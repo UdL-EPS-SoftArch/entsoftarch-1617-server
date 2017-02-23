@@ -1,0 +1,1 @@
+web: java $JAVA_OPTS -Dspring.profiles.active=heroku -Dserver.port=$PORT -jar target/mydata-api-0.0.1-SNAPSHOT.jar
