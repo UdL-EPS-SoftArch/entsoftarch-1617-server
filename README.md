@@ -2,7 +2,7 @@
 
 Class project for the Enterprise Software Architecture 2016-17 Course, Polytechnic School, University of Lleida
 
-[![Build Status](https://travis-ci.org/UdL-EPS-SoftArch/entsoftarch-1617-server.svg?branch=master)](https://travis-ci.org/UdL-EPS-SoftArch/entsoftarch-1617-server/branches) 
+[![Build Status](https://travis-ci.org/UdL-EPS-SoftArch/mydata-api.svg?branch=master)](https://travis-ci.org/UdL-EPS-SoftArch/mydata-api/branches) 
 <a href="https://zenhub.com"><img src="https://cdn.rawgit.com/ZenHubIO/support/master/zenhub-badge.svg"></a>
 
 ## Vision
