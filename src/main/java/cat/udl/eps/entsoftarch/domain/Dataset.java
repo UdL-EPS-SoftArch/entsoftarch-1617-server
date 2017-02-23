@@ -19,7 +19,7 @@ public class Dataset {
     private Long id;
 
     @NotBlank
-    private String despription;
+    private String description;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private ZonedDateTime dateTime;
@@ -27,6 +27,8 @@ public class Dataset {
     private boolean isBlocked = false;
 
     private int flags = 0;
+
+    private String owner;
 
     public Long getId() {
         return id;
@@ -36,12 +38,12 @@ public class Dataset {
         this.id = id;
     }
 
-    public String getDespription() {
-        return despription;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDespription(String despription) {
-        this.despription = despription;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public ZonedDateTime getDateTime() {
@@ -59,4 +61,20 @@ public class Dataset {
     public int getFlags() { return flags; }
 
     public void setFlags(int flags) { this.flags = flags; }
+
+    public String getOwner() { return owner; }
+
+    public void setOwner(String owner) { this.owner = owner; }
+
+    @Override
+    public String toString() {
+        return "Dataset{" +
+                "id=" + id +
+                ", description='" + description + '\'' +
+                ", dateTime=" + dateTime +
+                ", isBlocked=" + isBlocked +
+                ", flags=" + flags +
+                ", owner='" + owner + '\'' +
+                '}';
+    }
 }

@@ -7,7 +7,8 @@ import org.springframework.test.web.servlet.request.RequestPostProcessor;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.anonymous;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 
-public class AuthenticationStepDefs extends StepDefs {
+public class AuthenticationStepDefs {
+
     private static String currentUsername;
     private static String currentPassword;
 
