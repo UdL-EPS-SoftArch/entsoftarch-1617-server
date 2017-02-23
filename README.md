@@ -29,7 +29,7 @@ mechanisms arround the data.
 |  Delete Dataset         |  List Datasets order by Popularity   |  Associate Tag to Topic
 |  Update Dataset         |  Search Dataset by description words |  List Datasets by Flags
 |  Define Schema          |  Search Dataset by tag               |  Block Dataset
-|  Delete Schema          |  Filter Datasets by licensing        |
+|  Delete Schema          |  Filter Datasets by licensing        |  Verify Owner
 |  Update Schema          |  Filter Datasets by type             |
 |  Add Schema Field       |  Filter Datasets by topic            |
 |  Remove Schema Field    |  Request Dataset for topic           |
@@ -38,8 +38,8 @@ mechanisms arround the data.
 |  Post Stream Record     |  Unsubscribe from Dataset Stream     |
 |  Set Dataset License    |  Comment about Topic                 |
 |  Comment about Dataset  |  Comment about Dataset               |
-|  Define License
-|  Add Dataset Owner
+|  Define License         |  Flag Dataset
+|  Add Dataset Owner      |  Unflag Dataset
 |  Remove Dataset Owner
 
 ## Entities Model
