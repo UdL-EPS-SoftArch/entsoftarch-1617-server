@@ -1,7 +1,6 @@
 package cat.udl.eps.entsoftarch.steps;
 
 import cat.udl.eps.entsoftarch.MyDataAPIApplication;
-import cat.udl.eps.entsoftarch.config.WebSecurityTestConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
@@ -29,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Created by http://rhizomik.net/~roberto/
  */
 @ContextConfiguration(
-        classes = {MyDataAPIApplication.class, WebSecurityTestConfig.class}, loader = SpringBootContextLoader.class
+        classes = {MyDataAPIApplication.class}, loader = SpringBootContextLoader.class
 )
 @DirtiesContext
 @RunWith(SpringRunner.class)
