@@ -4,7 +4,7 @@ Feature: List Datasets order by Title
   I want to list a group of datasets and order it by Title
 
   Scenario: List datasets
-    Given There is a dataset
+    Given There is a dataset with description "anyTest" and owner "owner"
     And There is 1 datasets registered
     And I login as "user" with password "password"
     When I list the dataset
