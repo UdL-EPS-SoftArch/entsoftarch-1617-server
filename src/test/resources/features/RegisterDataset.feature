@@ -10,6 +10,7 @@ Feature: Register Dataset
     Then The new dataset has description "my own data"
     And The new dataset has date and time approximately now
     And There is 1 dataset registered
+    And User "owner" owns 1 dataset
 
   Scenario: Register a new dataset if one already registered
     Given I login as "owner" with password "password"
