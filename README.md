@@ -30,8 +30,8 @@ mechanisms arround the data.
 |  Update Dataset         |  Search Dataset by description words |  List Datasets by Flags
 |  Define Schema          |  Search Dataset by tag               |  Block Dataset
 |  Delete Schema          |  Filter Datasets by licensing        |  Verify Owner
-|  Update Schema          |  Filter Datasets by type             |
-|  Add Schema Field       |  Filter Datasets by topic            |
+|  Update Schema          |  Filter Datasets by type             |  Delete Tag
+|  Add Schema Field       |  Filter Datasets by topic            |  Edit Tag Name
 |  Remove Schema Field    |  Request Dataset for topic           |
 |  Update Schema Field    |  Download Dataset File               |
 |  Upload Data File       |  Subscribe to Dataset Stream         |
@@ -40,7 +40,10 @@ mechanisms arround the data.
 |  Comment about Dataset  |  Comment about Dataset               |
 |  Define License         |  Flag Dataset
 |  Add Dataset Owner      |  Unflag Dataset
-|  Remove Dataset Owner
+|  Remove Dataset Owner   |  Create Tag
+|                         |  Search Tab by name starting with
+|                         |  Tag Dataset
+|                         |  Untag Dataset
 
 ## Entities Model
 
