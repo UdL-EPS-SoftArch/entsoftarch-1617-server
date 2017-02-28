@@ -1,7 +1,10 @@
 package cat.udl.eps.entsoftarch.steps;
 
+import cat.udl.eps.entsoftarch.domain.DataOwner;
 import cat.udl.eps.entsoftarch.domain.Dataset;
+import cat.udl.eps.entsoftarch.repository.DataOwnerRepository;
 import cat.udl.eps.entsoftarch.repository.DatasetRepository;
+import cat.udl.eps.entsoftarch.repository.UserRepository;
 import com.jayway.jsonpath.JsonPath;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.When;
@@ -31,18 +34,21 @@ public class RegisterDatasetStepdefs {
 
     @Autowired private StepDefs stepDefs;
     @Autowired private DatasetRepository datasetRepository;
+    @Autowired private UserRepository userRepository;
+    @Autowired private DataOwnerRepository dataOwnerRepository;
 
     @And("^There (?:are|is) (\\d+) datasets? registered$")
     public void thereAreDatasetsRegistered(int count) throws Throwable {
         stepDefs.result = stepDefs.mockMvc.perform(get("/datasets")
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
                 .andDo(print())
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("$._embedded.datasets", hasSize(count)));
     }
 
     @And("^There is a dataset with description \"([^\"]*)\" and owner \"([^\"]*)\"$")
-    public void thereIsADatasetWithDescription(String description, String owner) throws Throwable {
+    public void thereIsADatasetWithDescription(String description, String username) throws Throwable {
+        DataOwner owner = dataOwnerRepository.findOne(username);
         Dataset dataset = new Dataset();
         dataset.setDescription(description);
         dataset.setOwner(owner);
@@ -67,7 +73,7 @@ public class RegisterDatasetStepdefs {
 
     @And("^The new dataset has description \"([^\"]*)\"$")
     public void existsADatasetWithDescription(String description) throws Throwable {
-        stepDefs.result.andExpect(jsonPath("$.description", is(description)));
+        stepDefs.result.andExpect(jsonPath("$.description"+"aa", is(description)));
     }
 
     @And("^The new dataset has date and time approximately now$")
@@ -76,5 +82,14 @@ public class RegisterDatasetStepdefs {
         ZonedDateTime dateTime = ZonedDateTime.parse(JsonPath.read(response, "$.dateTime"));
         Assert.assertThat(dateTime, greaterThan(ZonedDateTime.now().minus(5, ChronoUnit.SECONDS)));
         Assert.assertThat(dateTime, lessThan(ZonedDateTime.now()));
+    }
+
+    @And("^User \"([^\"]*)\" owns (\\d+) dataset$")
+    public void userOwnsDataset(String username, int count) throws Throwable {
+        stepDefs.result = stepDefs.mockMvc.perform(get("/dataOwners/{username}/owns", username)
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$._embedded.datasets", hasSize(count)));
     }
 }
