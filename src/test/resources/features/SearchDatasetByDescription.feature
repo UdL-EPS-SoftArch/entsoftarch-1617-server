@@ -12,11 +12,13 @@ Feature: SearchDatasetByDescription
   Scenario: Show a dataset given a description
     Given There is a dataset with description "dataset owned by owner" and owner "owner"
     And There is 1 datasets registered
-    When I search with "owner"
+    And I login as "owner" with password "password"
+    When I search with "by"
     Then Show 1 datasets
 
   Scenario: Show a dataset given a erroneous description
     Given There is a dataset with description "dataset owned by owner" and owner "owner"
     And There is 1 datasets registered
-    When I search with "qwerty"
-    Then Show 0 datasets
+    And I login as "owner" with password "password"
+    When I search with "dataset"
+    Then Show 1 datasets
