@@ -2,6 +2,7 @@ package cat.udl.eps.entsoftarch.domain;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -9,6 +10,7 @@ import javax.persistence.Id;
 /**
  * Created by gerard on 28/02/17.
  */
+@Entity
 public class Schema {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -19,6 +21,8 @@ public class Schema {
 
     @NotBlank
     private String description;
+
+    private String owner;
 
     public Long getId() {
         return id;
@@ -44,12 +48,21 @@ public class Schema {
         this.description = description;
     }
 
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
+
     @Override
     public String toString() {
         return "Schema{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
+                ", owner='" + owner + '\'' +
                 '}';
     }
 }
