@@ -33,6 +33,7 @@ public class DatasetEventHandler {
     @HandleBeforeSave
     @PreAuthorize("#dataset.owner == principal.username")
     public void handleDatasetPreSave(Dataset dataset){
+
         logger.info("Before updating: {}", dataset.toString());
     }
 
