@@ -3,14 +3,14 @@ Feature: Update Dataset
   As a data owner
   I want to update a dataset
 
-#  Scenario: Register a dataset description without data
-#    Given I login as "owner" with password "password"
-#    And There are 0 datasets registered
-#    When I register a dataset with description "my own data"
-#    Then The new dataset has description "my own data"
+  Scenario: Update a dataset description
+    Given I login as "owner" with password "password"
+    And There is a dataset with description "my original data" and owner "owner"
+    When I update my dataset description "my changed description"
+    Then The new dataset has description "my changed description"
 #    And The new dataset has date and time approximately now
-#    And There is 1 dataset registered
-#
+    And There is 1 dataset registered
+
 #  Scenario: Register a new dataset if one already registered
 #    Given I login as "owner" with password "password"
 #    And There is a dataset with description "my original data" and owner "owner"
