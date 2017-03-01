@@ -16,7 +16,6 @@ Feature: Register Schema
     When I register a schema with title "my own title" and description "my own schema"
     Then There are 2 schemas registered
 
-
   Scenario: Register a schema but wrong password
     Given I login as "owner" with password "wrongpassword"
     And There are 0 schemas registered
