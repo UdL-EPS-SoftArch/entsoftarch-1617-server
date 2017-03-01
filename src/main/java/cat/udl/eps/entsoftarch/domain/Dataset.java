@@ -1,7 +1,7 @@
 package cat.udl.eps.entsoftarch.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.data.annotation.ReadOnlyProperty;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Entity;
@@ -14,7 +14,6 @@ import java.time.ZonedDateTime;
  * Created by http://rhizomik.net/~roberto/
  */
 @Entity
-@JsonIgnoreProperties(value = {"dateTime"}, allowGetters = true)
 public class Dataset {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -24,12 +23,14 @@ public class Dataset {
     private String description;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @ReadOnlyProperty
     private ZonedDateTime dateTime;
 
     private boolean isBlocked = false;
 
     private int flags = 0;
 
+    @ReadOnlyProperty
     private String owner;
 
     public Long getId() {
