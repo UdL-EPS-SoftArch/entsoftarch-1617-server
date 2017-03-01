@@ -2,6 +2,7 @@ package cat.udl.eps.entsoftarch.steps;
 
 import cat.udl.eps.entsoftarch.MyDataAPIApplication;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
@@ -48,6 +49,7 @@ public class StepDefs {
                 .webAppContextSetup(this.wac)
                 .apply(SecurityMockMvcConfigurers.springSecurity())
                 .build();
+        this.mapper.registerModule(new JavaTimeModule());
     }
 
     @Then("^The response code is (\\d+)$")

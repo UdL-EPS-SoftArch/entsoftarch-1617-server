@@ -27,7 +27,6 @@ public class UpdateDatasetStepDefs {
     public void iUpdateMyDatasetWithDesciptionToDescription(String oldDescription, String newDescription) throws Throwable {
         Dataset dataset = datasetRepository.findByDescription(oldDescription).get(0);
         dataset.setDescription(newDescription);
-        //dataset.setDateTime(null);
         String message = stepDefs.mapper.writeValueAsString(dataset);
 
         stepDefs.result = stepDefs.mockMvc.perform(
