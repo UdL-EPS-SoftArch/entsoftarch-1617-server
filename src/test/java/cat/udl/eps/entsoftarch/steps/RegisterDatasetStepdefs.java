@@ -7,6 +7,7 @@ import cat.udl.eps.entsoftarch.repository.DatasetRepository;
 import cat.udl.eps.entsoftarch.repository.UserRepository;
 import com.jayway.jsonpath.JsonPath;
 import cucumber.api.java.en.And;
+import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
 import org.slf4j.Logger;
@@ -46,20 +47,20 @@ public class RegisterDatasetStepdefs {
                 .andExpect(jsonPath("$._embedded.datasets", hasSize(count)));
     }
 
-    @And("^There is a dataset with description \"([^\"]*)\" and owner \"([^\"]*)\"$")
-    public void thereIsADatasetWithDescription(String description, String username) throws Throwable {
+    @Given("^There is a dataset with title \"([^\"]*)\" and owner \"([^\"]*)\"$")
+    public void thereIsADatasetWithTitleAndOwner(String title, String username) throws Throwable {
         DataOwner owner = dataOwnerRepository.findOne(username);
         Dataset dataset = new Dataset();
-        dataset.setDescription(description);
+        dataset.setTitle(title);
         dataset.setOwner(owner);
         dataset.setDateTime(ZonedDateTime.now());
         datasetRepository.save(dataset);
     }
 
-    @When("^I register a dataset with description \"([^\"]*)\"$")
-    public void iRegisterADatasetWithDescription(String description) throws Throwable {
+    @When("^I register a dataset with title \"([^\"]*)\"$")
+    public void iRegisterADatasetWithDescription(String title) throws Throwable {
         Dataset dataset = new Dataset();
-        dataset.setDescription(description);
+        dataset.setTitle(title);
         String message = stepDefs.mapper.writeValueAsString(dataset);
 
         stepDefs.result = stepDefs.mockMvc.perform(
@@ -71,9 +72,9 @@ public class RegisterDatasetStepdefs {
                 .andDo(print());
     }
 
-    @And("^The new dataset has description \"([^\"]*)\"$")
-    public void existsADatasetWithDescription(String description) throws Throwable {
-        stepDefs.result.andExpect(jsonPath("$.description"+"aa", is(description)));
+    @And("^The new dataset has title \"([^\"]*)\"$")
+    public void existsADatasetWithDescription(String title) throws Throwable {
+        stepDefs.result.andExpect(jsonPath("$.title", is(title)));
     }
 
     @And("^The new dataset has date and time approximately now$")

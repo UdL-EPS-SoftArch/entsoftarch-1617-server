@@ -1,15 +1,10 @@
 package cat.udl.eps.entsoftarch.steps;
 
-import cat.udl.eps.entsoftarch.domain.Dataset;
 import cat.udl.eps.entsoftarch.repository.DatasetRepository;
-import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
-import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-
-import java.time.ZonedDateTime;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -31,16 +26,6 @@ public class ListDatasetsStepdefs {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
-    }
-
-    @Given("^There is a dataset with title \"([^\"]*)\" and owner \"([^\"]*)\"$")
-    public void thereIsADatasetWithTitleAndOwner(String title, String owner) throws Throwable {
-        Dataset dataset = new Dataset();
-        dataset.setTitle(title);
-        dataset.setDescription("anyDescription");
-        dataset.setOwner(owner);
-        dataset.setDateTime(ZonedDateTime.now());
-        datasetRepository.save(dataset);
     }
 
     @And("^In the position (\\d+) there is a dataset with title \"([^\"]*)\"$")
