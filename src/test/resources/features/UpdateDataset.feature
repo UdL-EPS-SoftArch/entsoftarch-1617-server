@@ -9,7 +9,7 @@ Feature: Update Dataset
     And There is 1 dataset registered
     When I update my dataset with desciption "my original data" to description "my changed description"
     Then The new dataset has description "my changed description"
-#    And The new dataset has date and time approximately now
+    And The new dataset has lastModified field approximately now
     And There is 1 dataset registered
 
 #  Scenario: Register a new dataset if one already registered
