@@ -26,6 +26,9 @@ public class Dataset {
     @ReadOnlyProperty
     private ZonedDateTime dateTime;
 
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    private ZonedDateTime lastModified;
+
     private boolean isBlocked = false;
 
     private int flags = 0;
