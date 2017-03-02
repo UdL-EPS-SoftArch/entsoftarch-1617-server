@@ -1,6 +1,8 @@
 package cat.udl.eps.entsoftarch.steps;
 
+import cat.udl.eps.entsoftarch.domain.DataOwner;
 import cat.udl.eps.entsoftarch.domain.Schema;
+import cat.udl.eps.entsoftarch.repository.DataOwnerRepository;
 import cat.udl.eps.entsoftarch.repository.SchemaRepository;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.When;
@@ -28,6 +30,7 @@ public class RegisterSchemaStepdefs {
     @Autowired
     private StepDefs stepDefs;
     @Autowired private SchemaRepository schemaRepository;
+    @Autowired private DataOwnerRepository dataOwnerRepository;
 
     @And("^There (?:are|is) (\\d+) schemas? registered$")
     public void thereAreSchemasRegistered(int count) throws Throwable {
@@ -42,8 +45,9 @@ public class RegisterSchemaStepdefs {
             "and description \"([^\"]*)\" and owner \"([^\"]*)\"$")
     public void thereIsASchemaWithTitleAndDescription(String title,
                                                       String description,
-                                                      String owner)
+                                                      String username)
             throws Throwable {
+        DataOwner owner = dataOwnerRepository.findOne(username);
         Schema schema = new Schema();
         schema.setTitle(title);
         schema.setDescription(description);
@@ -73,6 +77,15 @@ public class RegisterSchemaStepdefs {
             throws Throwable {
         stepDefs.result.andExpect(jsonPath("$.title", is(title)));
         stepDefs.result.andExpect(jsonPath("$.description", is(description)));
+    }
+
+    @And("^User \"([^\"]*)\" owns (\\d+) schema$")
+    public void userOwnsSchema(String username, int count) throws Throwable {
+        stepDefs.result = stepDefs.mockMvc.perform(get("/dataOwners/{username}/owns_schemas", username)
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$._embedded.schemas", hasSize(count)));
     }
 
 }
