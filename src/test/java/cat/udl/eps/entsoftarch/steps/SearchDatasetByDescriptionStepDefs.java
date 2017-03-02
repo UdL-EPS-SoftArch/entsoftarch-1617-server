@@ -1,18 +1,13 @@
 package cat.udl.eps.entsoftarch.steps;
 
-import cat.udl.eps.entsoftarch.domain.Dataset;
 import cat.udl.eps.entsoftarch.repository.DatasetRepository;
-import com.jayway.jsonpath.JsonPath;
 import cucumber.api.PendingException;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.time.ZonedDateTime;
-
 import static cat.udl.eps.entsoftarch.steps.AuthenticationStepDefs.authenticate;
 import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -23,8 +18,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class SearchDatasetByDescriptionStepDefs {
 
     @Autowired private StepDefs stepDefs;
-    @Autowired private DatasetRepository datasetRepository;
-    int numberDatasets;
 
 
 
