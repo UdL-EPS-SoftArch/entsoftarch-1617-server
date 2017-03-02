@@ -8,8 +8,4 @@ import javax.persistence.Entity;
 
 @Entity
 public class OpenLicense extends License {
-
-    public OpenLicense(String text) {
-        super(text);
-    }
 }

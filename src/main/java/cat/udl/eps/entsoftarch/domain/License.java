@@ -11,10 +11,6 @@ public abstract class License {
 
     public String text;
 
-    public License(String text) {
-        this.text = text;
-    }
-
     public String getText() {
         return text;
     }

@@ -10,7 +10,7 @@ Scenario: Register a open license text
   Then The new license has text "text"
   And There is 1 license registered
 
-Scenario: Register a closed license text and price
+"""Scenario: Register a closed license text and price
   Given I login as "owner" with password "password"
   And There are 0 licenses registered
   When I register a license with text "text" and price "price"
@@ -45,4 +45,4 @@ Scenario: Register a closed license but wrong password
   When I register a license with text "text" and price "price"
   Then The response code is 401
   And The error message is "Bad credentials"
-  And There are 0 licenses registered
+  And There are 0 licenses registered"""
