@@ -1,5 +1,7 @@
 package cat.udl.eps.entsoftarch.domain;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 
@@ -20,6 +22,7 @@ public class DataOwner extends User {
     private List<Dataset> owns = new ArrayList<>();
 
     @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     private List<Schema> owns_schemas = new ArrayList<>();
 
     @Override
