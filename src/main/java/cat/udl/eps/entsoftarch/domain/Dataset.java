@@ -59,6 +59,15 @@ public class Dataset {
 
     public void setDateTime(ZonedDateTime dateTime) {
         this.dateTime = dateTime;
+        this.lastModified = dateTime;
+    }
+
+    public ZonedDateTime getLastModified() {
+        return lastModified;
+    }
+
+    public void setLastModified(ZonedDateTime lastModified) {
+        this.lastModified = lastModified;
     }
 
     public boolean isBlocked() { return isBlocked; }
