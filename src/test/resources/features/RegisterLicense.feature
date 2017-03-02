@@ -1,3 +1,8 @@
+Feature: Register License
+  In order to define a license
+  As a data owner
+  I want to register a license and make it available
+
 Scenario: Register a open license text
   Given I login as "owner" with password "password"
   And There are 0 licenses registered
