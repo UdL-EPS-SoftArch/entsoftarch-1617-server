@@ -1,5 +1,6 @@
 package cat.udl.eps.entsoftarch.handler;
 
+import cat.udl.eps.entsoftarch.domain.DataOwner;
 import cat.udl.eps.entsoftarch.domain.Dataset;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,18 +27,18 @@ public class DatasetEventHandler {
         logger.info("Before creating: {}", dataset.toString());
 
         dataset.setDateTime(ZonedDateTime.now());
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        dataset.setOwner(username);
+        DataOwner principal = (DataOwner) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        dataset.setOwner(principal);
     }
 
     @HandleBeforeSave
-    @PreAuthorize("#dataset.owner == principal.username")
+    @PreAuthorize("#dataset.owner.username == principal.username")
     public void handleDatasetPreSave(Dataset dataset){
         logger.info("Before updating: {}", dataset.toString());
     }
 
     @HandleBeforeDelete
-    @PreAuthorize("#dataset.owner == principal.username")
+    @PreAuthorize("#dataset.owner.username == principal.username")
     public void handleDatasetPreDelete(Dataset dataset){
         logger.info("Before deleting: {}", dataset.toString());
     }
