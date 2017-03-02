@@ -19,7 +19,6 @@ public class Schema {
     @NotBlank
     private String title;
 
-    @NotBlank
     private String description;
 
     @ManyToOne
