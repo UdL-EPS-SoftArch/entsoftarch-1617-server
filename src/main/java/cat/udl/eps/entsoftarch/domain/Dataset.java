@@ -1,40 +1,53 @@
 package cat.udl.eps.entsoftarch.domain;
 
+import lombok.Data;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.data.annotation.ReadOnlyProperty;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.ZonedDateTime;
 
 /**
  * Created by http://rhizomik.net/~roberto/
  */
+
 @Entity
+@Data
 public class Dataset {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @NotBlank
-    private String description;
+    private String title;
 
+    private String description;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @ReadOnlyProperty
     private ZonedDateTime dateTime;
-
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private ZonedDateTime lastModified;
-
     private boolean isBlocked = false;
-
     private int flags = 0;
+    @ManyToOne
+    private DataOwner owner;
 
-    @ReadOnlyProperty
-    private String owner;
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public DataOwner getOwner() {
+        return owner;
+    }
+
+    public void setOwner(DataOwner owner) {
+        this.owner = owner;
+    }
 
     public Long getId() {
         return id;
@@ -69,17 +82,21 @@ public class Dataset {
         this.lastModified = lastModified;
     }
 
-    public boolean isBlocked() { return isBlocked; }
+    public boolean isBlocked() {
+        return isBlocked;
+    }
 
-    public void setBlocked(boolean blocked) { isBlocked = blocked; }
+    public void setBlocked(boolean blocked) {
+        isBlocked = blocked;
+    }
 
-    public int getFlags() { return flags; }
+    public int getFlags() {
+        return flags;
+    }
 
-    public void setFlags(int flags) { this.flags = flags; }
-
-    public String getOwner() { return owner; }
-
-    public void setOwner(String owner) { this.owner = owner; }
+    public void setFlags(int flags) {
+        this.flags = flags;
+    }
 
     @Override
     public String toString() {
@@ -89,7 +106,7 @@ public class Dataset {
                 ", dateTime=" + dateTime +
                 ", isBlocked=" + isBlocked +
                 ", flags=" + flags +
-                ", owner='" + owner + '\'' +
+                ", owner='" + owner.toString() + '\'' +
                 '}';
     }
 }

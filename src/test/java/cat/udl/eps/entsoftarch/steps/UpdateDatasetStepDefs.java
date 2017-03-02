@@ -32,10 +32,10 @@ public class UpdateDatasetStepDefs {
     @Autowired
     private DatasetRepository datasetRepository;
 
-    @When("^I update my dataset with desciption \"([^\"]*)\" to description \"([^\"]*)\"$")
-    public void iUpdateMyDatasetWithDesciptionToDescription(String oldDescription, String newDescription) throws Throwable {
-        Dataset dataset = datasetRepository.findByDescription(oldDescription).get(0);
-        dataset.setDescription(newDescription);
+    @When("^I update my dataset with title \"([^\"]*)\" to title \"([^\"]*)\"$")
+    public void iUpdateMyDatasetWithTitleToTitle(String oldTitle, String newTitle) throws Throwable {
+        Dataset dataset = datasetRepository.findByTitle(oldTitle).get(0);
+        dataset.setTitle(newTitle);
         String message = stepDefs.mapper.writeValueAsString(dataset);
 
         stepDefs.result = stepDefs.mockMvc.perform(
