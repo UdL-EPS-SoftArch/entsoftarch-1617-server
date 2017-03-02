@@ -17,9 +17,9 @@ public class DeleteDatasetStepdefs {
     @Autowired StepDefs stepDefs;
     @Autowired DatasetRepository datasetRepository;
 
-    @When("^I delete the dataset with description \"([^\"]*)\"$")
-    public void iDeleteTheDatasetWithDescription(String description) throws Throwable {
-        Dataset dataset = datasetRepository.findByDescription(description).get(0);
+    @When("^I delete the dataset with title \"([^\"]*)\"$")
+    public void iDeleteTheDatasetWithDescription(String title) throws Throwable {
+        Dataset dataset = datasetRepository.findByTitle(title).get(0);
         stepDefs.result = stepDefs.mockMvc.perform(
                 delete("/datasets/{id}", dataset.getId())
                         .with(authenticate()))

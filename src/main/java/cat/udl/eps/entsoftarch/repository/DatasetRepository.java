@@ -13,4 +13,5 @@ import java.util.List;
 @RepositoryRestResource
 public interface DatasetRepository extends PagingAndSortingRepository<Dataset, Long> {
     List<Dataset> findByDescription(@Param("description") String description);
+    List<Dataset> findByTitle(@Param("title") String title);
 }
