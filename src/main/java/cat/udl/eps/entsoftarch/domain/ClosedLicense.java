@@ -11,8 +11,11 @@ public class ClosedLicense extends License {
 
     private double price;
 
-    public ClosedLicense(String text, double price) {
-        super(text);
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
         this.price = price;
     }
 }
