@@ -12,7 +12,7 @@ import java.util.List;
  */
 @RepositoryRestResource
 public interface SchemaRepository extends PagingAndSortingRepository<Schema, Long> {
-    List<Schema> findByTitleAndDescription(@Param("title") String title,
-                                   @Param("description") String description);
+    List<Schema> findByTitle(@Param("title") String title);
+    List<Schema> findByDescription(@Param("description") String description);
 }
 
