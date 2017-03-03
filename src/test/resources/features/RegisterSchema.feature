@@ -8,6 +8,7 @@ Feature: Register Schema
     When I register a schema with title "my title" and description "my own schema"
     Then The new schema has title "my title" and description "my own schema"
     And There is 1 schema registered
+    And User "owner" owns 1 schema
 
   Scenario: Register a new schema if one already registered
     Given I login as "owner" with password "password"
