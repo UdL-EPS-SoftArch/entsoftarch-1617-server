@@ -1,14 +1,17 @@
 package cat.udl.eps.entsoftarch.steps;
 
 import cat.udl.eps.entsoftarch.domain.ClosedLicense;
+import cat.udl.eps.entsoftarch.domain.DataOwner;
 import cat.udl.eps.entsoftarch.domain.OpenLicense;
 import cat.udl.eps.entsoftarch.repository.ClosedLicenseRepository;
+import cat.udl.eps.entsoftarch.repository.DataOwnerRepository;
 import cat.udl.eps.entsoftarch.repository.OpenLicenseRepository;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+
 
 import static cat.udl.eps.entsoftarch.steps.AuthenticationStepDefs.authenticate;
 import static org.hamcrest.Matchers.hasSize;
@@ -30,9 +33,11 @@ public class RegisterLicenseStepdefs {
     private OpenLicenseRepository openLicenseRepository;
     @Autowired
     private ClosedLicenseRepository closedLicenseRepository;
+    @Autowired
+    private DataOwnerRepository dataOwnerRepository;
 
     //Open License
-    @When("^I register a license with text \"([^\"]*)\"$")
+    @When("^I register a open license with text \"([^\"]*)\"$")
     public void iRegisterAOpenLicenseWithText(String text) throws Throwable {
         OpenLicense license = new OpenLicense();
         license.setText(text);
@@ -54,6 +59,16 @@ public class RegisterLicenseStepdefs {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$._embedded.openlicenses", hasSize(count)));
+    }
+
+    @And("^There is a open license with text \"([^\"]*)\" and owner \"([^\"]*)\"$")
+    public void thereIsAOpenLicenseWithTextAndOwner(String text, String username) throws Throwable {
+        DataOwner owner = dataOwnerRepository.findOne(username);
+        OpenLicense license = new OpenLicense();
+        license.setText(text);
+        license.setOwner(owner);
+
+        openLicenseRepository.save(license);
     }
 
     @Then("^The new license has text \"([^\"]*)\"$")
@@ -91,5 +106,16 @@ public class RegisterLicenseStepdefs {
     public void theNewClosedLicenseHasTextAndPrice(String text, double price) throws Throwable {
         stepDefs.result.andExpect(jsonPath("$.text", is(text)));
         stepDefs.result.andExpect(jsonPath("$.price", is(price)));
+    }
+
+    @And("^There is a closed license with text \"([^\"]*)\" and price (\\d+) and owner \"([^\"]*)\"$")
+    public void thereIsAClosedLicenseWithTextAndPriceAndOwner(String text, int price, String username) throws Throwable {
+        DataOwner owner = dataOwnerRepository.findOne(username);
+        ClosedLicense license = new ClosedLicense();
+        license.setText(text);
+        license.setPrice(price);
+        license.setOwner(owner);
+
+        closedLicenseRepository.save(license);
     }
 }
