@@ -22,17 +22,12 @@ Feature: Update Dataset
     And The new dataset has lastModified field approximately now
     And There is 1 dataset registered
 
-#  Scenario: Register a new dataset if one already registered
-#    Given I login as "owner" with password "password"
-#    And There is a dataset with description "my original data" and owner "owner"
-#    And There are 1 datasets registered
-#    When I register a dataset with description "my own data"
-#    Then There are 2 datasets registered
-#
-#  Scenario: Register a dataset but wrong password
-#    Given I login as "owner" with password "wrongpassword"
-#    And There are 0 datasets registered
-#    When I register a dataset with description "my own data"
-#    Then The response code is 401
-#    And The error message is "Bad credentials"
-#    And There are 0 datasets registered
+
+  Scenario: Update a dataset but not owner
+    Given I login as "user" with password "password"
+    And There is a dataset with title "my original data" and owner "owner"
+    And There is 1 datasets registered
+    When I update my dataset with title "my original data" to title "my changed title"
+    Then The response code is 403
+    And The error message is "Access is denied"
+    And The dataset has title "my original data"
