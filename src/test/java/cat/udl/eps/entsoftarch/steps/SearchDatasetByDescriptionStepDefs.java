@@ -1,12 +1,10 @@
 package cat.udl.eps.entsoftarch.steps;
 
-import cat.udl.eps.entsoftarch.repository.DatasetRepository;
 import cucumber.api.PendingException;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static cat.udl.eps.entsoftarch.steps.AuthenticationStepDefs.authenticate;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -30,8 +28,7 @@ public class SearchDatasetByDescriptionStepDefs {
     @When("^I search with \"([^\"]*)\"$")
     public void iSearchWith(String description) throws Throwable {
         stepDefs.result = stepDefs.mockMvc.perform(
-                get("/datasets/search/findByDescriptionContaining?description={description}",description)
-                        .with(authenticate()))
+                get("/datasets/search/findByDescriptionContaining?description={description}",description))
                 .andDo(print());
     }
 

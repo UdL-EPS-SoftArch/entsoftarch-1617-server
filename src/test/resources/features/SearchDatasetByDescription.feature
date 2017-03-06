@@ -4,15 +4,13 @@ Feature: SearchDatasetByDescription
   I want to show the datasets that match with a description
 
   Scenario: Show a dataset given a description
-    Given There is a dataset with description "dataset owned by owner" and owner "owner"
+    Given There is a dataset with description "dataset description one" and owner "owner"
     And There is 1 datasets registered
-    And I login as "owner" with password "password"
-    When I search with "by"
+    When I search with "one"
     Then Show 1 datasets
 
   Scenario: Show a dataset given a erroneous description
-    Given There is a dataset with description "dataset owned by owner" and owner "owner"
+    Given There is a dataset with description "dataset description 2" and owner "owner"
     And There is 1 datasets registered
-    And I login as "owner" with password "password"
     When I search with "notmatch"
     Then Show 0 datasets

@@ -57,8 +57,19 @@ public class RegisterDatasetStepdefs {
         datasetRepository.save(dataset);
     }
 
+    @Given("^There is a dataset with description \"([^\"]*)\" and owner \"([^\"]*)\"$")
+    public void thereIsADatasetWithDescriptionAndOwner(String description, String username) throws Throwable {
+        DataOwner owner = dataOwnerRepository.findOne(username);
+        Dataset dataset = new Dataset();
+        dataset.setDescription(description);
+        dataset.setTitle("title");
+        dataset.setOwner(owner);
+        dataset.setDateTime(ZonedDateTime.now());
+        datasetRepository.save(dataset);
+    }
+
     @When("^I register a dataset with title \"([^\"]*)\"$")
-    public void iRegisterADatasetWithDescription(String title) throws Throwable {
+    public void iRegisterADatasetWithTitle(String title) throws Throwable {
         Dataset dataset = new Dataset();
         dataset.setTitle(title);
         String message = stepDefs.mapper.writeValueAsString(dataset);
