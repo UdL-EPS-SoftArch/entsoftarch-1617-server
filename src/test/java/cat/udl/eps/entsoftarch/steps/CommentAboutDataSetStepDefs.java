@@ -33,13 +33,6 @@ public class CommentAboutDataSetStepDefs {
         CommentAboutDataSetStepDefs.currentUsername = username;
         CommentAboutDataSetStepDefs.currentPassword = password;
     }
-    
-
-    @Given("^User not registered$")
-    public void userNotRegistered() throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
-    }
 
     @When("^I comment a dataset$")
     public void iCommentADataset() throws Throwable {
