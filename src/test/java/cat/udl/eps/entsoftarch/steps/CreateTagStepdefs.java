@@ -3,12 +3,13 @@ package cat.udl.eps.entsoftarch.steps;
 import cat.udl.eps.entsoftarch.domain.Tag;
 import cat.udl.eps.entsoftarch.repository.TagRepository;
 import cucumber.api.java.en.And;
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 
 import static cat.udl.eps.entsoftarch.steps.AuthenticationStepDefs.authenticate;
-import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -47,5 +48,11 @@ public class CreateTagStepdefs {
                         .with(authenticate()))
                 .andDo(print());
     }
+
+    @Then("^The new tag has name \"([^\"]*)\"$")
+    public void theNewTagHasName(String name) throws Throwable {
+        stepDefs.result.andExpect(jsonPath("$.name", is(name)));
+    }
+
 
 }
