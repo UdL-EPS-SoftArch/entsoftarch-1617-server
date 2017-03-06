@@ -10,6 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
+import java.time.ZonedDateTime;
 
 /**
  * Created by gerard on 02/03/17.
@@ -32,6 +33,7 @@ public class SchemaEventHandler {
     @HandleBeforeSave
     @PreAuthorize("#schema.owner.username == principal.username")
     public void handleSchemaPreSave(Schema schema){
+        schema.setLastModified(ZonedDateTime.now());
         logger.info("Before updating: {}", schema.toString());
     }
 
