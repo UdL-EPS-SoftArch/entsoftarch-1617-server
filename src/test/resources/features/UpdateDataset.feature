@@ -22,7 +22,6 @@ Feature: Update Dataset
     And The new dataset has lastModified field approximately now
     And There is 1 dataset registered
 
-
   Scenario: Update a dataset but not owner
     Given I login as "user" with password "password"
     And There is a dataset with title "my original data" and owner "owner"

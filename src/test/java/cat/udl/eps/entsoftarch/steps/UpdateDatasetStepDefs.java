@@ -19,9 +19,7 @@ import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 
 import static cat.udl.eps.entsoftarch.steps.AuthenticationStepDefs.authenticate;
-import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.lessThan;
+import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -96,7 +94,8 @@ public class UpdateDatasetStepDefs {
 
     @And("^The dataset has title \"([^\"]*)\"$")
     public void theDatasetHasTitle(String title) throws Throwable {
-        stepDefs.result.andExpect(jsonPath("$.title", is(title)));
+        Dataset dataset = datasetRepository.findByTitle(title).get(0);
+        Assert.assertThat(dataset, notNullValue());
     }
 }
 
