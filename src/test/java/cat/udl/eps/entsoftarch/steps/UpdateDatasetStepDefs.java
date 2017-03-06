@@ -61,17 +61,6 @@ public class UpdateDatasetStepDefs {
         Assert.assertThat(dateTime, lessThan(ZonedDateTime.now()));
     }
 
-    @And("^There is a dataset with description \"([^\"]*)\" and owner \"([^\"]*)\"$")
-    public void thereIsADatasetWithDescriptionAndOwner(String description, String username) throws Throwable {
-        DataOwner owner = dataOwnerRepository.findOne(username);
-        Dataset dataset = new Dataset();
-        dataset.setTitle("Any title");
-        dataset.setDescription(description);
-        dataset.setOwner(owner);
-        dataset.setDateTime(ZonedDateTime.now());
-        datasetRepository.save(dataset);
-    }
-
     @When("^I update my dataset with description \"([^\"]*)\" to description \"([^\"]*)\"$")
     public void iUpdateMyDatasetWithDescriptionToDescription(String oldDesc, String newDesc) throws Throwable {
         Dataset dataset = datasetRepository.findByDescription(oldDesc).get(0);
