@@ -1,7 +1,9 @@
 package cat.udl.eps.entsoftarch.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.data.annotation.ReadOnlyProperty;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -24,12 +26,17 @@ public class Dataset {
     private String description;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @ReadOnlyProperty
     private ZonedDateTime dateTime;
+
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    private ZonedDateTime lastModified;
 
     private boolean isBlocked = false;
 
     private int flags = 0;
 
     @ManyToOne
+    @JsonBackReference
     private DataOwner owner;
 }
