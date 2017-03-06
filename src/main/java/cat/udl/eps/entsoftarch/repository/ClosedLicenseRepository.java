@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Created by Victor on 03/03/2017.
  */
-@RepositoryRestResource(collectionResourceRel="closedlicenses", path="closedlicenses")
+@RepositoryRestResource
 public interface ClosedLicenseRepository extends PagingAndSortingRepository <ClosedLicense, Long> {
-    List <ClosedLicense> findByText(@Param("text") String text, @Param("price") double price);
+    List <ClosedLicense> findByText(@Param("text") String text);
 }

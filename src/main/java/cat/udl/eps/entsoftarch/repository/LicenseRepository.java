@@ -8,5 +8,5 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
  * Created by Victor on 03/03/2017.
  */
 @RepositoryRestResource
-public interface LicenseRepository extends PagingAndSortingRepository<License, Long> {
+public interface LicenseRepository extends PagingAndSortingRepository <License, Long> {
 }

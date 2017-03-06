@@ -11,7 +11,7 @@ import java.util.List;
  * Created by victorserrate on 2/3/17.
  */
 
-@RepositoryRestResource(collectionResourceRel = "openlicenses", path = "openlicenses")
-public interface OpenLicenseRepository extends PagingAndSortingRepository<OpenLicense, Long> {
-    List<OpenLicense> findByText(@Param("text") String text);
+@RepositoryRestResource
+public interface OpenLicenseRepository extends PagingAndSortingRepository <OpenLicense, Long> {
+    List <OpenLicense> findByText(@Param("text") String text);
 }
