@@ -2,12 +2,15 @@ package cat.udl.eps.entsoftarch.domain;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.ReadOnlyProperty;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.time.ZonedDateTime;
 
 /**
  * Created by santi on 6/03/17.
@@ -27,7 +30,11 @@ public class Comment {
 
     @ManyToOne
     @NotNull
-    private Dataset comments;
+    private Dataset about;
+
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @ReadOnlyProperty
+    private ZonedDateTime dateTime;
 
     public long getId() {
         return id;
@@ -53,11 +60,15 @@ public class Comment {
         this.txt = txt;
     }
 
-    public Dataset getComments() {
-        return comments;
+    public Dataset getAbout() {
+        return about;
     }
 
-    public void setComments(Dataset comments) {
-        this.comments = comments;
+    public void setAbout(Dataset about) {
+        this.about = about;
+    }
+
+    public ZonedDateTime getDateTime() {
+        return dateTime;
     }
 }
