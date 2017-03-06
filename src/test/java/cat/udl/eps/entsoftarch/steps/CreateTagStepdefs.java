@@ -2,6 +2,7 @@ package cat.udl.eps.entsoftarch.steps;
 
 import cat.udl.eps.entsoftarch.domain.Tag;
 import cat.udl.eps.entsoftarch.repository.TagRepository;
+import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -55,4 +56,10 @@ public class CreateTagStepdefs {
     }
 
 
+    @And("^There is a tag with name \"([^\"]*)\"$")
+    public void thereIsATagWithName(String name) throws Throwable {
+        Tag tag = new Tag();
+        tag.setName(name);
+        tagRepository.save(tag);
+    }
 }
