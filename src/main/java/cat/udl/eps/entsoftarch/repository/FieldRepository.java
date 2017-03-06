@@ -1,6 +1,5 @@
 package cat.udl.eps.entsoftarch.repository;
 
-import cat.udl.eps.entsoftarch.domain.Dataset;
 import cat.udl.eps.entsoftarch.domain.Field;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
@@ -10,6 +9,7 @@ import java.util.List;
 
 
 @RepositoryRestResource
-public interface FieldRepository extends PagingAndSortingRepository<Dataset, Long> {
-    List<Field> findByDescription(@Param("description") String description);
+public interface FieldRepository extends PagingAndSortingRepository<Field, Long> {
+    List<Field> findByTitle(@Param("title") String title);
+
 }
