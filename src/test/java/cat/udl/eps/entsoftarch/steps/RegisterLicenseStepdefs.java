@@ -39,12 +39,12 @@ public class RegisterLicenseStepdefs {
     //Open License
     @When("^I register a open license with text \"([^\"]*)\"$")
     public void iRegisterAOpenLicenseWithText(String text) throws Throwable {
-        OpenLicense license = new OpenLicense();
+        OpenLicense license=new OpenLicense();
         license.setText(text);
 
-        String message = stepDefs.mapper.writeValueAsString(license);
+        String message=stepDefs.mapper.writeValueAsString(license);
 
-        stepDefs.result = stepDefs.mockMvc.perform(post("/openlicenses")
+        stepDefs.result=stepDefs.mockMvc.perform(post("/openLicenses")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(message)
                 .accept(MediaType.APPLICATION_JSON)
@@ -54,17 +54,17 @@ public class RegisterLicenseStepdefs {
 
     @And("^There (?:are|is) (\\d+) open licenses? registered$")
     public void thereAreOpenLicensesRegistered(int count) throws Throwable {
-        stepDefs.result = stepDefs.mockMvc.perform(get("/openlicenses")
+        stepDefs.result=stepDefs.mockMvc.perform(get("/openLicenses")
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$._embedded.openlicenses", hasSize(count)));
+                .andExpect(jsonPath("$._embedded.openLicenses", hasSize(count)));
     }
 
     @And("^There is a open license with text \"([^\"]*)\" and owner \"([^\"]*)\"$")
     public void thereIsAOpenLicenseWithTextAndOwner(String text, String username) throws Throwable {
-        DataOwner owner = dataOwnerRepository.findOne(username);
-        OpenLicense license = new OpenLicense();
+        DataOwner owner=dataOwnerRepository.findOne(username);
+        OpenLicense license=new OpenLicense();
         license.setText(text);
         license.setOwner(owner);
 
@@ -76,16 +76,26 @@ public class RegisterLicenseStepdefs {
         stepDefs.result.andExpect(jsonPath("$.text", is(text)));
     }
 
+
+    @And("^User \"([^\"]*)\" owns (\\d+) open license$")
+    public void userOwnsOpenLicense(String username, int count) throws Throwable {
+        stepDefs.result=stepDefs.mockMvc.perform(get("/dataOwners/{username}/owns_openLicenses", username)
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$._embedded.openLicenses", hasSize(count)));
+    }
+
     //Closed License
     @When("^I register a closed license with text \"([^\"]*)\" and price (\\d+)$")
     public void iRegisterAClosedLicenseWithTextAndPrice(String text, double price) throws Throwable {
-        ClosedLicense license = new ClosedLicense();
+        ClosedLicense license=new ClosedLicense();
         license.setText(text);
         license.setPrice(price);
 
-        String message = stepDefs.mapper.writeValueAsString(license);
+        String message=stepDefs.mapper.writeValueAsString(license);
 
-        stepDefs.result = stepDefs.mockMvc.perform(post("/closedlicenses")
+        stepDefs.result=stepDefs.mockMvc.perform(post("/closedLicenses")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(message)
                 .accept(MediaType.APPLICATION_JSON)
@@ -95,11 +105,11 @@ public class RegisterLicenseStepdefs {
 
     @And("^There (?:are|is) (\\d+) closed licenses? registered$")
     public void thereIsClosedLicenseRegistered(int count) throws Throwable {
-        stepDefs.result = stepDefs.mockMvc.perform(get("/closedlicenses")
+        stepDefs.result=stepDefs.mockMvc.perform(get("/closedLicenses")
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$._embedded.closedlicenses", hasSize(count)));
+                .andExpect(jsonPath("$._embedded.closedLicenses", hasSize(count)));
     }
 
     @Then("^The new closed license has text \"([^\"]*)\" and price (\\d+)$")
@@ -109,13 +119,22 @@ public class RegisterLicenseStepdefs {
     }
 
     @And("^There is a closed license with text \"([^\"]*)\" and price (\\d+) and owner \"([^\"]*)\"$")
-    public void thereIsAClosedLicenseWithTextAndPriceAndOwner(String text, int price, String username) throws Throwable {
-        DataOwner owner = dataOwnerRepository.findOne(username);
-        ClosedLicense license = new ClosedLicense();
+    public void thereIsAClosedLicenseWithTextAndPriceAndOwner(String text, double price, String username) throws Throwable {
+        DataOwner owner=dataOwnerRepository.findOne(username);
+        ClosedLicense license=new ClosedLicense();
         license.setText(text);
         license.setPrice(price);
         license.setOwner(owner);
 
         closedLicenseRepository.save(license);
+    }
+
+    @And("^User \"([^\"]*)\" owns (\\d+) closed license$")
+    public void userOwnsClosedLicense(String username, int count) throws Throwable {
+        stepDefs.result=stepDefs.mockMvc.perform(get("/dataOwners/{username}/owns_closedLicenses", username)
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$._embedded.closedLicenses", hasSize(count)));
     }
 }

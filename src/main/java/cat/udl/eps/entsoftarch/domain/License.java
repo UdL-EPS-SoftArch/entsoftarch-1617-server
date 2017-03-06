@@ -12,7 +12,7 @@ import javax.persistence.*;
 public abstract class License {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
 
     @ManyToOne
@@ -26,7 +26,7 @@ public abstract class License {
     }
 
     public void setText(String text) {
-        this.text = text;
+        this.text=text;
     }
 
     public Long getId() {
@@ -34,7 +34,7 @@ public abstract class License {
     }
 
     public void setId(Long id) {
-        this.id = id;
+        this.id=id;
     }
 
     public DataOwner getOwner() {
@@ -42,26 +42,9 @@ public abstract class License {
     }
 
     public void setOwner(DataOwner owner) {
-        this.owner = owner;
+        this.owner=owner;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        License license = (License) o;
-
-        if (owner != null ? !owner.equals(license.owner) : license.owner != null) return false;
-        return text != null ? text.equals(license.text) : license.text == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = owner != null ? owner.hashCode() : 0;
-        result = 31 * result + (text != null ? text.hashCode() : 0);
-        return result;
-    }
 
     @Override
     public String toString() {

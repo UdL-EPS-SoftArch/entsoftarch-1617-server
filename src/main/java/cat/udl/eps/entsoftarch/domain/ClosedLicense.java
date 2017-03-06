@@ -16,6 +16,6 @@ public class ClosedLicense extends License {
     }
 
     public void setPrice(double price) {
-        this.price = price;
+        this.price=price;
     }
 }

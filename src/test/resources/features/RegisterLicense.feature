@@ -9,6 +9,7 @@ Feature: Register License
     When I register a open license with text "text"
     Then The new license has text "text"
     And There is 1 open license registered
+    And User "owner" owns 1 open license
 
   Scenario: Register a closed license with text and price
     Given I login as "owner" with password "password"
@@ -16,6 +17,7 @@ Feature: Register License
     When I register a closed license with text "text" and price 10
     Then The new closed license has text "text" and price 10
     And There is 1 closed license registered
+    And User "owner" owns 1 closed license
 
   Scenario: Register a new open license if one already registered
     Given I login as "owner" with password "password"
