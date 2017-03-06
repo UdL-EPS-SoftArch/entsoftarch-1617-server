@@ -17,3 +17,10 @@ Feature: Create Tag
     Then The response code is 401
     And The error message is "Bad credentials"
     And There are 0 tags created
+
+  Scenario: Create a new tag if one already created
+    Given I login as "user" with password "password"
+    And There is a tag with name "tag1"
+    And There are 1 tags created
+    When I create a tag with name "tag2"
+    Then There are 2 tags created
