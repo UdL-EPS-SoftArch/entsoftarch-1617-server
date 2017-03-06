@@ -24,7 +24,7 @@ public class CreateTagStepdefs {
     private StepDefs stepDefs;
     @Autowired private TagRepository tagRepository;
 
-    @And("^There are (\\d+) tags registered$")
+    @And("^There are (\\d+) tags created$")
     public void thereAreIsTagsRegistered(int count) throws Throwable {
         stepDefs.result = stepDefs.mockMvc.perform(get("/tags")
                 .accept(MediaType.APPLICATION_JSON))
@@ -33,7 +33,7 @@ public class CreateTagStepdefs {
                 .andExpect(jsonPath("$._embedded.tags", hasSize(count)));
     }
 
-    @When("^I register a tag with name \"([^\"]*)\"$")
+    @When("^I create a tag with name \"([^\"]*)\"$")
     public void iRegisterATagWithName(String name) throws Throwable {
         Tag tag = new Tag();
         tag.setName(name);
