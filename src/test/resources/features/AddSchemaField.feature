@@ -22,7 +22,7 @@ Feature: Add Schema Field
 
   Scenario: Add a field to the schema but wrong password
     Given I login as "owner" with password "wrongpassword"
-    And There is a schema registered with title "my title" and description "my own schema" and owner "owner"
+    And There is a schema with title "my title" and description "my own schema" and owner "owner"
     When I add a field with title "My field title" and description "my own field"
     Then The response code is 401
     And The error message is "Bad credentials"
