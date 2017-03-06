@@ -15,4 +15,4 @@ Feature: Comment About Dataset
     Given User not registered
     And There are 1 datasets registered
     When I comment a dataset
-    Then Return error(user not registered)
+    Then The error message is "<User not registered>"
