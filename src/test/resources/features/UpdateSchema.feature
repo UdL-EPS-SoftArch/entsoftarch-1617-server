@@ -30,3 +30,12 @@ Feature: Update Schema
     Then The response code is 403
     And The error message is "Access is denied"
     And The schema has title "my original data"
+
+  Scenario: Update a schema but wrong credentials
+    Given I login as "owner" with password "wrongpassword"
+    And There is a schema with title "my original data" and owner "owner"
+    And There is 1 schemas registered
+    When I update my schema with title "my original data" to title "my changed title"
+    Then The response code is 401
+    And The error message is "Bad credentials"
+    And The schema has title "my original data"
