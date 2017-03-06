@@ -12,7 +12,7 @@ Feature: Comment About Dataset
     And The new comment has date and time approximately now
 
   Scenario: Publish a comment about Dataset without a registered user.
-    Given User not registered
+    Given I'm not logged in
     And There are 1 datasets registered
     When I comment a dataset
     Then The error message is "<User not registered>"
