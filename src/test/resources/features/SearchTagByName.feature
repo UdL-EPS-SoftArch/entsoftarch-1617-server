@@ -6,5 +6,5 @@ Feature: SearchTagByName
   Scenario: Show a tag given a name
     Given There is a tag with name "tag1"
     And There are 1 tags created
-    When I search with "tag1"
+    When I search tag with name "tag1"
     Then Show 1 tag
