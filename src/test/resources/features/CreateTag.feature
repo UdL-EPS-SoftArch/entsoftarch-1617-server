@@ -24,3 +24,10 @@ Feature: Create Tag
     And There are 1 tags created
     When I create a tag with name "tag2"
     Then There are 2 tags created
+
+  Scenario: Can't create two tags with the same name
+    Given I login as "user" with password "password"
+    And There is a tag with name "tag1"
+    When I create a tag with name "tag2"
+    And I create a tag with name "tag1"
+    Then The response code is 409
