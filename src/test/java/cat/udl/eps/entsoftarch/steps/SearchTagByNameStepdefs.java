@@ -1,5 +1,6 @@
 package cat.udl.eps.entsoftarch.steps;
 
+import cucumber.api.PendingException;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,5 +28,12 @@ public class SearchTagByNameStepdefs {
     @Then("^Show (\\d+) tags$")
     public void showTag(int count) throws Throwable {
         stepDefs.result.andExpect(jsonPath("$._embedded.tags", hasSize(count)));
+    }
+
+    @When("^I search tag with name containing \"([^\"]*)\"$")
+    public void iSearchTagWithNameContaining(String name) throws Throwable {
+        stepDefs.result = stepDefs.mockMvc.perform(
+                get("/tags/search/findByNameContaining?name={name}",name))
+                .andDo(print());
     }
 }
