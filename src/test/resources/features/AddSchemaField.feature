@@ -8,7 +8,7 @@ Feature: Add Schema Field
     And There is a schema with title "my title" and description "my own schema" and owner "owner"
     And There are 0 fields added
     When I add a field with title "My field title" and description "my own field"
-    Then the new field has title "My field tittle" and description "my own field"
+    Then The new field has title "My field tittle" and description "my own field"
     And There is 1 field added
 
   Scenario: Add an existing field to the schema
