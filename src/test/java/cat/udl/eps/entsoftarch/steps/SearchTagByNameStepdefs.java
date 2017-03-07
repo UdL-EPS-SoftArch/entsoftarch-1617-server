@@ -18,7 +18,7 @@ public class SearchTagByNameStepdefs {
     @When("^I search tag with name \"([^\"]*)\"$")
     public void iSearchTagWithName(String name) throws Throwable {
         stepDefs.result = stepDefs.mockMvc.perform(
-                get("/tags/search/findByNameContaining?id={id}",name))
+                get("/tags/search/findByNameContaining?name={name}",name))
                 .andDo(print());
     }
 }
