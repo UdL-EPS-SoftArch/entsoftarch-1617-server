@@ -2,22 +2,29 @@ package cat.udl.eps.entsoftarch.domain;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.data.domain.Persistable;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * Created by Francofriz on 6/3/17.
  */
 @Entity
 @Data
-public class Tag {
+public class Tag implements Persistable<String>{
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
-    @NotBlank
     private String name;
+
+    @Version
+    private Long version;
+
+    @Override
+    public String getId() {
+        return name;
+    }
+
+    @Override
+    public boolean isNew() {
+        return version == null;
+    }
 }

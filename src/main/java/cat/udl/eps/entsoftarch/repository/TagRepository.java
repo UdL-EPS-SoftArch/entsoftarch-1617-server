@@ -11,6 +11,6 @@ import java.util.List;
  * Created by UNI on 06/03/2017.
  */
 @RepositoryRestResource
-public interface TagRepository extends PagingAndSortingRepository<Tag, Long> {
+public interface TagRepository extends PagingAndSortingRepository<Tag, String> {
     List<Tag> findByName(@Param("name") String name);
 }
