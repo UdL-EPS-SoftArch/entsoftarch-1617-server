@@ -19,7 +19,7 @@ public class DeleteSchemaStepdefs {
 
 
     @When("^I delete the schema with title \"([^\"]*)\"$")
-    public void iDeleteTheDatasetWithDescription(String title) throws Throwable {
+    public void iDeleteTheSchemaWithTitle(String title) throws Throwable {
         Schema schema = schemaRepository.findByTitle(title).get(0);
         stepDefs.result = stepDefs.mockMvc.perform(
                 delete("/schemas/{id}", schema.getId())
