@@ -32,4 +32,7 @@ public class Dataset {
 
     @ManyToOne
     private DataOwner owner;
+
+    @ManyToOne
+    private Schema schema;
 }
