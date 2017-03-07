@@ -9,3 +9,10 @@ Feature: SearchTagByName
     And There are 2 tags created
     When I search tag with name "tag1"
     Then Show 1 tags
+
+  Scenario: Show a tag given a part of a name
+    Given There is a tag with name "tag1"
+    And There is a tag with name "tag2"
+    And There are 2 tags created
+    When I search tag with name containing "tag1"
+    Then Show 1 tags
