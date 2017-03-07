@@ -52,7 +52,7 @@ public class CreateTagStepdefs {
 
     @Then("^The new tag has name \"([^\"]*)\"$")
     public void theNewTagHasName(String name) throws Throwable {
-        stepDefs.result.andExpect(jsonPath("$.name", is(name)));
+        stepDefs.result.andExpect(jsonPath("$.id", is(name)));
     }
 
 
