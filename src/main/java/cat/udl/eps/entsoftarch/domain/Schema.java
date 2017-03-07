@@ -1,10 +1,14 @@
 package cat.udl.eps.entsoftarch.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
 
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.ZonedDateTime;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +28,11 @@ public class Schema {
 
     private String description;
 
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    private ZonedDateTime lastModified;
+
     @ManyToOne
+    @JsonBackReference
     private DataOwner owner;
 
     @OneToMany(mappedBy = "schema", fetch = FetchType.EAGER)
