@@ -40,4 +40,10 @@ Feature: List Datasets order by Title
     And In the position 1 there is a dataset with title "anyTest"
     And In the position 0 there is a dataset with title "anyTest1"
 
+  Scenario: List datasets without authentication
+    Given There is a dataset with title "anyTest" and owner "owner"
+    And There is 1 datasets registered
+    When I list the dataset
+    Then The response code is 200
+
 
