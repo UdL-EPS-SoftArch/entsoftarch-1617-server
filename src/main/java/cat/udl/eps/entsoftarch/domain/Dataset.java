@@ -39,4 +39,10 @@ public class Dataset {
     @ManyToOne
     @JsonBackReference
     private DataOwner owner;
+
+    @ManyToOne
+    private OpenLicense openLicense;
+
+    @ManyToOne
+    private ClosedLicense closedLicense;
 }
