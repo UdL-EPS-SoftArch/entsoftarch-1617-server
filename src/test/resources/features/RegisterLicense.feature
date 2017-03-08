@@ -7,7 +7,7 @@ Feature: Register License
     Given I login as "owner" with password "password"
     And There are 0 open licenses registered
     When I register a open license with text "text"
-    Then The new license has text "text"
+    Then The new open license has text "text"
     And There is 1 open license registered
     And User "owner" owns 1 open license
 

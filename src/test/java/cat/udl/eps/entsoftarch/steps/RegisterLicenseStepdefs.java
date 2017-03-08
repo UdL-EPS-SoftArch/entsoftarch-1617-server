@@ -71,7 +71,7 @@ public class RegisterLicenseStepdefs {
         openLicenseRepository.save(license);
     }
 
-    @Then("^The new license has text \"([^\"]*)\"$")
+    @Then("^The new open license has text \"([^\"]*)\"$")
     public void theNewOpenLicenseHasText(String text) throws Throwable {
         stepDefs.result.andExpect(jsonPath("$.text", is(text)));
     }
