@@ -10,6 +10,13 @@ Feature: Tag Dataset
     Then I tag the dataset titled "My dataset" with tag "tag1"
     And The dataset has tag "tag1"
 
+  Scenario: Tag a dataset with another tag
+    Given I login as "owner" with password "password"
+    And There is a tag with name "tag1"
+    And There is a dataset with title "My dataset", tagged with "tag1" and owner "owner"
+    Then I tag the dataset titled "My dataset" with a new tag "tag2"
+    And The dataset has 2 tags
+
 
 #  Scenario: Create a tag
 #    Given I login as "user" with password "password"

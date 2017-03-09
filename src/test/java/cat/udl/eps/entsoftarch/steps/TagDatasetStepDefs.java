@@ -1,7 +1,9 @@
 package cat.udl.eps.entsoftarch.steps;
 
+import cat.udl.eps.entsoftarch.domain.DataOwner;
 import cat.udl.eps.entsoftarch.domain.Dataset;
 import cat.udl.eps.entsoftarch.domain.Tag;
+import cat.udl.eps.entsoftarch.repository.DataOwnerRepository;
 import cat.udl.eps.entsoftarch.repository.DatasetRepository;
 import cat.udl.eps.entsoftarch.repository.TagRepository;
 import cucumber.api.PendingException;
@@ -12,6 +14,11 @@ import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.RestMediaTypes;
 import org.springframework.http.MediaType;
+
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 import static cat.udl.eps.entsoftarch.steps.AuthenticationStepDefs.authenticate;
 import static org.hamcrest.Matchers.contains;
@@ -31,6 +38,9 @@ public class TagDatasetStepDefs {
 
     @Autowired
     DatasetRepository datasetRepository;
+
+    @Autowired
+    DataOwnerRepository dataOwnerRepository;
 
     @Autowired
     TagRepository tagRepository;
@@ -53,5 +63,17 @@ public class TagDatasetStepDefs {
     public void theDatasetHasTag(String tagName) throws Throwable {
         Tag tag = tagRepository.findByName(tagName).get(0);
         Assert.assertEquals(1, tag.getTags().size());
+    }
+
+    @And("^There is a dataset with title \"([^\"]*)\", tagged with \"([^\"]*)\" and owner \"([^\"]*)\"$")
+    public void thereIsADatasetWithTitleTaggedWithAndOwner(String title, String tagName, String username) throws Throwable {
+        Tag tag = tagRepository.findByName(tagName).get(0);
+        DataOwner owner = dataOwnerRepository.findOne(username);
+        Dataset dataset = new Dataset();
+        dataset.setTitle(title);
+        dataset.setOwner(owner);
+        dataset.setTaggedWith(Collections.singletonList(tag));
+        dataset.setDateTime(ZonedDateTime.now());
+        datasetRepository.save(dataset);
     }
 }
