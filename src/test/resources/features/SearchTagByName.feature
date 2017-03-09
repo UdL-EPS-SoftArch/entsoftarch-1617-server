@@ -23,3 +23,9 @@ Feature: SearchTagByName
     And There are 2 tags created
     When I search tag with name containing "tag"
     Then Show 2 tags
+
+  Scenario: Show a tag given a non-existent name
+    Given There is a tag with name "tag1"
+    And There are 1 tags created
+    When I search tag with name "tag2"
+    Then Show 0 tags
