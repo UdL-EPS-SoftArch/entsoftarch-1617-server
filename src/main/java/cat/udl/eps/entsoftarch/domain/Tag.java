@@ -1,6 +1,7 @@
 package cat.udl.eps.entsoftarch.domain;
 
 import lombok.Data;
+import lombok.ToString;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.validator.constraints.NotBlank;
@@ -15,6 +16,7 @@ import java.util.List;
  */
 @Entity
 @Data
+@ToString(exclude = "tags")
 public class Tag implements Persistable<String>{
     @Id
     private String name;
@@ -34,13 +36,5 @@ public class Tag implements Persistable<String>{
     @Override
     public boolean isNew() {
         return version == null;
-    }
-
-    @Override
-    public String toString() {
-        return "Tag{" +
-                "name='" + name + '\'' +
-                ", version=" + version +
-                '}';
     }
 }
