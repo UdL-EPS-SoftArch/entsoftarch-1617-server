@@ -35,4 +35,12 @@ public class Tag implements Persistable<String>{
     public boolean isNew() {
         return version == null;
     }
+
+    @Override
+    public String toString() {
+        return "Tag{" +
+                "name='" + name + '\'' +
+                ", version=" + version +
+                '}';
+    }
 }

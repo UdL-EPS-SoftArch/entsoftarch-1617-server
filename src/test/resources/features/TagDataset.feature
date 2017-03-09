@@ -7,15 +7,16 @@ Feature: Tag Dataset
     Given I login as "owner" with password "password"
     And There is a tag with name "tag1"
     And There is a dataset with title "My dataset" and owner "owner"
-    Then I tag the dataset titled "My dataset" with tag "tag1"
-    And The dataset has tag "tag1"
+    When I tag the dataset titled "My dataset" with tag "tag1"
+    Then The dataset has tag "tag1"
 
   Scenario: Tag a dataset with another tag
     Given I login as "owner" with password "password"
     And There is a tag with name "tag1"
     And There is a dataset with title "My dataset", tagged with "tag1" and owner "owner"
-    Then I tag the dataset titled "My dataset" with a new tag "tag2"
-    And The dataset has 2 tags
+    And I create a tag with name "tag2"
+    When I tag the dataset titled "My dataset" with tag "tag2"
+    Then The dataset with title "My dataset" has 2 tags
 
 
 #  Scenario: Create a tag

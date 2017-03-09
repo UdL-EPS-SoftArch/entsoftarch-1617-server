@@ -76,4 +76,10 @@ public class TagDatasetStepDefs {
         dataset.setDateTime(ZonedDateTime.now());
         datasetRepository.save(dataset);
     }
+
+    @And("^The dataset with title \"([^\"]*)\" has (\\d+) tags$")
+    public void theDatasetWithTitleHasTags(String title, int count) throws Throwable {
+        Dataset dataset = datasetRepository.findByTitle(title).get(0);
+        Assert.assertEquals(count, dataset.getTaggedWith().size());
+    }
 }
