@@ -19,31 +19,18 @@ Feature: Tag Dataset
     Then The dataset with title "My dataset" has 2 tags
 
 
-#  Scenario: Create a tag
-#    Given I login as "user" with password "password"
-#    And There are 0 tags created
-#    When I create a tag with name "tag1"
-#    Then The new tag has name "tag1"
-#    And There are 1 tags created
-#
-#  Scenario: Create a tag but wrong password
-#    Given I login as "user" with password "wrongpassword"
-#    And There are 0 tags created
-#    When I create a tag with name "tag1"
-#    Then The response code is 401
-#    And The error message is "Bad credentials"
-#    And There are 0 tags created
-#
-#  Scenario: Create a new tag if one already created
-#    Given I login as "user" with password "password"
-#    And There is a tag with name "tag1"
-#    And There are 1 tags created
-#    When I create a tag with name "tag2"
-#    Then There are 2 tags created
-#
-#  Scenario: Can't create two tags with the same name
-#    Given I login as "user" with password "password"
-#    And There is a tag with name "tag1"
-#    When I create a tag with name "tag2"
-#    And I create a tag with name "tag1"
-#    Then The response code is 409
+  Scenario: Tag dataset but not owner
+    Given I login as "user" with password "password"
+    And There is a tag with name "tag1"
+    And There is a dataset with title "My dataset" and owner "owner"
+    When I tag the dataset titled "My dataset" with tag "tag1"
+    Then The response code is 403
+    And The error message is "Access is denied"
+    And The dataset has 0 tags
+
+  Scenario: Can't tag a dataset with the same tag
+    Given I login as "owner" with password "password"
+    And There is a tag with name "tag1"
+    And There is a dataset with title "My dataset", tagged with "tag1" and owner "owner"
+    When I create a tag with name "tag1"
+    Then The response code is 409
