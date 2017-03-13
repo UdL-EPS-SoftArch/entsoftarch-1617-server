@@ -9,7 +9,12 @@ import cucumber.api.java.en.When;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.RestMediaTypes;
+
+import static cat.udl.eps.entsoftarch.steps.AuthenticationStepDefs.authenticate;
 import static org.junit.Assert.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 /**
  * Created by gerard on 06/03/17.
@@ -21,11 +26,21 @@ public class SetDatasetSchemaStepdefs {
     @Autowired private SchemaRepository schemaRepository;
     @Autowired private DatasetRepository datasetRepository;
 
-    @When("^I set the schema with title \"([^\"]*)\" to dataset with title \"([^\"]*)\"$")
+    @When("^I set a schema with title \"([^\"]*)\" to dataset with title \"([^\"]*)\"$")
     public void setSchemaToDataset(String schema_title, String dataset_title) throws Throwable {
         Schema schema = schemaRepository.findByTitle(schema_title).get(0);
         Dataset dataset = datasetRepository.findByTitle(dataset_title).get(0);
-        dataset.setSchema(schema);
+
+
+        String message = "/schemas/" + schema.getId();
+
+        stepDefs.result = stepDefs.mockMvc.perform(
+                put("/datasets/{id}/schema", dataset.getId())
+                        .contentType(RestMediaTypes.TEXT_URI_LIST)
+                        .content(message)
+                        .with(authenticate()))
+                .andDo(print());
+
     }
 
     @Then("^The dataset with title \"([^\"]*)\" has a schema with title \"([^\"]*)\"$")

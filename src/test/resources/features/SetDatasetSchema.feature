@@ -11,5 +11,6 @@ Feature: Set Dataset Schema
     When I register a dataset with title "my dataset"
     Then The new dataset has title "my dataset"
     And There is 1 dataset registered
-    When I set the schema with title "my schema" to dataset with title "my dataset"
+    When I set a schema with title "my schema" to dataset with title "my dataset"
     Then The dataset with title "my dataset" has a schema with title "my schema"
+
