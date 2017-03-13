@@ -86,5 +86,21 @@ public class UpdateDatasetStepDefs {
         Dataset dataset = datasetRepository.findByTitle(title).get(0);
         Assert.assertThat(dataset, notNullValue());
     }
+
+    @When("^I update my dataset with title \"([^\"]*)\" to new owner \"([^\"]*)\"$")
+    public void iUpdateMyDatasetWithTitleToNewOwner(String title, String newOwner) throws Throwable {
+        Dataset dataset = datasetRepository.findByTitle(title).get(0);
+        DataOwner newDataOwner = dataOwnerRepository.findOne(newOwner);
+        dataset.setOwner(newDataOwner);
+        String message = stepDefs.mapper.writeValueAsString(dataset);
+
+        stepDefs.result = stepDefs.mockMvc.perform(
+                put("/datasets/{id}", dataset.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(message)
+                        .accept(MediaType.APPLICATION_JSON)
+                        )
+                .andDo(print());
+    }
 }
 
