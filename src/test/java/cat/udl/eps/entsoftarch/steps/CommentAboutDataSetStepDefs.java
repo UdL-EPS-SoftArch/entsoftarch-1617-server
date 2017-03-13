@@ -3,20 +3,26 @@ package cat.udl.eps.entsoftarch.steps;
 import cat.udl.eps.entsoftarch.domain.Comment;
 import cat.udl.eps.entsoftarch.domain.Dataset;
 import cat.udl.eps.entsoftarch.domain.User;
+import cat.udl.eps.entsoftarch.repository.CommentRepository;
+import cat.udl.eps.entsoftarch.repository.DataOwnerRepository;
+import cat.udl.eps.entsoftarch.repository.DatasetRepository;
 import cucumber.api.PendingException;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.RequestPostProcessor;
 
 import java.time.ZonedDateTime;
+import java.util.List;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.anonymous;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 
@@ -25,6 +31,11 @@ public class CommentAboutDataSetStepDefs {
     private static String currentPassword;
     private static String currentUsername;
     private static ZonedDateTime zonedDateTime;
+    @Autowired
+    private DataOwnerRepository dataOwnerRepository;
+    @Autowired
+    private DatasetRepository datasetRepository;
+    @Autowired
     private StepDefs stepDefs;
     private Dataset dataset;
 
@@ -42,12 +53,13 @@ public class CommentAboutDataSetStepDefs {
     }
 
 
-    @When("^I comment a dataset with text \"([^\"]*)\" and user \"([^\"]*)\"$")
-    public void iCommentADataset(String text, User user) throws Throwable {
+    @When("^I comment a dataset \"([^\"]*)\" with text \"([^\"]*)\" and user \"([^\"]*)\"$")
+    public void iCommentADataset(String dataset, String text, String user) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
+        Dataset data = datasetRepository.findByTitle(dataset).get(0);
+        User userC = dataOwnerRepository.findOne(user);
         Comment comment = new Comment();
         comment.setTxt(text);
-        comment.setUser(user);
         comment.setDateTime(zonedDateTime);
         String message = stepDefs.mapper.writeValueAsString(comment);
         stepDefs.result = stepDefs.mockMvc.perform(
@@ -57,7 +69,6 @@ public class CommentAboutDataSetStepDefs {
                         .accept(MediaType.APPLICATION_JSON)
                         .with(authenticate()))
                 .andDo(print());
-
     }
 
     @Then("^This dataset has a new comment$")

@@ -8,6 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.ZonedDateTime;
+import java.util.List;
 
 /**
  * Created by http://rhizomik.net/~roberto/
@@ -35,7 +36,6 @@ public class Dataset {
     private boolean isBlocked = false;
 
     private int flags = 0;
-
     @ManyToOne
     @JsonBackReference
     private DataOwner owner;
