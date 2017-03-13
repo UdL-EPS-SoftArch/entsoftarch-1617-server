@@ -36,4 +36,11 @@ public class SearchTagByNameStepdefs {
                 get("/tags/search/findByNameContaining?name={name}",name))
                 .andDo(print());
     }
+
+    @When("^I search tag starting with name \"([^\"]*)\"$")
+    public void iSearchTagStartingWithName(String name) throws Throwable {
+        stepDefs.result = stepDefs.mockMvc.perform(
+                get("/tags/search/findByNameStartingWith?name={name}",name))
+                .andDo(print());
+    }
 }
