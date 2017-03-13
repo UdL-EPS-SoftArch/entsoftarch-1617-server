@@ -42,3 +42,10 @@ Feature: SearchTagByName
     And There are 2 tags created
     When I search tag starting with name "ta"
     Then Show 2 tags
+
+  Scenario: Show a tag given a non-existent start of a name
+    Given There is a tag with name "tag1"
+    And There is a tag with name "tag2"
+    And There are 2 tags created
+    When I search tag starting with name "a"
+    Then Show 0 tags
