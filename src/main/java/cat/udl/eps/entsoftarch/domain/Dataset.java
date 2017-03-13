@@ -45,7 +45,6 @@ public class Dataset {
     private DataOwner owner;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JsonBackReference
     @Fetch(value = FetchMode.SUBSELECT)
     private List<Tag> taggedWith = new ArrayList<>();
 }

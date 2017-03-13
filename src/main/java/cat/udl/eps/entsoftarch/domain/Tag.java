@@ -1,5 +1,6 @@
 package cat.udl.eps.entsoftarch.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 import lombok.ToString;
 import org.hibernate.annotations.Fetch;
@@ -26,6 +27,7 @@ public class Tag implements Persistable<String>{
 
     @ManyToMany(mappedBy = "taggedWith", fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
+    @JsonBackReference
     private List<Dataset> tags = new ArrayList<>();
 
     @Override
