@@ -25,6 +25,14 @@ public class DataOwner extends User {
     @Fetch(value = FetchMode.SUBSELECT)
     private List<Schema> owns_schemas = new ArrayList<>();
 
+    @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
+    private List<License> owns_openLicenses= new ArrayList<>();
+
+    @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
+    private List<License> owns_closedLicenses= new ArrayList<>();
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_OWNER");
@@ -40,5 +48,21 @@ public class DataOwner extends User {
 
     public void setOwns_schemas(List<Schema> owns_schemas) {
         this.owns_schemas = owns_schemas;
+    }
+
+    public List <License> getOwns_openLicenses() {
+        return owns_openLicenses;
+    }
+
+    public void setOwns_openLicenses(List <License> owns_openLicenses) {
+        this.owns_openLicenses=owns_openLicenses;
+    }
+
+    public List <License> getOwns_closedLicenses() {
+        return owns_closedLicenses;
+    }
+
+    public void setOwns_closedLicenses(List <License> owns_closedLicenses) {
+        this.owns_closedLicenses=owns_closedLicenses;
     }
 }
