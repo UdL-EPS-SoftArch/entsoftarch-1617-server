@@ -18,7 +18,6 @@ Feature: Tag Dataset
     When I tag the dataset titled "My dataset" with tag "tag2"
     Then The dataset with title "My dataset" has 2 tags
 
-
   Scenario: Tag dataset but not owner
     Given I login as "user" with password "password"
     And There is a tag with name "tag1"
@@ -26,7 +25,7 @@ Feature: Tag Dataset
     When I tag the dataset titled "My dataset" with tag "tag1"
     Then The response code is 403
     And The error message is "Access is denied"
-    And The dataset has 0 tags
+    And The dataset with title "My dataset" has 0 tags
 
   Scenario: Can't tag a dataset with the same tag
     Given I login as "owner" with password "password"

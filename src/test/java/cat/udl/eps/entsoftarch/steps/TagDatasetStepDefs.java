@@ -82,4 +82,10 @@ public class TagDatasetStepDefs {
         Dataset dataset = datasetRepository.findByTitle(title).get(0);
         Assert.assertEquals(count, dataset.getTaggedWith().size());
     }
+
+    @And("^The dataset has (\\d+) tags$")
+    public void theDatasetHasTags(int arg0) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        throw new PendingException();
+    }
 }
