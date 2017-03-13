@@ -30,9 +30,15 @@ Feature: SearchTagByName
     When I search tag with name "tag2"
     Then Show 0 tags
 
-
   Scenario: Show a tag given a non-existent part of a name
     Given There is a tag with name "tag1"
     And There are 1 tags created
     When I search tag with name containing "2"
     Then Show 0 tags
+
+  Scenario: Show a tag given a start of a name
+    Given There is a tag with name "tag1"
+    And There is a tag with name "tag2"
+    And There are 2 tags created
+    When I search tag starting with name "ta"
+    Then Show 2 tags
