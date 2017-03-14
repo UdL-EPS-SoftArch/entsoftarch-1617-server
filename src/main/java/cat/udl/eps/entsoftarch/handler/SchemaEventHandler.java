@@ -24,7 +24,7 @@ public class SchemaEventHandler {
     @HandleBeforeCreate
     @PreAuthorize("hasRole('OWNER')")
     public void handleSchemaPreCreate(Schema schema) {
-        logger.info("Before creating: {}", schema.toString());
+        logger.info("Before creating: {}", schema);
 
         DataOwner principal = (DataOwner) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         schema.setOwner(principal);
@@ -34,37 +34,29 @@ public class SchemaEventHandler {
     @PreAuthorize("#schema.owner.username == principal.username")
     public void handleSchemaPreSave(Schema schema){
         schema.setLastModified(ZonedDateTime.now());
-        logger.info("Before updating: {}", schema.toString());
+        logger.info("Before updating: {}", schema);
     }
 
     @HandleBeforeDelete
     @PreAuthorize("#schema.owner.username == principal.username")
-    public void handleSchemaPreDelete(Schema schema){
-        logger.info("Before deleting: {}", schema.toString());
-    }
+    public void handleSchemaPreDelete(Schema schema){ logger.info("Before deleting: {}", schema); }
 
     @HandleBeforeLinkSave
-    public void handleSchemaPreLinkSave(Schema schema, Object o) {
-        logger.info("Before linking: {} to {}", schema.toString(), o.toString());
-    }
+    public void handleSchemaPreLinkSave(Schema schema, Object o) { logger.info("Before linking: {} to {}", schema, o); }
 
     @HandleAfterCreate
     public void handleSchemaPostCreate(Schema schema){
-        logger.info("After creating: {}", schema.toString());
+        logger.info("After creating: {}", schema);
     }
 
     @HandleAfterSave
     public void handleSchemaPostSave(Schema schema){
-        logger.info("After updating: {}", schema.toString());
+        logger.info("After updating: {}", schema);
     }
 
     @HandleAfterDelete
-    public void handleSchemaPostDelete(Schema schema){
-        logger.info("After deleting: {}", schema.toString());
-    }
+    public void handleSchemaPostDelete(Schema schema){ logger.info("After deleting: {}", schema); }
 
     @HandleAfterLinkSave
-    public void handleSchemaPostLinkSave(Schema schema, Object o) {
-        logger.info("After linking: {} to {}", schema.toString(), o.toString());
-    }
+    public void handleSchemaPostLinkSave(Schema schema, Object o) { logger.info("After linking: {} to {}", schema, o); }
 }

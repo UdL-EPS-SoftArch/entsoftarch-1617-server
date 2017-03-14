@@ -23,7 +23,7 @@ public class LicenseEventHandler {
     @HandleBeforeCreate
     @PreAuthorize("hasRole('OWNER')")
     public void handleLicensePreCreate(License license) {
-        logger.info("Before creating: {}", license.toString());
+        logger.info("Before creating: {}", license);
 
         DataOwner principal=(DataOwner) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         license.setOwner(principal);
@@ -32,37 +32,33 @@ public class LicenseEventHandler {
     @HandleBeforeSave
     @PreAuthorize("#licence.owner.username == principal.username")
     public void handleLicensePreSave(License license) {
-        logger.info("Before updating: {}", license.toString());
+        logger.info("Before updating: {}", license);
     }
 
     @HandleBeforeDelete
     @PreAuthorize("#licence.owner.username == principal.username")
     public void handleLicensePreDelete(License license) {
-        logger.info("Before deleting: {}", license.toString());
+        logger.info("Before deleting: {}", license);
     }
 
     @HandleBeforeLinkSave
-    public void handleLicensePreLinkSave(License license, Object o) {
-        logger.info("Before linking: {} to {}", license.toString(), o.toString());
-    }
+    public void handleLicensePreLinkSave(License license, Object o) { logger.info("Before linking: {} to {}", license, o); }
 
     @HandleAfterCreate
     public void handleLicensePostCreate(License license) {
-        logger.info("After creating: {}", license.toString());
+        logger.info("After creating: {}", license);
     }
 
     @HandleAfterSave
     public void handleLicensePostSave(License license) {
-        logger.info("After updating: {}", license.toString());
+        logger.info("After updating: {}", license);
     }
 
     @HandleAfterDelete
     public void handleLicensePostDelete(License license) {
-        logger.info("After deleting: {}", license.toString());
+        logger.info("After deleting: {}", license);
     }
 
     @HandleAfterLinkSave
-    public void handleLicensePostLinkSave(License license, Object o) {
-        logger.info("After linking: {} to {}", license.toString(), o.toString());
-    }
+    public void handleLicensePostLinkSave(License license, Object o) { logger.info("After linking: {} to {}", license, o); }
 }
