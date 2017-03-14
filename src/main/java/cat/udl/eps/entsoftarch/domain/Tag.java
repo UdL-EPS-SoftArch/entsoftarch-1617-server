@@ -1,22 +1,34 @@
 package cat.udl.eps.entsoftarch.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
+import lombok.ToString;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.data.domain.Persistable;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Francofriz on 6/3/17.
  */
 @Entity
 @Data
+@ToString(exclude = "tags")
 public class Tag implements Persistable<String>{
     @Id
     private String name;
 
     @Version
     private Long version;
+
+    @ManyToMany(mappedBy = "taggedWith", fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
+    @JsonBackReference
+    private List<Dataset> tags = new ArrayList<>();
 
     @Override
     public String getId() {
