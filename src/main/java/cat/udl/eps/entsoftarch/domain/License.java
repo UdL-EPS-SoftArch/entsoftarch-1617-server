@@ -3,6 +3,8 @@ package cat.udl.eps.entsoftarch.domain;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by victorserrate on 2/3/17.
@@ -20,6 +22,9 @@ public abstract class License {
 
     @NotBlank
     private String text;
+
+    @OneToMany(mappedBy = "license", fetch = FetchType.EAGER)
+    private List<Dataset> datasets = new ArrayList<>();
 
     public String getText() {
         return text;
@@ -45,6 +50,13 @@ public abstract class License {
         this.owner=owner;
     }
 
+    public List<Dataset> getDatasets() {
+        return datasets;
+    }
+
+    public void setDatasets(List<Dataset> datasets) {
+        this.datasets = datasets;
+    }
 
     @Override
     public String toString() {

@@ -41,8 +41,5 @@ public class Dataset {
     private DataOwner owner;
 
     @ManyToOne
-    private OpenLicense openLicense;
-
-    @ManyToOne
-    private ClosedLicense closedLicense;
+    private License license;
 }
