@@ -2,12 +2,10 @@ package cat.udl.eps.entsoftarch.domain;
 
 
 import lombok.Data;
+import org.aspectj.util.PartialOrder;
 import org.hibernate.validator.constraints.NotBlank;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Data
@@ -19,7 +17,8 @@ public class Field {
 
     @NotBlank
     private String title;
-
     private String description;
 
+    @ManyToOne
+    private Schema schema;
 }
