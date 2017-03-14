@@ -14,3 +14,9 @@ Feature: SearchDatasetByDescription
     And There is 1 datasets registered
     When I search with "notmatch"
     Then Show 0 datasets
+
+Scenario: Show a dataset given a blank description
+    Given There is a dataset with description "dataset description 3" and owner "owner"
+    And There is 1 datasets registered
+    When I search with a blank description
+    Then Show 0 datasets
