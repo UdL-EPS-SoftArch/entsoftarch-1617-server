@@ -12,6 +12,7 @@ import org.springframework.data.rest.webmvc.RestMediaTypes;
 import org.springframework.http.MediaType;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static cat.udl.eps.entsoftarch.steps.AuthenticationStepDefs.authenticate;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -41,13 +42,12 @@ public class UntagDatasetStepDefs {
         Tag tag = tagRepository.findByName(tagName).get(0);
         List<Tag> tagList = dataset.getTaggedWith();
         tagList.remove(tag);
-        String message = stepDefs.mapper.writeValueAsString(tagList);
+        String message = tagList.stream().map(Tag::getName).collect(Collectors.joining("\n"));
 
         stepDefs.result = stepDefs.mockMvc.perform(
                 put("/datasets/{id}/taggedWith", dataset.getId())
-                        .contentType(MediaType.APPLICATION_JSON)
+                        .contentType(RestMediaTypes.TEXT_URI_LIST)
                         .content(message)
-                        .accept(MediaType.APPLICATION_JSON)
                         .with(authenticate()))
                 .andDo(print());
     }
