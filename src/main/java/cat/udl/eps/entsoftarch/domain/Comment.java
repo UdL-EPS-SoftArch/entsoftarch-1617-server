@@ -1,13 +1,10 @@
 package cat.udl.eps.entsoftarch.domain;
 
 import org.hibernate.validator.constraints.NotBlank;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.ReadOnlyProperty;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.ZonedDateTime;
@@ -15,11 +12,12 @@ import java.time.ZonedDateTime;
 /**
  * Created by santi on 6/03/17.
  */
+@Entity
 public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     @ManyToOne
     private User user;
@@ -36,11 +34,11 @@ public class Comment {
     @ReadOnlyProperty
     private ZonedDateTime dateTime;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
