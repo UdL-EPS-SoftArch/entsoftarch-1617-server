@@ -21,8 +21,9 @@ public class SearchDatasetByDescriptionStepDefs {
 
     @When("^I search with a blank description$")
     public void iSearchWithABlankDescription() throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
+        stepDefs.result = stepDefs.mockMvc.perform(
+                get("/datasets/search/findByDescriptionContaining?description={}"))
+                .andDo(print());
     }
 
     @When("^I search with \"([^\"]*)\"$")
