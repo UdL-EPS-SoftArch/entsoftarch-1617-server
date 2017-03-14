@@ -4,17 +4,23 @@ import cat.udl.eps.entsoftarch.domain.Dataset;
 import cat.udl.eps.entsoftarch.domain.Schema;
 import cat.udl.eps.entsoftarch.repository.DatasetRepository;
 import cat.udl.eps.entsoftarch.repository.SchemaRepository;
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.RestMediaTypes;
+import org.springframework.http.MediaType;
 
 import static cat.udl.eps.entsoftarch.steps.AuthenticationStepDefs.authenticate;
-import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.hasItem;
+import static org.junit.Assert.assertEquals;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * Created by gerard on 06/03/17.
@@ -39,7 +45,7 @@ public class SetDatasetSchemaStepdefs {
                         .contentType(RestMediaTypes.TEXT_URI_LIST)
                         .content(message)
                         .with(authenticate()))
-                .andDo(print());
+                    .andDo(print());
 
     }
 
@@ -48,5 +54,17 @@ public class SetDatasetSchemaStepdefs {
         Dataset dataset = datasetRepository.findByTitle(dataset_title).get(0);
         Schema schema = dataset.getSchema();
         assertEquals(schema.getTitle(), schema_title);
+    }
+
+    @And("^The datasets defined by schema with title \"([^\"]*)\" include one titled \"([^\"]*)\"$")
+    public void theDatasetsDefinedBySchemaWithTitleIncludeOneTitled(String schemaTitle, String datasetTitle) throws Throwable {
+        Schema schema = schemaRepository.findByTitle(schemaTitle).get(0);
+
+        stepDefs.result = stepDefs.mockMvc.perform(
+                get("/schemas/{id}/datasets", schema.getId())
+                        .accept(MediaType.APPLICATION_JSON))
+                    .andDo(print())
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$._embedded.datasets[*].title", hasItem(datasetTitle)));
     }
 }
