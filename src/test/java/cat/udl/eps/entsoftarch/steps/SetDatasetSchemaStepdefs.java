@@ -15,6 +15,8 @@ import org.springframework.http.MediaType;
 
 import static cat.udl.eps.entsoftarch.steps.AuthenticationStepDefs.authenticate;
 import static org.hamcrest.CoreMatchers.hasItem;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -66,5 +68,28 @@ public class SetDatasetSchemaStepdefs {
                     .andDo(print())
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$._embedded.datasets[*].title", hasItem(datasetTitle)));
+    }
+
+    @And("^The schema with title \"([^\"]*)\" don't include a dataset with title \"([^\"]*)\"$")
+    public void theSchemaDontIncludeDataset(String schemaTitle, String datasetTitle) throws Throwable{
+        Schema schema = schemaRepository.findByTitle(schemaTitle).get(0);
+
+        stepDefs.result = stepDefs.mockMvc.perform(
+                get("/schemas/{id}/datasets", schema.getId())
+                        .accept(MediaType.APPLICATION_JSON))
+                    .andDo(print())
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$._embedded.datasets[*].title", not(hasItem(datasetTitle))));
+    }
+
+    @And("^The schema with title \"([^\"]*)\" has (\\d+) datasets? registered$")
+    public void thereAreSchemasRegistered(String schemaTitle, int count) throws Throwable {
+        Schema schema = schemaRepository.findByTitle(schemaTitle).get(0);
+
+        stepDefs.result = stepDefs.mockMvc.perform(get("/schemas/{id}/datasets", schema.getId())
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(jsonPath("$._embedded.datasets[*]", hasSize(count)));
     }
 }
