@@ -13,6 +13,7 @@ import org.junit.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.RestMediaTypes;
 import org.springframework.http.MediaType;
 
 import java.time.ZonedDateTime;
@@ -20,6 +21,7 @@ import java.time.temporal.ChronoUnit;
 
 import static cat.udl.eps.entsoftarch.steps.AuthenticationStepDefs.authenticate;
 import static org.hamcrest.Matchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -92,13 +94,13 @@ public class UpdateDatasetStepDefs {
         Dataset dataset = datasetRepository.findByTitle(title).get(0);
         DataOwner newDataOwner = dataOwnerRepository.findOne(newOwner);
         dataset.setOwner(newDataOwner);
-        String message = stepDefs.mapper.writeValueAsString(dataset);
+        String message = "/dataOwners/" + newDataOwner.getUsername();
 
         stepDefs.result = stepDefs.mockMvc.perform(
-                put("/datasets/{id}", dataset.getId())
-                        .contentType(MediaType.APPLICATION_JSON)
+                put("/datasets/{id}/owner", dataset.getId())
+                        .contentType(RestMediaTypes.TEXT_URI_LIST)
                         .content(message)
-                        .accept(MediaType.APPLICATION_JSON)
+                        .with(authenticate())
                         )
                 .andDo(print());
     }

@@ -45,6 +45,11 @@ public class Dataset {
     private DataOwner owner;
 
     @ManyToMany(fetch = FetchType.EAGER)
+    @JsonBackReference
+    @Fetch(value = FetchMode.SUBSELECT)
+    private List<DataOwner> sharedWith;
+
+    @ManyToMany(fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
     private List<Tag> taggedWith = new ArrayList<>();
 }

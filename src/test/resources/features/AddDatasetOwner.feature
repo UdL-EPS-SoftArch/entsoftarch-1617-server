@@ -1,9 +1,9 @@
-Feature: Set a DataOwner to Dataset
-  In order to set new Owner to my Dataset
-  I change the owner dataset to the new owner
+Feature: Share Dataset
+  In order to share my Dataset
+  I add a new DataOwner to sharedWith
 
-  Scenario: Set a new DataOwner to dataset
-    Given I login as "owner" with password "password"
+  Scenario: Set a new DataOwner to sharedWith
+    Given I login as "owner2" with password "password"
     And There is a dataset with title "my original data" and owner "owner"
     And There is 1 dataset registered
     When I update my dataset with title "my original data" to new owner "owner2"

@@ -7,6 +7,7 @@ import org.springframework.security.core.authority.AuthorityUtils;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,6 +33,10 @@ public class DataOwner extends User {
     @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
     private List<License> owns_closedLicenses= new ArrayList<>();
+
+    @ManyToMany(mappedBy = "sharedWith", fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
+    private List<Dataset> sharedDatasets;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
