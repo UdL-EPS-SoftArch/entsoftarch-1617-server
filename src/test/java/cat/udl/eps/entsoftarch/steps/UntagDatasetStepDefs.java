@@ -6,7 +6,9 @@ import cat.udl.eps.entsoftarch.repository.DataOwnerRepository;
 import cat.udl.eps.entsoftarch.repository.DatasetRepository;
 import cat.udl.eps.entsoftarch.repository.TagRepository;
 import cucumber.api.PendingException;
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.When;
+import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.RestMediaTypes;
 import org.springframework.http.MediaType;
@@ -50,5 +52,11 @@ public class UntagDatasetStepDefs {
                         .content(message)
                         .with(authenticate()))
                 .andDo(print());
+    }
+
+    @And("^The dataset with title \"([^\"]*)\" is tagged with tag \"([^\"]*)\"$")
+    public void theDatasetWithTitleIsTaggedWithTag(String datasetTitle, String tagName) throws Throwable {
+        Dataset dataset = datasetRepository.findByTitle(datasetTitle).get(0);
+        Assert.assertEquals(dataset.getTaggedWith().get(0).getName(), tagName);
     }
 }
