@@ -45,7 +45,10 @@ public class DatasetEventHandler {
     }
 
     @HandleBeforeLinkSave
-    public void handleDatasetPreLinkSave(Dataset dataset, Object o) { logger.info("Before linking: {} to {}", dataset, o); }
+    @PreAuthorize("#dataset.owner.username == principal.username")
+    public void handleDatasetPreLinkSave(Dataset dataset, Object o) {
+        logger.info("Before linking: {} to {}", dataset, o);
+    }
 
     @HandleAfterCreate
     public void handleDatasetPostCreate(Dataset dataset){
@@ -63,5 +66,7 @@ public class DatasetEventHandler {
     }
 
     @HandleAfterLinkSave
-    public void handleDatasetPostLinkSave(Dataset dataset, Object o) { logger.info("After linking: {} to {}", dataset, o); }
+    public void handleDatasetPostLinkSave(Dataset dataset, Object o) { 
+      logger.info("After linking: {} to {}", dataset, o); 
+    }
 }

@@ -13,4 +13,6 @@ import java.util.List;
 @RepositoryRestResource
 public interface TagRepository extends PagingAndSortingRepository<Tag, String> {
     List<Tag> findByName(@Param("name") String name);
+    List<Tag> findByNameContaining(@Param("name") String name);
+    List<Tag> findByNameStartingWith(@Param("name") String name);
 }
