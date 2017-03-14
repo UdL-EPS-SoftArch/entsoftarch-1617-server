@@ -10,6 +10,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.ZonedDateTime;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by gerard on 28/02/17.
  */
@@ -31,5 +34,8 @@ public class Schema {
     @ManyToOne
     @JsonBackReference
     private DataOwner owner;
+
+    @OneToMany(mappedBy = "schema", fetch = FetchType.EAGER)
+    private List<Dataset> datasets = new ArrayList<>();
 
 }
