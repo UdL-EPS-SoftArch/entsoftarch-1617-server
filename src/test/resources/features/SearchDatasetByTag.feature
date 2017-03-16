@@ -11,6 +11,14 @@ Feature: SearchDatasetByTag
     When I search dataset with tag "tag1"
     Then Show 1 datasets
 
+  Scenario: Show a dataset given a part of a tag's name
+    Given There is a tag with name "tag1"
+    And There is a dataset with title "My dataset", tagged with "tag1" and owner "owner"
+    And There are 1 datasets registered
+    And The dataset with title "My dataset" has 1 tags
+    When I search dataset with tag name containing "tag"
+    Then Show 1 datasets
+
   Scenario: Show a dataset given non-existent tag
     Given There is a tag with name "tag1"
     And There is a dataset with title "My dataset", tagged with "tag1" and owner "owner"
