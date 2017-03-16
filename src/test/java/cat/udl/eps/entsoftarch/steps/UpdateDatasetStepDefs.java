@@ -5,7 +5,6 @@ import cat.udl.eps.entsoftarch.domain.Dataset;
 import cat.udl.eps.entsoftarch.repository.DataOwnerRepository;
 import cat.udl.eps.entsoftarch.repository.DatasetRepository;
 import com.jayway.jsonpath.JsonPath;
-import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -21,7 +20,6 @@ import java.time.temporal.ChronoUnit;
 
 import static cat.udl.eps.entsoftarch.steps.AuthenticationStepDefs.authenticate;
 import static org.hamcrest.Matchers.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -89,20 +87,19 @@ public class UpdateDatasetStepDefs {
         Assert.assertThat(dataset, notNullValue());
     }
 
-    @When("^I update my dataset with title \"([^\"]*)\" to new owner \"([^\"]*)\"$")
-    public void iUpdateMyDatasetWithTitleToNewOwner(String title, String newOwner) throws Throwable {
+    @When("^I change the owner of dataset with title \"([^\"]*)\" to \"([^\"]*)\"$")
+    public void iChangeTheOwnerOfDatasetWithTitleTo(String title, String newOwner) throws Throwable {
         Dataset dataset = datasetRepository.findByTitle(title).get(0);
         DataOwner newDataOwner = dataOwnerRepository.findOne(newOwner);
-        dataset.setOwner(newDataOwner);
+
         String message = "/dataOwners/" + newDataOwner.getUsername();
 
         stepDefs.result = stepDefs.mockMvc.perform(
                 put("/datasets/{id}/owner", dataset.getId())
                         .contentType(RestMediaTypes.TEXT_URI_LIST)
                         .content(message)
-                        .with(authenticate())
-                        )
-                .andDo(print());
+                        .with(authenticate()))
+                    .andDo(print());
     }
 }
 
