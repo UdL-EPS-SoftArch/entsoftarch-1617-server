@@ -49,7 +49,7 @@ public class Dataset {
     @ManyToMany(fetch = FetchType.EAGER)
     @JsonBackReference
     @Fetch(value = FetchMode.SUBSELECT)
-    private List<DataOwner> sharedWith;
+    private List<User> sharedWith = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)

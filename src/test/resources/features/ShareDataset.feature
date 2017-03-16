@@ -4,6 +4,12 @@ Feature: Share Dataset
   I want to share my datasets with other data owners
 
   Scenario: Share a previously unshared dataset
+    Given There is a dataset with title "my original data" and owner "owner"
+    And I login as "owner" with password "password"
+    When I share the dataset titled "my original data" with user "owner2"
+    Then The response code is 204
+    And User "owner" owns 1 dataset
+    And User "owner2" have 1 shared dataset
     #TODO: complete scenario, also share with multiple users, data users or owners, repeat user...
 
   Scenario: Dataset owner can transfer ownership
