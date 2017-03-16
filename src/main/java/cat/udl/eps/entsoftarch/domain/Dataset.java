@@ -43,6 +43,9 @@ public class Dataset {
     @ManyToOne
     private DataOwner owner;
 
+    @ManyToOne
+    private Schema schema;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JsonBackReference
     @Fetch(value = FetchMode.SUBSELECT)
