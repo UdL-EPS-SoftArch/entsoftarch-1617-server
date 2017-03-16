@@ -14,11 +14,12 @@ Feature: Add Schema Field
   Scenario: Add an existing field to the schema
     Given I login as "owner" with password "password"
     And There is a schema with title "my title" and description "my own schema" and owner "owner"
-    And There is a field with title "My field title" and description "my own field"
+    And There is a field with title "My field title" and description "my own field" to schema 000100
+    And There are 1 fields
     When I add a field with title "My field title" and description "my own field" to schema 000100
-    Then The response code is 500
-    And The error message is "Exception: Duplicate field"
-    And The schema "my schema" has 0 fields added
+    #Then The response code is 500
+    #And The error message is "Duplicated field"
+    And There are 1 fields
 
   Scenario: Add a field to the schema but wrong password
     Given I login as "owner" with password "wrongpassword"

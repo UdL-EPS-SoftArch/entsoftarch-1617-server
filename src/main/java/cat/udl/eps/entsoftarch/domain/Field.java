@@ -6,6 +6,9 @@ import org.hibernate.validator.constraints.NotBlank;
 import javax.persistence.*;
 
 @Entity
+@Table(
+        uniqueConstraints=@UniqueConstraint(columnNames={"partOf", "title"})
+)
 @Data
 public class Field {
     @Id
@@ -17,5 +20,6 @@ public class Field {
     private String description;
 
     @ManyToOne
+    @Column (name="partOf")
     private Schema partOf;
 }
