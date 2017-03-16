@@ -41,7 +41,6 @@ public class Dataset {
     private int flags = 0;
 
     @ManyToOne
-    @JsonBackReference
     private DataOwner owner;
 
     @ManyToMany(fetch = FetchType.EAGER)

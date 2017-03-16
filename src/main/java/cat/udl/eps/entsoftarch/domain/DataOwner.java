@@ -1,5 +1,6 @@
 package cat.udl.eps.entsoftarch.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;
@@ -20,6 +21,7 @@ import java.util.List;
 public class DataOwner extends User {
 
     @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
+    @JsonBackReference
     private List<Dataset> owns = new ArrayList<>();
 
     @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
