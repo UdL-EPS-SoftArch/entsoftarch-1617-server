@@ -2,9 +2,11 @@ package cat.udl.eps.entsoftarch.handler;
 
 import cat.udl.eps.entsoftarch.domain.DataOwner;
 import cat.udl.eps.entsoftarch.domain.Dataset;
+import cat.udl.eps.entsoftarch.domain.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.rest.core.annotation.*;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -24,7 +26,7 @@ public class DatasetEventHandler {
     @HandleBeforeCreate
     @PreAuthorize("hasRole('OWNER')")
     public void handleDatasetPreCreate(Dataset dataset) {
-        logger.info("Before creating: {}", dataset.toString());
+        logger.info("Before creating: {}", dataset);
 
         dataset.setDateTime(ZonedDateTime.now());
         DataOwner principal = (DataOwner) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -35,38 +37,46 @@ public class DatasetEventHandler {
     @PreAuthorize("#dataset.owner.username == principal.username")
     public void handleDatasetPreSave(Dataset dataset){
         dataset.setLastModified(ZonedDateTime.now());
-        logger.info("Before updating: {}", dataset.toString());
+        logger.info("Before updating: {}", dataset);
     }
 
     @HandleBeforeDelete
     @PreAuthorize("#dataset.owner.username == principal.username")
     public void handleDatasetPreDelete(Dataset dataset){
-        logger.info("Before deleting: {}", dataset.toString());
+        logger.info("Before deleting: {}", dataset);
     }
 
     @HandleBeforeLinkSave
-    @PreAuthorize("#dataset.owner.username == principal.username")
     public void handleDatasetPreLinkSave(Dataset dataset, Object o) {
-        logger.info("Before linking: {} to {}", dataset.toString(), o);
+        logger.info("Before linking: {} to {}", dataset, o);
+
+        User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (o instanceof User) {
+            User linkedUser = (User) o;
+            if (linkedUser.getUsername().equals(principal.getUsername()))
+                return; // Transferring ownership
+            else
+                throw new AccessDeniedException("Just dataset owner can transfer ownership");
+        }
+        if (!dataset.getOwner().getUsername().equals(principal.getUsername()))
+            throw new AccessDeniedException("Access is denied");
     }
 
     @HandleAfterCreate
     public void handleDatasetPostCreate(Dataset dataset){
-        logger.info("After creating: {}", dataset.toString());
+        logger.info("After creating: {}", dataset);
     }
 
     @HandleAfterSave
     public void handleDatasetPostSave(Dataset dataset){
-        logger.info("After updating: {}", dataset.toString());
+        logger.info("After updating: {}", dataset);
     }
 
     @HandleAfterDelete
     public void handleDatasetPostDelete(Dataset dataset){
-        logger.info("After deleting: {}", dataset.toString());
+        logger.info("After deleting: {}", dataset);
     }
 
     @HandleAfterLinkSave
-    public void handleDatasetPostLinkSave(Dataset dataset, Object o) {
-        logger.info("After linking: {} to {}", dataset.toString(), o);
-    }
+    public void handleDatasetPostLinkSave(Dataset dataset, Object o) { logger.info("After linking: {} to {}", dataset, o); }
 }
