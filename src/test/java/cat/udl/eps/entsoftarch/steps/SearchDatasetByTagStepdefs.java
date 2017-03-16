@@ -23,4 +23,10 @@ public class SearchDatasetByTagStepdefs {
     }
 
 
+    @When("^I search dataset with tag name containing \"([^\"]*)\"$")
+    public void iSearchDatasetWithTagNameContaining(String tagName) throws Throwable {
+        stepDefs.result = stepDefs.mockMvc.perform(
+                get("/datasets/search/findByTaggedWith_NameStartingWith?tag={tag}",tagName))
+                .andDo(print());
+    }
 }
