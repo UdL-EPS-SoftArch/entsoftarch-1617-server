@@ -4,12 +4,10 @@ import cat.udl.eps.entsoftarch.domain.Field;
 import cat.udl.eps.entsoftarch.domain.Schema;
 import cat.udl.eps.entsoftarch.repository.FieldRepository;
 import cat.udl.eps.entsoftarch.repository.SchemaRepository;
-import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.rest.webmvc.RestMediaTypes;
 import org.springframework.http.MediaType;
 
 import static cat.udl.eps.entsoftarch.steps.AuthenticationStepDefs.authenticate;
@@ -51,12 +49,13 @@ public class AddSchemaFieldStepDefs {
         field.setTitle(title);
         field.setDescription(description);
       //  field.setSchema(schema);
-        fieldRepository.save(field);
+      //  fieldRepository.save(field);
 
         String message = stepDefs.mapper.writeValueAsString(field);
+
         stepDefs.result = stepDefs.mockMvc.perform(
             post("/fields")
-                    .contentType(RestMediaTypes.TEXT_URI_LIST)
+                    .contentType(MediaType.APPLICATION_JSON)
                     .content(message)
                     .accept(MediaType.APPLICATION_JSON)
                     .with(authenticate()))
