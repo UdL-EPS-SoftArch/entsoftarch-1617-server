@@ -62,6 +62,6 @@ public class StepDefs {
         if (result.andReturn().getResponse().getContentAsString().isEmpty())
             result.andExpect(status().reason(is(message)));
         else
-            result.andExpect(jsonPath("$.message", hasItem(message)));
+            result.andExpect(jsonPath("$..message", hasItem(message)));
     }
 }

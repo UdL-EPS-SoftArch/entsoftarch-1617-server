@@ -44,6 +44,9 @@ public class Dataset {
     @JsonBackReference
     private DataOwner owner;
 
+    @ManyToOne
+    private Schema schema;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
     private List<Tag> taggedWith = new ArrayList<>();

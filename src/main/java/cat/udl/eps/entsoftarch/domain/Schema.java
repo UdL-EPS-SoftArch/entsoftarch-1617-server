@@ -7,6 +7,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.ZonedDateTime;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,6 +32,9 @@ public class Schema {
     @ManyToOne
     @JsonBackReference
     private DataOwner owner;
+
+    @OneToMany(mappedBy = "schema", fetch = FetchType.EAGER)
+    private List<Dataset> datasets = new ArrayList<>();
 
     @OneToMany(mappedBy = "partOf")
     private List<Field> contains;

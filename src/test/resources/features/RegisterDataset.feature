@@ -26,3 +26,10 @@ Feature: Register Dataset
     Then The response code is 401
     And The error message is "Bad credentials"
     And There are 0 datasets registered
+
+  Scenario: Register a dataset but empty title
+    Given I login as "owner" with password "password"
+    When I register a dataset with title ""
+    Then The response code is 400
+    And The error message is "may not be empty"
+    And There are 0 datasets registered
