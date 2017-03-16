@@ -7,15 +7,22 @@ import cat.udl.eps.entsoftarch.domain.OpenLicense;
 import cat.udl.eps.entsoftarch.repository.ClosedLicenseRepository;
 import cat.udl.eps.entsoftarch.repository.DatasetRepository;
 import cat.udl.eps.entsoftarch.repository.OpenLicenseRepository;
+import cucumber.api.PendingException;
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.RestMediaTypes;
+import org.springframework.http.MediaType;
+import static org.hamcrest.CoreMatchers.hasItem;
 
 import static cat.udl.eps.entsoftarch.steps.AuthenticationStepDefs.authenticate;
 import static org.junit.Assert.assertEquals;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
 /**
@@ -51,6 +58,30 @@ public class SetDatasetLicenseStepDefs {
         assertEquals(license.getText(), text);
     }
 
+    @And("^The datasets defined by open license with text \"([^\"]*)\" include one titled \"([^\"]*)\"$")
+    public void theDatasetsDefinedByOpenLicenseWithTextIncludeOneTitled(String text, String title) throws Throwable {
+        OpenLicense openLicense = openLicenseRepository.findByText(text).get(0);
+
+        stepDefs.result = stepDefs.mockMvc.perform(
+                get("/openLicenses/{id}/datasets", openLicense.getId())
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$._embedded.datasets[*].title", hasItem(title)));
+    }
+
+    @And("^The open license with text \"([^\"]*)\" don't include a dataset with title \"([^\"]*)\"$")
+    public void theOpenLicenseWithTextDonTIncludeADatasetWithTitle(String arg0, String arg1) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        throw new PendingException();
+    }
+
+    @Then("^The open license with text \"([^\"]*)\" has (\\d+) datasets registered$")
+    public void theOpenLicenseWithTextHasDatasetsRegistered(String arg0, int arg1) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        throw new PendingException();
+    }
+
     /*CLOSED LICENSE*/
     @When("^I set the closed license with text \"([^\"]*)\" and price (\\d+) to dataset with title \"([^\"]*)\"$")
     public void iSetTheClosedLicenseWithTextAndPriceToDatasetWithTitle(String text, int count, String title) throws Throwable {
@@ -72,5 +103,23 @@ public class SetDatasetLicenseStepDefs {
         Dataset dataset = datasetRepository.findByTitle(title).get(0);
         License license = dataset.getLicense();
         assertEquals(license.getText(), text);
+    }
+
+    @And("^The datasets defined by closed license with text \"([^\"]*)\" and price (\\d+) include one titled \"([^\"]*)\"$")
+    public void theDatasetsDefinedByClosedLicenseWithTextAndPriceIncludeOneTitled(String arg0, int arg1, String arg2) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        throw new PendingException();
+    }
+
+    @And("^The closed license with text \"([^\"]*)\" and price (\\d+) don't include a dataset with title \"([^\"]*)\"$")
+    public void theClosedLicenseWithTextAndPriceDonTIncludeADatasetWithTitle(String arg0, int arg1, String arg2) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        throw new PendingException();
+    }
+
+    @Then("^The closed license with text \"([^\"]*)\" and price (\\d+) has (\\d+) datasets registered$")
+    public void theClosedLicenseWithTextAndPriceHasDatasetsRegistered(String arg0, int arg1, int arg2) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        throw new PendingException();
     }
 }
