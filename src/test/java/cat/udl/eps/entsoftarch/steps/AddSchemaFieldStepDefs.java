@@ -1,11 +1,9 @@
 package cat.udl.eps.entsoftarch.steps;
 
-import cat.udl.eps.entsoftarch.domain.Dataset;
 import cat.udl.eps.entsoftarch.domain.Field;
 import cat.udl.eps.entsoftarch.domain.Schema;
 import cat.udl.eps.entsoftarch.repository.FieldRepository;
 import cat.udl.eps.entsoftarch.repository.SchemaRepository;
-import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -14,11 +12,8 @@ import org.springframework.data.rest.webmvc.RestMediaTypes;
 import org.springframework.http.MediaType;
 
 import static cat.udl.eps.entsoftarch.steps.AuthenticationStepDefs.authenticate;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.hamcrest.Matchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -28,12 +23,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 public class AddSchemaFieldStepDefs {
 
-
     @Autowired private StepDefs stepDefs;
     @Autowired private FieldRepository fieldRepository;
     @Autowired private SchemaRepository SchemaRepository;
-
-
 
     @And("^There (?:are|is) (\\d+) (?:field|fields) added$")
     public void ThereAreFieldsAdded(int num) throws Throwable {
@@ -44,61 +36,22 @@ public class AddSchemaFieldStepDefs {
                 .andExpect(jsonPath("$._embedded.fields", hasSize(num)));
     }
 
-    @And("^There are (\\d+) fields$")
-    public void thereAreFields(int num) throws Throwable {
-        stepDefs.result = stepDefs.mockMvc.perform(get("/fields")
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andDo(print())
-                .andExpect(jsonPath("$._embedded.fields", hasSize(num)));
-    }
-
-    @When("^I add a field with title \"([^\"]*)\" and description \"([^\"]*)\" to schema (\\d+)$")
-    public void iAddAFieldWithTitleAndDescriptionToSchema(String title, String description, Long schemaID) throws Throwable {
-
-        Schema schema = SchemaRepository.findOne(schemaID);
-        //Schema schema = schemaRepository.findByTitle(schema_title).get(0);
-
+    @And("^There is a field with title \"([^\"]*)\" in schema \"([^\"]*)\"$")
+    public void thereIsAFieldWithTitleInSchema(String fieldTitle, String schemaTitle) throws Throwable {
+        Schema schema = SchemaRepository.findByTitle(schemaTitle).get(0);
         Field field = new Field();
-        field.setTitle(title);
-        field.setDescription(description);
+        field.setTitle(fieldTitle);
         field.setPartOf(schema);
-      //  fieldRepository.save(field);
-
-        String message = stepDefs.mapper.writeValueAsString(field);
-
-        stepDefs.result = stepDefs.mockMvc.perform(
-            post("/fields")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(message)
-                    .accept(MediaType.APPLICATION_JSON)
-                    .with(authenticate()))
-            .andDo(print());
-
-
-
-        String message2 = "/schemas/" + schema.getId();
-
-        stepDefs.result = stepDefs.mockMvc.perform(
-                put("/fields/{id}/partOf", field.getId())
-                        .contentType(RestMediaTypes.TEXT_URI_LIST)
-                        .content(message2)
-                        .with(authenticate()))
-                .andDo(print());
+        fieldRepository.save(field);
     }
 
-    @And("^There is a field with title \"([^\"]*)\" and description \"([^\"]*)\" to schema (\\d+)$")
-    public void thereIsAFieldWithTitleAndDescriptionToSchema(String title, String description, Long schemaID) throws Throwable {
-      //  stepDefs.result.andExpect(jsonPath("$.title", is(title)));
-      //  stepDefs.result.andExpect(jsonPath("$.description", is(description)));
-
-        Schema schema = SchemaRepository.findOne(schemaID);
-
+    @When("^I add a field with title \"([^\"]*)\" and description \"([^\"]*)\" to schema \"([^\"]*)\"$")
+    public void iAddAFieldWithTitleAndDescriptionToSchema(String title, String description, String schemaTitle)
+            throws Throwable {
+        Schema schema = SchemaRepository.findByTitle(schemaTitle).get(0);
         Field field = new Field();
         field.setTitle(title);
         field.setDescription(description);
-        //  field.setSchema(schema);
-        //  fieldRepository.save(field);
 
         String message = stepDefs.mapper.writeValueAsString(field);
 
@@ -108,24 +61,44 @@ public class AddSchemaFieldStepDefs {
                         .content(message)
                         .accept(MediaType.APPLICATION_JSON)
                         .with(authenticate()))
-                .andDo(print());
+                    .andDo(print());
 
-        String message2 = "/schemas/" + schema.getId();
+        String fieldUri = stepDefs.result.andReturn().getResponse().getHeader("Location");
+        message = "/schemas/" + schema.getId();
 
         stepDefs.result = stepDefs.mockMvc.perform(
-                put("/fields/{id}/partOf", field.getId())
+                put(fieldUri + "/partOf")
                         .contentType(RestMediaTypes.TEXT_URI_LIST)
-                        .content(message2)
+                        .content(message)
                         .with(authenticate()))
-                .andDo(print());
+                    .andDo(print());
     }
 
+    @And("^The schema with title \"([^\"]*)\" has a field with title \"([^\"]*)\"$")
+    public void theSchemaWithTitleHasFieldWithTitle(String schemaTitle, String fieldTitle) throws Throwable {
+        Schema schema = SchemaRepository.findByTitle(schemaTitle).get(0);
+
+        stepDefs.result = stepDefs.mockMvc.perform(
+                get("/schemas/{id}/contains", schema.getId())
+                        .accept(MediaType.APPLICATION_JSON))
+                    .andDo(print())
+                    .andExpect(jsonPath("$._embedded.fields[*].title", hasItem(fieldTitle)));
+    }
+
+    @And("^The schema with title \"([^\"]*)\" has (\\d+) (?:field|fields)$")
+    public void theSchemaWithTitleHasFields(String schemaTitle, int count) throws Throwable {
+        Schema schema = SchemaRepository.findByTitle(schemaTitle).get(0);
+
+        stepDefs.result = stepDefs.mockMvc.perform(
+                get("/schemas/{id}/contains", schema.getId())
+                        .accept(MediaType.APPLICATION_JSON))
+                    .andDo(print())
+                    .andExpect(jsonPath("$._embedded.fields", hasSize(count)));
+    }
 
     @Then("^The new field has title \"([^\"]*)\" and description \"([^\"]*)\"$")
     public void theNewFieldHasTitleAndDescription(String title, String description) throws Throwable {
         stepDefs.result.andExpect(jsonPath("$.title", is(title)));
         stepDefs.result.andExpect(jsonPath("$.description", is(description)));
     }
-
-
 }
