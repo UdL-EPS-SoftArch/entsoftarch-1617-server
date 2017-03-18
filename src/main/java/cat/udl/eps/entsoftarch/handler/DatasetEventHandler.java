@@ -24,7 +24,7 @@ public class DatasetEventHandler {
     @HandleBeforeCreate
     @PreAuthorize("hasRole('OWNER')")
     public void handleDatasetPreCreate(Dataset dataset) {
-        logger.info("Before creating: {}", dataset);
+        logger.info("Before creating: {}", dataset.toString());
 
         dataset.setDateTime(ZonedDateTime.now());
         DataOwner principal = (DataOwner) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -35,13 +35,13 @@ public class DatasetEventHandler {
     @PreAuthorize("#dataset.owner.username == principal.username")
     public void handleDatasetPreSave(Dataset dataset){
         dataset.setLastModified(ZonedDateTime.now());
-        logger.info("Before updating: {}", dataset);
+        logger.info("Before updating: {}", dataset.toString());
     }
 
     @HandleBeforeDelete
     @PreAuthorize("#dataset.owner.username == principal.username")
     public void handleDatasetPreDelete(Dataset dataset){
-        logger.info("Before deleting: {}", dataset);
+        logger.info("Before deleting: {}", dataset.toString());
     }
 
     @HandleBeforeLinkSave
@@ -52,21 +52,19 @@ public class DatasetEventHandler {
 
     @HandleAfterCreate
     public void handleDatasetPostCreate(Dataset dataset){
-        logger.info("After creating: {}", dataset);
+        logger.info("After creating: {}", dataset.toString());
     }
 
     @HandleAfterSave
     public void handleDatasetPostSave(Dataset dataset){
-        logger.info("After updating: {}", dataset);
+        logger.info("After updating: {}", dataset.toString());
     }
 
     @HandleAfterDelete
     public void handleDatasetPostDelete(Dataset dataset){
-        logger.info("After deleting: {}", dataset);
+        logger.info("After deleting: {}", dataset.toString());
     }
 
     @HandleAfterLinkSave
-    public void handleDatasetPostLinkSave(Dataset dataset, Object o) { 
-      logger.info("After linking: {} to {}", dataset, o); 
-    }
+    public void handleDatasetPostLinkSave(Dataset dataset, Object o) { logger.info("After linking: {} to {}", dataset, o); }
 }

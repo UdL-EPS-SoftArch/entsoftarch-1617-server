@@ -45,7 +45,7 @@ public class Dataset {
     private DataOwner owner;
 
     @ManyToOne
-    private License license;
+    private Schema schema;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
