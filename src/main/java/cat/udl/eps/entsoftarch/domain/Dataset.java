@@ -47,6 +47,9 @@ public class Dataset {
     @ManyToOne
     private Schema schema;
 
+    @ManyToOne
+    private License license;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
     private List<Tag> taggedWith = new ArrayList<>();

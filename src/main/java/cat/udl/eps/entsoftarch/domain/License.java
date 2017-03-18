@@ -1,5 +1,9 @@
 package cat.udl.eps.entsoftarch.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.Data;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
@@ -10,6 +14,7 @@ import java.util.List;
  * Created by victorserrate on 2/3/17.
  */
 
+@Data
 @Entity
 public abstract class License {
 
@@ -18,6 +23,7 @@ public abstract class License {
     private Long id;
 
     @ManyToOne
+    @JsonBackReference
     private DataOwner owner;
 
     @NotBlank
@@ -26,37 +32,9 @@ public abstract class License {
     @OneToMany(mappedBy = "license", fetch = FetchType.EAGER)
     private List<Dataset> datasets = new ArrayList<>();
 
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text=text;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id=id;
-    }
-
-    public DataOwner getOwner() {
-        return owner;
-    }
-
-    public void setOwner(DataOwner owner) {
-        this.owner=owner;
-    }
-
-    public List<Dataset> getDatasets() {
-        return datasets;
-    }
-
-    public void setDatasets(List<Dataset> datasets) {
-        this.datasets = datasets;
-    }
+    @OneToMany(mappedBy = "partOf", fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
+    private List<Field> contains;
 
     @Override
     public String toString() {

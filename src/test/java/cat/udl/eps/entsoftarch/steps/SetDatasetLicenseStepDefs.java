@@ -15,9 +15,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.RestMediaTypes;
 import org.springframework.http.MediaType;
 import static org.hamcrest.CoreMatchers.hasItem;
+import static org.hamcrest.Matchers.hasSize;
 
 import static cat.udl.eps.entsoftarch.steps.AuthenticationStepDefs.authenticate;
 import static org.junit.Assert.assertEquals;
+import static org.hamcrest.Matchers.not;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -40,7 +42,6 @@ public class SetDatasetLicenseStepDefs {
     public void setOpenLicenseToDataset(String text, String title) throws Throwable {
         OpenLicense openLicense = openLicenseRepository.findByText(text).get(0);
         Dataset dataset = datasetRepository.findByTitle(title).get(0);
-
         String message = "/openLicenses/" + openLicense.getId();
 
         stepDefs.result = stepDefs.mockMvc.perform(
@@ -71,15 +72,26 @@ public class SetDatasetLicenseStepDefs {
     }
 
     @And("^The open license with text \"([^\"]*)\" don't include a dataset with title \"([^\"]*)\"$")
-    public void theOpenLicenseWithTextDonTIncludeADatasetWithTitle(String arg0, String arg1) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
+    public void theOpenLicenseWithTextDonTIncludeADatasetWithTitle(String text, String title) throws Throwable {
+        OpenLicense openLicense = openLicenseRepository.findByText(text).get(0);
+
+        stepDefs.result = stepDefs.mockMvc.perform(
+                get("/openLicenses/{id}/datasets", openLicense.getId())
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$._embedded.datasets[*].title", not(hasItem(title))));
     }
 
     @Then("^The open license with text \"([^\"]*)\" has (\\d+) datasets registered$")
-    public void theOpenLicenseWithTextHasDatasetsRegistered(String arg0, int arg1) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
+    public void theOpenLicenseWithTextHasDatasetsRegistered(String text, int count) throws Throwable {
+        OpenLicense openLicense = openLicenseRepository.findByText(text).get(0);
+
+        stepDefs.result = stepDefs.mockMvc.perform(get("/openLicenses/{id}/datasets", openLicense.getId())
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(jsonPath("$._embedded.datasets[*]", hasSize(count)));
     }
 
     /*CLOSED LICENSE*/
