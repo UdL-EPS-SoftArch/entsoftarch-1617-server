@@ -96,7 +96,7 @@ public class SetDatasetLicenseStepDefs {
 
     /*CLOSED LICENSE*/
     @When("^I set the closed license with text \"([^\"]*)\" and price (\\d+) to dataset with title \"([^\"]*)\"$")
-    public void iSetTheClosedLicenseWithTextAndPriceToDatasetWithTitle(String text, int count, String title) throws Throwable {
+    public void iSetTheClosedLicenseWithTextAndPriceToDatasetWithTitle(String text, int price, String title) throws Throwable {
         ClosedLicense closedLicense = closedLicenseRepository.findByText(text).get(0);
         Dataset dataset = datasetRepository.findByTitle(title).get(0);
 
@@ -111,27 +111,44 @@ public class SetDatasetLicenseStepDefs {
     }
 
     @Then("^The dataset with title \"([^\"]*)\" has a closed license with text \"([^\"]*)\" and price (\\d+)$")
-    public void theDatasetWithTitleHasAClosedLicenseWithTextAndPrice(String title, String text, int count) throws Throwable {
+    public void theDatasetWithTitleHasAClosedLicenseWithTextAndPrice(String title, String text, int price) throws Throwable {
         Dataset dataset = datasetRepository.findByTitle(title).get(0);
         License license = dataset.getLicense();
         assertEquals(license.getText(), text);
     }
 
     @And("^The datasets defined by closed license with text \"([^\"]*)\" and price (\\d+) include one titled \"([^\"]*)\"$")
-    public void theDatasetsDefinedByClosedLicenseWithTextAndPriceIncludeOneTitled(String arg0, int arg1, String arg2) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
+    public void theDatasetsDefinedByClosedLicenseWithTextAndPriceIncludeOneTitled(String text, int price, String title) throws Throwable {
+        ClosedLicense closedLicense = closedLicenseRepository.findByText(text).get(0);
+
+        stepDefs.result = stepDefs.mockMvc.perform(
+                get("/closedLicenses/{id}/datasets", closedLicense.getId())
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$._embedded.datasets[*].title", hasItem(title)));
     }
 
     @And("^The closed license with text \"([^\"]*)\" and price (\\d+) don't include a dataset with title \"([^\"]*)\"$")
-    public void theClosedLicenseWithTextAndPriceDonTIncludeADatasetWithTitle(String arg0, int arg1, String arg2) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
+    public void theClosedLicenseWithTextAndPriceDonTIncludeADatasetWithTitle(String text, int price, String title) throws Throwable {
+        ClosedLicense closedLicense = closedLicenseRepository.findByText(text).get(0);
+
+        stepDefs.result = stepDefs.mockMvc.perform(
+                get("/closedLicenses/{id}/datasets", closedLicense.getId())
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$._embedded.datasets[*].title", not(hasItem(title))));
     }
 
     @Then("^The closed license with text \"([^\"]*)\" and price (\\d+) has (\\d+) datasets registered$")
-    public void theClosedLicenseWithTextAndPriceHasDatasetsRegistered(String arg0, int arg1, int arg2) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
+    public void theClosedLicenseWithTextAndPriceHasDatasetsRegistered(String text, int price, int count) throws Throwable {
+        ClosedLicense closedLicense = closedLicenseRepository.findByText(text).get(0);
+
+        stepDefs.result = stepDefs.mockMvc.perform(get("/closedLicenses/{id}/datasets", closedLicense.getId())
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(jsonPath("$._embedded.datasets[*]", hasSize(count)));
     }
 }

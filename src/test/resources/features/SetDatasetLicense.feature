@@ -55,4 +55,4 @@ Feature: Set Dataset License
     When I set the closed license with text "My first closed license" and price 10 to dataset with title "My other dataset"
     And The datasets defined by closed license with text "My first closed license" and price 10 include one titled "My dataset"
     And The datasets defined by closed license with text "My first closed license" and price 10 include one titled "My other dataset"
-    Then The closed license with text "My first open license" and price 10 has 2 datasets registered
+    Then The closed license with text "My first closed license" and price 10 has 2 datasets registered
