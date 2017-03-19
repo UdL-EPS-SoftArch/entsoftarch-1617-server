@@ -1,5 +1,6 @@
 package cat.udl.eps.entsoftarch.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;
@@ -7,6 +8,7 @@ import org.springframework.security.core.authority.AuthorityUtils;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,6 +21,7 @@ import java.util.List;
 public class DataOwner extends User {
 
     @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
+    @JsonBackReference
     private List<Dataset> owns = new ArrayList<>();
 
     @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
@@ -32,6 +35,10 @@ public class DataOwner extends User {
     @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
     private List<License> owns_closedLicenses= new ArrayList<>();
+
+    @ManyToMany(mappedBy = "sharedWith", fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
+    private List<Dataset> sharedDatasets;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

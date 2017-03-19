@@ -32,6 +32,11 @@ public class AuthenticationTestConfig extends GlobalAuthenticationConfigurerAdap
         owner.setPassword("password");
         userRepository.save(owner);
 
+        User owner2 = new DataOwner();
+        owner2.setUsername("owner2");
+        owner2.setPassword("password");
+        userRepository.save(owner2);
+
         User user = new DataUser();
         user.setUsername("user");
         user.setPassword("password");

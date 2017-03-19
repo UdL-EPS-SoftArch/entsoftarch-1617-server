@@ -41,7 +41,6 @@ public class Dataset {
     private int flags = 0;
 
     @ManyToOne
-    @JsonBackReference
     private DataOwner owner;
 
     @ManyToOne
@@ -49,6 +48,11 @@ public class Dataset {
 
     @ManyToOne
     private License license;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JsonBackReference
+    @Fetch(value = FetchMode.SUBSELECT)
+    private List<User> sharedWith = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
