@@ -10,10 +10,4 @@ import javax.persistence.Entity;
 
 @Entity
 @Data
-public class OpenLicense extends License {
-
-    @Override
-    public String toString() {
-        return "OpenLicense " + super.toString();
-    }
-}
+public class OpenLicense extends License { }
