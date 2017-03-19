@@ -52,6 +52,7 @@ public class AddSchemaFieldStepDefs {
         Field field = new Field();
         field.setTitle(title);
         field.setDescription(description);
+        field.setPartOf(schema);
 
         String message = stepDefs.mapper.writeValueAsString(field);
 
@@ -62,16 +63,21 @@ public class AddSchemaFieldStepDefs {
                         .accept(MediaType.APPLICATION_JSON)
                         .with(authenticate()))
                     .andDo(print());
+    }
 
-        String fieldUri = stepDefs.result.andReturn().getResponse().getHeader("Location");
-        message = "/schemas/" + schema.getId();
+    @When("^I move the field with title \"([^\"]*)\" to schema \"([^\"]*)\"$")
+    public void iAssociateTheFieldWithTitleToSchema(String fieldTitle, String schemaTitle) throws Throwable {
+        Schema schema = SchemaRepository.findByTitle(schemaTitle).get(0);
+        Field field = fieldRepository.findByTitle(fieldTitle).get(0);
+
+        String message = "/schemas/" + schema.getId();
 
         stepDefs.result = stepDefs.mockMvc.perform(
-                put(fieldUri + "/partOf")
+                put("/fields/{id}/partOf", field.getId())
                         .contentType(RestMediaTypes.TEXT_URI_LIST)
                         .content(message)
                         .with(authenticate()))
-                    .andDo(print());
+                .andDo(print());
     }
 
     @And("^The schema with title \"([^\"]*)\" has a field with title \"([^\"]*)\"$")
