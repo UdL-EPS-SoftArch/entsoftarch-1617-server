@@ -29,6 +29,7 @@ public class DatasetEventHandler {
         logger.info("Before creating: {}", dataset);
 
         dataset.setDateTime(ZonedDateTime.now());
+        dataset.setLastModified(dataset.getDateTime());
         DataOwner principal = (DataOwner) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         dataset.setOwner(principal);
     }
@@ -63,19 +64,13 @@ public class DatasetEventHandler {
     }
 
     @HandleAfterCreate
-    public void handleDatasetPostCreate(Dataset dataset){
-        logger.info("After creating: {}", dataset);
-    }
+    public void handleDatasetPostCreate(Dataset dataset){ logger.info("After creating: {}", dataset); }
 
     @HandleAfterSave
-    public void handleDatasetPostSave(Dataset dataset){
-        logger.info("After updating: {}", dataset);
-    }
+    public void handleDatasetPostSave(Dataset dataset){ logger.info("After updating: {}", dataset); }
 
     @HandleAfterDelete
-    public void handleDatasetPostDelete(Dataset dataset){
-        logger.info("After deleting: {}", dataset);
-    }
+    public void handleDatasetPostDelete(Dataset dataset){ logger.info("After deleting: {}", dataset); }
 
     @HandleAfterLinkSave
     public void handleDatasetPostLinkSave(Dataset dataset, Object o) { logger.info("After linking: {} to {}", dataset, o); }
