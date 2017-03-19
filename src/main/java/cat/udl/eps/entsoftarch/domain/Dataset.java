@@ -43,7 +43,6 @@ public class Dataset extends UriEntity<Long> {
     private int flags = 0;
 
     @ManyToOne
-    @ReadOnlyProperty
     @JsonIdentityReference(alwaysAsId = true)
     private DataOwner owner;
 

@@ -38,7 +38,6 @@ public class Schema extends UriEntity<Long> {
     private ZonedDateTime lastModified;
 
     @ManyToOne
-    @ReadOnlyProperty
     @JsonIdentityReference(alwaysAsId = true)
     private DataOwner owner;
 
