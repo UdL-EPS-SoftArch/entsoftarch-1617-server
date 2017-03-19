@@ -37,8 +37,9 @@ public class DatasetEventHandler {
     @HandleBeforeSave
     @PreAuthorize("#dataset.owner.username == principal.username")
     public void handleDatasetPreSave(Dataset dataset){
-        dataset.setLastModified(ZonedDateTime.now());
         logger.info("Before updating: {}", dataset);
+
+        dataset.setLastModified(ZonedDateTime.now());
     }
 
     @HandleBeforeDelete
