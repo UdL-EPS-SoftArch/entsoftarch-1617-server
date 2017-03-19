@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Created by Victor on 02/03/2017.
  */
-public class RegisterLicenseStepdefs {
+public class RegisterLicenseStepDefs {
 
     @Autowired
     private StepDefs stepDefs;
@@ -71,7 +71,7 @@ public class RegisterLicenseStepdefs {
         openLicenseRepository.save(license);
     }
 
-    @Then("^The new license has text \"([^\"]*)\"$")
+    @Then("^The new open license has text \"([^\"]*)\"$")
     public void theNewOpenLicenseHasText(String text) throws Throwable {
         stepDefs.result.andExpect(jsonPath("$.text", is(text)));
     }
