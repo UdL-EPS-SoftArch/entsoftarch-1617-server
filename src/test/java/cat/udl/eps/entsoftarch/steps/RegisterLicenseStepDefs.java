@@ -79,7 +79,7 @@ public class RegisterLicenseStepDefs {
 
     @And("^User \"([^\"]*)\" owns (\\d+) open license$")
     public void userOwnsOpenLicense(String username, int count) throws Throwable {
-        stepDefs.result=stepDefs.mockMvc.perform(get("/dataOwners/{username}/owns_openLicenses", username)
+        stepDefs.result=stepDefs.mockMvc.perform(get("/dataOwners/{username}/ownsLicenses", username)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -131,7 +131,7 @@ public class RegisterLicenseStepDefs {
 
     @And("^User \"([^\"]*)\" owns (\\d+) closed license$")
     public void userOwnsClosedLicense(String username, int count) throws Throwable {
-        stepDefs.result=stepDefs.mockMvc.perform(get("/dataOwners/{username}/owns_closedLicenses", username)
+        stepDefs.result=stepDefs.mockMvc.perform(get("/dataOwners/{username}/ownsLicenses", username)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
