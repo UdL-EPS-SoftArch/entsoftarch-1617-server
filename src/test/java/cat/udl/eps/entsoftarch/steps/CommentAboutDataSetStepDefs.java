@@ -20,6 +20,7 @@ import java.time.ZonedDateTime;
 import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.anonymous;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -85,9 +86,8 @@ public class CommentAboutDataSetStepDefs {
     @Then("^This comment comment about dataset \"([^\"]*)\"$")
     public void thisCommentCommentAboutDataset(String arg0) throws Throwable {
         Dataset dataset = datasetRepository.findByTitle(arg0).get(0);
-        Comment comment = commentRepository.
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
+        Comment comment = commentRepository.findByDataset(dataset).get(0);
+        stepDefs.result.andExpect(jsonPath("$.comments", is(comment)));
     }
 
     @And("^The new comment has been published with username \"([^\"]*)\" or username \"([^\"]*)\"$")
