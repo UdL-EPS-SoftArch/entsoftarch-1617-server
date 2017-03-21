@@ -1,5 +1,6 @@
 package cat.udl.eps.entsoftarch.domain;
 
+
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.data.annotation.ReadOnlyProperty;
 import org.springframework.format.annotation.DateTimeFormat;

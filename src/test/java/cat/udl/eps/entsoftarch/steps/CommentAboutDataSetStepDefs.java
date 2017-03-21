@@ -81,6 +81,7 @@ public class CommentAboutDataSetStepDefs {
                         .accept(MediaType.APPLICATION_JSON)
                         .with(authenticate()))
                         .andDo(print());
+        commentRepository.save(comment);
     }
 
     @Then("^This comment comment about dataset \"([^\"]*)\"$")
