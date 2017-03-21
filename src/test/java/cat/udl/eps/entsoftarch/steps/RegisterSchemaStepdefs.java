@@ -81,7 +81,7 @@ public class RegisterSchemaStepdefs {
 
     @And("^User \"([^\"]*)\" owns (\\d+) schema$")
     public void userOwnsSchema(String username, int count) throws Throwable {
-        stepDefs.result = stepDefs.mockMvc.perform(get("/dataOwners/{username}/owns_schemas", username)
+        stepDefs.result = stepDefs.mockMvc.perform(get("/dataOwners/{username}/ownsSchemas", username)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())

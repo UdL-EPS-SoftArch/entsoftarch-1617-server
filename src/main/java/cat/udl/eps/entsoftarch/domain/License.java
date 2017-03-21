@@ -1,55 +1,33 @@
 package cat.udl.eps.entsoftarch.domain;
 
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import lombok.Data;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by victorserrate on 2/3/17.
  */
 
 @Entity
-public abstract class License {
+@Data
+public abstract class License extends UriEntity<Long> {
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne
-    private DataOwner owner;
-
     @NotBlank
     private String text;
 
-    public String getText() {
-        return text;
-    }
+    @ManyToOne
+    @JsonIdentityReference(alwaysAsId = true)
+    private DataOwner owner;
 
-    public void setText(String text) {
-        this.text=text;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id=id;
-    }
-
-    public DataOwner getOwner() {
-        return owner;
-    }
-
-    public void setOwner(DataOwner owner) {
-        this.owner=owner;
-    }
-
-
-    @Override
-    public String toString() {
-        return "License{" +
-                "text='" + text + '\'' +
-                '}';
-    }
+    @OneToMany(mappedBy = "license", fetch = FetchType.EAGER)
+    @JsonIdentityReference(alwaysAsId = true)
+    private List<Dataset> datasets = new ArrayList<>();
 }

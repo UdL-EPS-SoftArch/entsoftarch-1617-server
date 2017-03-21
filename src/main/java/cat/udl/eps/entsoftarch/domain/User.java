@@ -1,6 +1,8 @@
 package cat.udl.eps.entsoftarch.domain;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.atteo.evo.inflector.English;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.StringUtils;
@@ -14,6 +16,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "MyDataUser") //Avoid collision with system table User in Postgres
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="uri")
 public abstract class User implements UserDetails {
     @Id
     private String username;

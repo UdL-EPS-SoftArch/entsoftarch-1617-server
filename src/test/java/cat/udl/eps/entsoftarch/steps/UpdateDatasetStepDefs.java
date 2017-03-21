@@ -5,7 +5,6 @@ import cat.udl.eps.entsoftarch.domain.Dataset;
 import cat.udl.eps.entsoftarch.repository.DataOwnerRepository;
 import cat.udl.eps.entsoftarch.repository.DatasetRepository;
 import com.jayway.jsonpath.JsonPath;
-import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -13,6 +12,7 @@ import org.junit.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.RestMediaTypes;
 import org.springframework.http.MediaType;
 
 import java.time.ZonedDateTime;
@@ -85,6 +85,21 @@ public class UpdateDatasetStepDefs {
     public void theDatasetHasTitle(String title) throws Throwable {
         Dataset dataset = datasetRepository.findByTitle(title).get(0);
         Assert.assertThat(dataset, notNullValue());
+    }
+
+    @When("^I change the owner of dataset with title \"([^\"]*)\" to \"([^\"]*)\"$")
+    public void iChangeTheOwnerOfDatasetWithTitleTo(String title, String newOwner) throws Throwable {
+        Dataset dataset = datasetRepository.findByTitle(title).get(0);
+        DataOwner newDataOwner = dataOwnerRepository.findOne(newOwner);
+
+        String message = "/dataOwners/" + newDataOwner.getUsername();
+
+        stepDefs.result = stepDefs.mockMvc.perform(
+                put("/datasets/{id}/owner", dataset.getId())
+                        .contentType(RestMediaTypes.TEXT_URI_LIST)
+                        .content(message)
+                        .with(authenticate()))
+                    .andDo(print());
     }
 }
 

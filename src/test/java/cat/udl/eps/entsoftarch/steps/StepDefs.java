@@ -20,6 +20,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -62,6 +63,6 @@ public class StepDefs {
         if (result.andReturn().getResponse().getContentAsString().isEmpty())
             result.andExpect(status().reason(is(message)));
         else
-            result.andExpect(jsonPath("$.message", hasItem(message)));
+            result.andExpect(jsonPath("$..message", hasItem(containsString(message))));
     }
 }
