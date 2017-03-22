@@ -13,5 +13,5 @@ import java.util.List;
  */
 @RepositoryRestResource
 public interface CommentRepository extends PagingAndSortingRepository<Comment, Long> {
-    List<Comment> findByDataset(@Param("dataset")Dataset dataset);
+    List<Comment> findByAbout(@Param("dataset")Dataset dataset);
 }
