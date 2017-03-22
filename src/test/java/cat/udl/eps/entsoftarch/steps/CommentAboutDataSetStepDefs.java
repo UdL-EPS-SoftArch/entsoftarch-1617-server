@@ -9,26 +9,17 @@ import cat.udl.eps.entsoftarch.repository.DatasetRepository;
 import cucumber.api.PendingException;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
-import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.request.RequestPostProcessor;
 
 import java.time.ZonedDateTime;
-import java.util.List;
 
-import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.anonymous;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
 public class CommentAboutDataSetStepDefs {
@@ -45,10 +36,6 @@ public class CommentAboutDataSetStepDefs {
     @Autowired
     private StepDefs stepDefs;
     private Dataset dataset;
-
-    static RequestPostProcessor authenticate() {
-        return currentUsername != null ? httpBasic(currentUsername, currentPassword) : anonymous();
-    }
 
     @Before
     public void setup() {
@@ -75,19 +62,19 @@ public class CommentAboutDataSetStepDefs {
         comment.setTxt(text);
         comment.setDateTime(zonedDateTime);
         String message = stepDefs.mapper.writeValueAsString(comment);
+
         stepDefs.result = stepDefs.mockMvc.perform( post("/comments")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(message)
                         .accept(MediaType.APPLICATION_JSON)
-                        .with(authenticate()))
+                        .with(AuthenticationStepDefs.authenticate()))
                         .andDo(print());
-        commentRepository.save(comment);
     }
 
     @Then("^This comment comment about dataset \"([^\"]*)\"$")
     public void thisCommentCommentAboutDataset(String arg0) throws Throwable {
         Dataset dataset = datasetRepository.findByTitle(arg0).get(0);
-        Comment comment = commentRepository.findByDataset(dataset).get(0);
+        Comment comment = commentRepository.findByAbout(dataset).get(0);
         stepDefs.result.andExpect(jsonPath("$.comments", is(comment)));
     }
 
