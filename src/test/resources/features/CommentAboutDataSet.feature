@@ -5,10 +5,9 @@ Feature: Comment About Dataset
 
   Scenario: Publish a comment about Dataset with a registered user.
     Given I login as "owner" with password "password"
-    And There is 1 datasets registered
+    And There is a dataset with title "dataset" and owner "owner"
     When I comment a dataset "dataset" with text "text" and user "owner"
-    Then This comment comment about dataset "dataset"
-    And The new comment has been published with username "owner" or username "user"
+    Then The new comment has been published with username "owner"
     And The new comment has date and time approximately now
 
   Scenario: Publish a comment about Dataset without a registered user.

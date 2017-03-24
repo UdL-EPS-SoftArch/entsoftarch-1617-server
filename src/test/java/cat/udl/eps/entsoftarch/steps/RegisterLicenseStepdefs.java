@@ -12,7 +12,6 @@ import cucumber.api.java.en.When;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 
-
 import static cat.udl.eps.entsoftarch.steps.AuthenticationStepDefs.authenticate;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
@@ -25,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Created by Victor on 02/03/2017.
  */
-public class RegisterLicenseStepdefs {
+public class RegisterLicenseStepDefs {
 
     @Autowired
     private StepDefs stepDefs;
@@ -71,7 +70,7 @@ public class RegisterLicenseStepdefs {
         openLicenseRepository.save(license);
     }
 
-    @Then("^The new license has text \"([^\"]*)\"$")
+    @Then("^The new open license has text \"([^\"]*)\"$")
     public void theNewOpenLicenseHasText(String text) throws Throwable {
         stepDefs.result.andExpect(jsonPath("$.text", is(text)));
     }
@@ -79,7 +78,7 @@ public class RegisterLicenseStepdefs {
 
     @And("^User \"([^\"]*)\" owns (\\d+) open license$")
     public void userOwnsOpenLicense(String username, int count) throws Throwable {
-        stepDefs.result=stepDefs.mockMvc.perform(get("/dataOwners/{username}/owns_openLicenses", username)
+        stepDefs.result = stepDefs.mockMvc.perform(get("/dataOwners/{username}/ownsLicenses", username)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -131,7 +130,7 @@ public class RegisterLicenseStepdefs {
 
     @And("^User \"([^\"]*)\" owns (\\d+) closed license$")
     public void userOwnsClosedLicense(String username, int count) throws Throwable {
-        stepDefs.result=stepDefs.mockMvc.perform(get("/dataOwners/{username}/owns_closedLicenses", username)
+        stepDefs.result = stepDefs.mockMvc.perform(get("/dataOwners/{username}/ownsLicenses", username)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
