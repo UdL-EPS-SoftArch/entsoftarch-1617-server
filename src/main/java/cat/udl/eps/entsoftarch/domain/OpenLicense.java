@@ -1,5 +1,7 @@
 package cat.udl.eps.entsoftarch.domain;
 
+import lombok.Data;
+
 import javax.persistence.Entity;
 
 /**
@@ -7,10 +9,5 @@ import javax.persistence.Entity;
  */
 
 @Entity
-public class OpenLicense extends License {
-
-    @Override
-    public String toString() {
-        return "OpenLicense " + super.toString();
-    }
-}
+@Data
+public class OpenLicense extends License { }

@@ -1,25 +1,33 @@
 package cat.udl.eps.entsoftarch.domain;
 
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import lombok.Data;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.annotation.ReadOnlyProperty;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by http://rhizomik.net/~roberto/
  */
+
 @Entity
-public class Dataset {
+@Data
+public class Dataset extends UriEntity<Long> {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @NotBlank
+    private String title;
+
     private String description;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
@@ -27,76 +35,32 @@ public class Dataset {
     private ZonedDateTime dateTime;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @LastModifiedDate
     private ZonedDateTime lastModified;
 
     private boolean isBlocked = false;
 
     private int flags = 0;
 
-    @ReadOnlyProperty
-    private String owner;
-    private String title;
+    @ManyToOne
+    @JsonIdentityReference(alwaysAsId = true)
+    private DataOwner owner;
 
-    public Long getId() {
-        return id;
-    }
+    @ManyToOne
+    @JsonIdentityReference(alwaysAsId = true)
+    private Schema schema;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @ManyToOne
+    @JsonIdentityReference(alwaysAsId = true)
+    private License license;
 
-    public String getDescription() {
-        return description;
-    }
+    @ManyToMany(fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
+    @JsonIdentityReference(alwaysAsId = true)
+    private List<User> sharedWith = new ArrayList<>();
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public ZonedDateTime getDateTime() {
-        return dateTime;
-    }
-
-    public void setDateTime(ZonedDateTime dateTime) {
-        this.dateTime = dateTime;
-        this.lastModified = dateTime;
-    }
-
-    public ZonedDateTime getLastModified() {
-        return lastModified;
-    }
-
-    public void setLastModified(ZonedDateTime lastModified) {
-        this.lastModified = lastModified;
-    }
-
-    public boolean isBlocked() { return isBlocked; }
-
-    public void setBlocked(boolean blocked) { isBlocked = blocked; }
-
-    public int getFlags() { return flags; }
-
-    public void setFlags(int flags) { this.flags = flags; }
-
-    public String getOwner() { return owner; }
-
-    public void setOwner(String owner) { this.owner = owner; }
-
-    public String getTitle() {return title; }
-
-    public void setTitle(String title) { this.title = title; }
-
-    @Override
-    public String toString() {
-        return "Dataset{" +
-                "id=" + id +
-                "title=" + title +
-                ", description='" + description + '\'' +
-                ", dateTime=" + dateTime +
-                ", isBlocked=" + isBlocked +
-                ", flags=" + flags +
-                ", owner='" + owner + '\'' +
-                '}';
-    }
-
+    @ManyToMany(fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
+    @JsonIdentityReference(alwaysAsId = true)
+    private List<Tag> taggedWith = new ArrayList<>();
 }

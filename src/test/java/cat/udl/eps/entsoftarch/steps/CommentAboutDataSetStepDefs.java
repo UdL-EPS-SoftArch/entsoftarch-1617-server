@@ -9,21 +9,17 @@ import cat.udl.eps.entsoftarch.repository.DatasetRepository;
 import cucumber.api.PendingException;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
-import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.request.RequestPostProcessor;
 
 import java.time.ZonedDateTime;
-import java.util.List;
 
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.anonymous;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
+import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 
 public class CommentAboutDataSetStepDefs {
@@ -36,20 +32,22 @@ public class CommentAboutDataSetStepDefs {
     @Autowired
     private DatasetRepository datasetRepository;
     @Autowired
+    private CommentRepository commentRepository;
+    @Autowired
     private StepDefs stepDefs;
     private Dataset dataset;
-
-    static RequestPostProcessor authenticate() {
-        return currentUsername != null ? httpBasic(currentUsername, currentPassword) : anonymous();
-    }
 
     @Before
     public void setup() {
         // Clear authentication credentials at the start of every test.
         CommentAboutDataSetStepDefs.currentPassword = "";
         CommentAboutDataSetStepDefs.currentUsername = "";
-        this.dataset = new Dataset();
         zonedDateTime = ZonedDateTime.now();
+        this.dataset = new Dataset();
+        dataset.setTitle("dataset");
+        dataset.setOwner(dataOwnerRepository.findOne(currentUsername));
+        dataset.setDateTime(zonedDateTime);
+        datasetRepository.save(dataset);
     }
 
 
@@ -59,26 +57,25 @@ public class CommentAboutDataSetStepDefs {
         Dataset data = datasetRepository.findByTitle(dataset).get(0);
         User userC = dataOwnerRepository.findOne(user);
         Comment comment = new Comment();
+        comment.setUser(userC);
+        comment.setAbout(data);
         comment.setTxt(text);
         comment.setDateTime(zonedDateTime);
         String message = stepDefs.mapper.writeValueAsString(comment);
-        stepDefs.result = stepDefs.mockMvc.perform(
-                post("/comments")
+
+        stepDefs.result = stepDefs.mockMvc.perform( post("/comments")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(message)
                         .accept(MediaType.APPLICATION_JSON)
-                        .with(authenticate()))
-                .andDo(print());
+                        .with(AuthenticationStepDefs.authenticate()))
+                        .andDo(print());
     }
 
-    @Then("^This dataset has a new comment$")
-    public void thisDatasetHasANewComment() throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        /*Comment comment = new Comment();
-        comment.setTxt(text);
-        comment.setUser(user);
-        comment.setDateTime(zonedDateTime);*/
-        throw new PendingException();
+    @Then("^This comment comment about dataset \"([^\"]*)\"$")
+    public void thisCommentCommentAboutDataset(String arg0) throws Throwable {
+        Dataset dataset = datasetRepository.findByTitle(arg0).get(0);
+        Comment comment = commentRepository.findByAbout(dataset).get(0);
+        stepDefs.result.andExpect(jsonPath("$.comments", is(comment)));
     }
 
     @And("^The new comment has been published with username \"([^\"]*)\" or username \"([^\"]*)\"$")

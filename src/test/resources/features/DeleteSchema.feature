@@ -1,15 +1,15 @@
-Feature: Delete Dataset
+Feature: Delete Schema
   In order to stop sharing or selling owned data
   As a data owner
-  I want to deregister a dataset and make it unavailable
+  I want to deregister a schema and make it unavailable
 
-  Scenario: Delete owned dataset
-    Given There is a dataset with title "dataset owned by owner" and owner "owner"
-    And There is 1 datasets registered
+  Scenario: Delete owned schema
+    Given There is a schema with title "schema title1" and description "schema owned by owner" and owner "owner"
+    And There is 1 schema registered
     And I login as "owner" with password "password"
-    When I delete the dataset with title "dataset owned by owner"
+    When I delete the schema with title "schema title1"
     Then The response code is 204
-    And There are 0 datasets registered
+    And There are 0 schema registered
 
   Scenario: Delete unowned dataset
     Given There is a dataset with title "dataset owned by owner" and owner "owner"

@@ -3,12 +3,12 @@ Feature: Update Dataset
   As a data owner
   I want to update a dataset
 
-  Scenario: Update a dataset description
+  Scenario: Update a dataset title
     Given I login as "owner" with password "password"
-    And There is a dataset with description "my original data" and owner "owner"
+    And There is a dataset with title "my original data" and owner "owner"
     And There is 1 dataset registered
-    When I update my dataset with desciption "my original data" to description "my changed description"
-    Then The new dataset has description "my changed description"
+    When I update my dataset with title "my original data" to title "my changed title"
+    Then The new dataset has title "my changed title"
     And The new dataset has lastModified field approximately now
     And There is 1 dataset registered
 

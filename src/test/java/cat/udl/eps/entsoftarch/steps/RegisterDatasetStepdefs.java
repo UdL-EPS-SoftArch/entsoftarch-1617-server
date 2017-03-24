@@ -9,7 +9,6 @@ import com.jayway.jsonpath.JsonPath;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
-import lombok.Data;
 import org.junit.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -99,7 +98,7 @@ public class RegisterDatasetStepdefs {
 
     @And("^User \"([^\"]*)\" owns (\\d+) dataset$")
     public void userOwnsDataset(String username, int count) throws Throwable {
-        stepDefs.result = stepDefs.mockMvc.perform(get("/dataOwners/{username}/owns", username)
+        stepDefs.result = stepDefs.mockMvc.perform(get("/dataOwners/{username}/ownsDatasets", username)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
