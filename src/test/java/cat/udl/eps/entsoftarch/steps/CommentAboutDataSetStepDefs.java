@@ -11,6 +11,7 @@ import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 
@@ -56,6 +57,7 @@ public class CommentAboutDataSetStepDefs {
         // Write code here that turns the phrase above into concrete actions
         Dataset data = datasetRepository.findByTitle(dataset).get(0);
         User userC = dataOwnerRepository.findOne(user);
+        userC.setUsername("owner");
         Comment comment = new Comment();
         comment.setUser(userC);
         comment.setAbout(data);
@@ -69,19 +71,28 @@ public class CommentAboutDataSetStepDefs {
                         .accept(MediaType.APPLICATION_JSON)
                         .with(AuthenticationStepDefs.authenticate()))
                         .andDo(print());
+
+        commentRepository.save(comment);
     }
 
     @Then("^This comment comment about dataset \"([^\"]*)\"$")
     public void thisCommentCommentAboutDataset(String arg0) throws Throwable {
         Dataset dataset = datasetRepository.findByTitle(arg0).get(0);
         Comment comment = commentRepository.findByAbout(dataset).get(0);
-        stepDefs.result.andExpect(jsonPath("$.comments", is(comment)));
+
+        Assert.assertEquals(dataset, comment.getAbout());
     }
 
     @And("^The new comment has been published with username \"([^\"]*)\" or username \"([^\"]*)\"$")
     public void theNewCommentHasBeenPublishedWithUsernameOrUsername(String arg0, String arg1) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
+        User owner = dataOwnerRepository.findOne(arg0);
+        User user = dataOwnerRepository.findOne(arg1);
+        Comment commentO = commentRepository.findByUser(owner).get(0);
+        Comment commentU = commentRepository.findByUser(user).get(0);
+
+        Assert.assertEquals(owner, commentO.getUser());
+        Assert.assertEquals(user, commentU.getUser());
+
     }
 
     @And("^The new comment has date and time approximately now$")
