@@ -16,11 +16,11 @@ after_success:
       docker login -u $DOCKER_USER -p $DOCKER_PASS;
       export REPO=udlepssoftarch/mydata-api;
       export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`;
-      docker build -f Dockerfile -t $REPO:$COMMIT .;
-      docker tag $REPO:$COMMIT $REPO:$TAG;
+      docker build -f Dockerfile -t $REPO:$TRAVIS_COMMIT .;
+      docker tag $REPO:$TRAVIS_COMMIT $REPO:$TAG;
       docker push $REPO;
       docker login --email=_ --username=_ --password=$HEROKU_TOKEN registry.heroku.com;
-      docker tag $REPO:$COMMIT registry.heroku.com/mydata-api/web;
+      docker tag $REPO:$TRAVIS_COMMIT registry.heroku.com/mydata-api/web;
       docker push registry.heroku.com/mydata-api/web;
     fi
 
