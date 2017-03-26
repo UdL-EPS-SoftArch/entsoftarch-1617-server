@@ -5,7 +5,7 @@
 
 	<groupId>cat.udl.eps.entsoftarch</groupId>
 	<artifactId>mydata-api</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<packaging>jar</packaging>
 
 	<name>MyData API</name>
