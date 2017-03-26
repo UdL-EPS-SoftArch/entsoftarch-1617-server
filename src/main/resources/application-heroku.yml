@@ -6,7 +6,6 @@ spring:
         maxIdle: 5
         minIdle: 2
         removeAbandoned: true
-        url: ${JDBC_DATABASE_URL}
     jpa:
         hibernate:
             ddl-auto: update
