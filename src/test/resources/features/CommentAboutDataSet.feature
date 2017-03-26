@@ -12,6 +12,6 @@ Feature: Comment About Dataset
 
   Scenario: Publish a comment about Dataset without a registered user.
     Given I'm not logged in
-    And There are 1 datasets registered
-    When I comment a dataset
-    Then The error message is "<User not registered>"
+    And There is a dataset with title "dataset" and owner "owner"
+    When I comment a dataset "dataset" with text "text"
+    Then The error message is "User not registered"
