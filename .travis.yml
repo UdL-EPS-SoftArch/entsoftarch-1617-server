@@ -19,9 +19,9 @@ after_success:
       docker build -f Dockerfile -t $REPO:$COMMIT .;
       docker tag $REPO:$COMMIT $REPO:$TAG;
       docker push $REPO;
-      docker login --email=_ --username=_ --password=$HEROKU_TOKEN registry.heroku.com
-      docker tag $REPO:$COMMIT registry.heroku.com/mydata-api/web
-      docker push registry.heroku.com/mydata-api/web
+      docker login --email=_ --username=_ --password=$HEROKU_TOKEN registry.heroku.com;
+      docker tag $REPO:$COMMIT registry.heroku.com/mydata-api/web;
+      docker push registry.heroku.com/mydata-api/web;
     fi
 
 notifications:
