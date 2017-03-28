@@ -35,16 +35,6 @@ public class CommentAboutDataSetStepDefs {
     private StepDefs stepDefs;
     private Dataset dataset;
 
-//    @Before
-//    public void setup() {
-//        // Clear authentication credentials at the start of every test.
-//        zonedDateTime = ZonedDateTime.now();
-//        this.dataset = new Dataset();
-//        dataset.setTitle("dataset");
-//        dataset.setOwner();
-//        dataset.setDateTime(zonedDateTime);
-//        datasetRepository.save(dataset);
-//    }
 
 
     @When("^I comment a dataset \"([^\"]*)\" with text \"([^\"]*)\" and user \"([^\"]*)\"$")
