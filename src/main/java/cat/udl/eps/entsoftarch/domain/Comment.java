@@ -25,7 +25,7 @@ public class Comment {
 
     @NotBlank(message = "Comment cannot be blank")
     @Size(max = 2096, message = "Comment maximum text lenght is {max} characters long")
-    private String txt;
+    private String text;
 
     @ManyToOne
     @NotNull
@@ -51,12 +51,12 @@ public class Comment {
         this.user = user;
     }
 
-    public String getTxt() {
-        return txt;
+    public String getText() {
+        return text;
     }
 
-    public void setTxt(String txt) {
-        this.txt = txt;
+    public void setText(String text) {
+        this.text = text;
     }
 
     public Dataset getAbout() {
