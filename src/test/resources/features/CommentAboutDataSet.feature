@@ -14,4 +14,4 @@ Feature: Comment About Dataset
     Given I'm not logged in
     And There is a dataset with title "dataset" and owner "owner"
     When I comment a dataset "dataset" with text "text"
-    Then The error message is "User not registered"
+    Then The error message is "Full authentication is required to access this resource"
