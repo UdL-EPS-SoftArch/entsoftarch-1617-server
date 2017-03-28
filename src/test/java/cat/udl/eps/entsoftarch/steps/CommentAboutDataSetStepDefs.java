@@ -92,7 +92,17 @@ public class CommentAboutDataSetStepDefs {
         comment.setTxt(arg1);
         comment.setDateTime(zonedDateTime);
 
-        Assert.assertNull(comment.getUser());
+        String message = stepDefs.mapper.writeValueAsString(comment);
+
+        stepDefs.result = stepDefs.mockMvc.perform(post("/comments")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(message)
+                .accept(MediaType.APPLICATION_JSON)
+                .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print());
+
+
+        commentRepository.save(comment);
 
     }
 }
