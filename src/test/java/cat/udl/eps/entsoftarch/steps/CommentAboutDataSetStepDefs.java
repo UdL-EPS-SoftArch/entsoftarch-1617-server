@@ -4,8 +4,8 @@ import cat.udl.eps.entsoftarch.domain.Comment;
 import cat.udl.eps.entsoftarch.domain.Dataset;
 import cat.udl.eps.entsoftarch.domain.User;
 import cat.udl.eps.entsoftarch.repository.CommentRepository;
-import cat.udl.eps.entsoftarch.repository.DataOwnerRepository;
 import cat.udl.eps.entsoftarch.repository.DatasetRepository;
+import cat.udl.eps.entsoftarch.repository.UserRepository;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -26,7 +26,7 @@ public class CommentAboutDataSetStepDefs {
 
     private static ZonedDateTime zonedDateTime;
     @Autowired
-    private DataOwnerRepository dataOwnerRepository;
+    private UserRepository dataOwnerRepository;
     @Autowired
     private DatasetRepository datasetRepository;
     @Autowired
