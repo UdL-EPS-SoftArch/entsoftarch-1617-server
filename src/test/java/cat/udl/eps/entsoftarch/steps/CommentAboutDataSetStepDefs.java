@@ -43,10 +43,9 @@ public class CommentAboutDataSetStepDefs {
         Dataset data = datasetRepository.findByTitle(dataset).get(0);
         User userC = dataOwnerRepository.findOne(user);
         Comment comment = new Comment();
-        comment.setUser(userC);
-        comment.setAbout(data);
         comment.setText(text);
         comment.setDateTime(zonedDateTime);
+        comment.setAbout(data);
         String message = stepDefs.mapper.writeValueAsString(comment);
 
 
