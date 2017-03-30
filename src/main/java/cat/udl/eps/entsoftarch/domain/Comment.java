@@ -1,6 +1,8 @@
 package cat.udl.eps.entsoftarch.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import lombok.Data;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.data.annotation.ReadOnlyProperty;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -10,11 +12,10 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.ZonedDateTime;
 
-/**
- * Created by santi on 6/03/17.
- */
+
 @Entity
-public class Comment {
+@Data
+public class Comment extends UriEntity<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -29,6 +30,7 @@ public class Comment {
 
     @ManyToOne
     @NotNull
+    @JsonIdentityReference(alwaysAsId = true)
     private Dataset about;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
