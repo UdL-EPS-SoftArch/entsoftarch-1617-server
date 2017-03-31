@@ -33,7 +33,6 @@ public class CommentAboutDataSetStepDefs {
     private CommentRepository commentRepository;
     @Autowired
     private StepDefs stepDefs;
-    private Dataset dataset;
 
 
 
