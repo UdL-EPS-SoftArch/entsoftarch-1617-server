@@ -47,8 +47,7 @@ mechanisms arround the data.
 
 ## Entities Model
 
-![Entities Model Diagram](http://g.gravizo.com/g?
-@startuml;
+![Entities Model Diagram](https://g.gravizo.com/svg?@startuml;
 skinparam classAttributeFontSize 8;
 skinparam classArrowFontSize 9;
 skinparam classFontSize 10;
