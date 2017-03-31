@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Created by Victor on 02/03/2017.
  */
-public class RegisterLicenseStepdefs {
+public class RegisterLicenseStepDefs {
 
     @Autowired
     private StepDefs stepDefs;
