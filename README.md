@@ -135,5 +135,5 @@ class DataOwner <<User>> extends User {;
 Dataset "owns many" -left- "owner many" DataOwner;
 class Admin <<User>> extends User {;
 };
-@enduml
+@enduml;
 )
