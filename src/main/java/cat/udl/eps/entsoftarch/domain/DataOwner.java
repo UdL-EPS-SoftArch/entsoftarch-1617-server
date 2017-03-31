@@ -45,4 +45,14 @@ public class DataOwner extends User {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_OWNER");
     }
+
+//    @Override
+//    public String toString() {
+//        return "DataOwner{" +
+//                "ownsDatasets=" + ownsDatasets +
+//                ", ownsSchemas=" + ownsSchemas +
+//                ", ownsLicenses=" + ownsLicenses +
+//                ", sharedDatasets=" + sharedDatasets +
+//                '}';
+//    }
 }

@@ -63,4 +63,27 @@ public class Dataset extends UriEntity<Long> {
     @Fetch(value = FetchMode.SUBSELECT)
     @JsonIdentityReference(alwaysAsId = true)
     private List<Tag> taggedWith = new ArrayList<>();
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
+    @JsonIdentityReference(alwaysAsId = true)
+    private List<Comment> commentedWith = new ArrayList<>();
+
+//    @Override
+//    public String toString() {
+//        return "Dataset{" +
+//                "id=" + id +
+//                ", title='" + title + '\'' +
+//                ", description='" + description + '\'' +
+//                ", dateTime=" + dateTime +
+//                ", lastModified=" + lastModified +
+//                ", isBlocked=" + isBlocked +
+//                ", flags=" + flags +
+//                ", owner=" + owner +
+//                ", schema=" + schema +
+//                ", license=" + license +
+//                ", sharedWith=" + sharedWith +
+//                ", taggedWith=" + taggedWith +
+//                '}';
+//    }
 }
