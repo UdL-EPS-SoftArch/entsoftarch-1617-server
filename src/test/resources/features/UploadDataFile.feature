@@ -6,8 +6,4 @@ Feature: Upload Data File
 
   Scenario: Add file to existing advertisement
     Given I login as "owner" with password "password"
-    And There is a dataset with title "my dataset" and owner "owner"
-    When I upload a file with filename "test.csv"
-    And I list the previous advertisement files
-    Then I get a list containing 1 file
-    And file number 1 has filename "overview.jpg", owner "user" and was just created
+    When I upload a file with filename "test.csv" and owner "owner" and title "my dataset"
