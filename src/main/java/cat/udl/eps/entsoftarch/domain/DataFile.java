@@ -1,9 +1,11 @@
 package cat.udl.eps.entsoftarch.domain;
 
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
-import lombok.Data;
+import lombok.*;
+import org.hibernate.validator.constraints.NotBlank;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import java.util.List;
 
 /**
@@ -11,10 +13,15 @@ import java.util.List;
  */
 
 
-@Entity
 @Data
+@Entity
 public class DataFile extends Dataset {
     private int downloads;
+
+    @NotBlank
+    private String filename;
+
+    private String content;
 
     @OneToMany
     @JsonIdentityReference(alwaysAsId = true)
