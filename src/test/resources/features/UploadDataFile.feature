@@ -4,6 +4,7 @@ Feature: Upload Data File
   I want to upload the data contained in a local file,
   organised as lines and using a specified string or character as field separator
 
-  Scenario: Add file to existing advertisement
+  Scenario: Create a dataset by uploading file
     Given I login as "owner" with password "password"
     When I upload a file with filename "test.csv" and owner "owner" and title "my dataset"
+    Then the dataset contains a file
