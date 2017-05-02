@@ -47,4 +47,8 @@ public class Dataset {
     @ManyToMany(fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
     private List<Tag> taggedWith = new ArrayList<>();
+
+    public void removeTag(Tag tag){
+        this.taggedWith.remove(tag);
+    }
 }
