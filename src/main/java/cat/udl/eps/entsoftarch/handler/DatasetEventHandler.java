@@ -1,5 +1,6 @@
 package cat.udl.eps.entsoftarch.handler;
 
+import cat.udl.eps.entsoftarch.domain.DataFile;
 import cat.udl.eps.entsoftarch.domain.DataOwner;
 import cat.udl.eps.entsoftarch.domain.Dataset;
 import cat.udl.eps.entsoftarch.domain.User;
@@ -65,7 +66,16 @@ public class DatasetEventHandler {
     }
 
     @HandleAfterCreate
-    public void handleDatasetPostCreate(Dataset dataset){ logger.info("After creating: {}", dataset); }
+    public void handleDatasetPostCreate(Dataset dataset){
+        if( dataset instanceof Dataset){
+            logger.error("After creating dataset: {}", dataset);
+        }else if(dataset instanceof DataFile){
+            DataFile df = (DataFile) dataset;
+
+            logger.error("After creating datafile: {}", df);
+        }
+
+    }
 
     @HandleAfterSave
     public void handleDatasetPostSave(Dataset dataset){ logger.info("After updating: {}", dataset); }
