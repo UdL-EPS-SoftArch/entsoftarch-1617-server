@@ -14,4 +14,5 @@ import java.util.List;
 @RepositoryRestResource
 public interface ClosedLicenseRepository extends PagingAndSortingRepository <ClosedLicense, Long> {
     List <ClosedLicense> findByText(@Param("text") String text);
+    List <ClosedLicense> findByTextContaining(@Param("text") String text);
 }

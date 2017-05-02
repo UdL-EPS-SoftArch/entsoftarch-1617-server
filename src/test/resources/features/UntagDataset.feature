@@ -39,4 +39,14 @@ Feature: Untag Dataset
     And The dataset with title "My second dataset" is tagged with tag "tag1"
     And The dataset with title "My second dataset" has 1 tags
 
+  Scenario: Untagging a tag which is not in dataset
+    Given I login as "owner" with password "password"
+    And There is a tag with name "tag1"
+    And There is a tag with name "tag2"
+    And There is a dataset with title "My dataset", tagged with "tag2" and owner "owner"
+    When I remove the tag "tag1" from the dataset titled "My dataset"
+    And The dataset with title "My dataset" has 1 tags
+    And The dataset with title "My dataset" is tagged with tag "tag2"
+
+
 
