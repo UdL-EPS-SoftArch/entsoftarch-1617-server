@@ -24,5 +24,8 @@ public class TagEventHandler {
     @PreAuthorize("hasRole('ADMIN')")
     public void handleTagPreDelete(Tag tag){
         logger.info("Before deleting: {}", tag.toString());
+        for (Dataset d: tag.getTags()) {
+            d.removeTag(tag);
+        }
     }
 }
