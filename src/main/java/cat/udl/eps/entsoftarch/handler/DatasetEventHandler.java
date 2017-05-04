@@ -67,12 +67,12 @@ public class DatasetEventHandler {
 
     @HandleAfterCreate
     public void handleDatasetPostCreate(Dataset dataset){
-        if( dataset instanceof Dataset){
-            logger.error("After creating dataset: {}", dataset);
-        }else if(dataset instanceof DataFile){
-            DataFile df = (DataFile) dataset;
+        if( dataset instanceof DataFile){
+            logger.error("After creating datafile: {}");
+        }else if(dataset instanceof Dataset){
+            //DataFile df = (DataFile) dataset;
 
-            logger.error("After creating datafile: {}", df);
+            logger.error("After creating dataset: {}");
         }
 
     }
