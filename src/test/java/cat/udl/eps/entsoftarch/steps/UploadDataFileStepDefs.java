@@ -4,7 +4,6 @@ import cat.udl.eps.entsoftarch.domain.DataFile;
 import cat.udl.eps.entsoftarch.domain.DataOwner;
 import cat.udl.eps.entsoftarch.repository.DataFileRepository;
 import cat.udl.eps.entsoftarch.repository.DataOwnerRepository;
-import cucumber.api.PendingException;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,13 +14,12 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.io.ByteArrayOutputStream;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import javax.xml.bind.DatatypeConverter;
-import java.io.ByteArrayOutputStream;
-import java.net.URLConnection;
 
 /**
  * Created by ElTrioMaquinero on 4/24/17.
@@ -29,6 +27,8 @@ import java.net.URLConnection;
 
 public class UploadDataFileStepDefs {
 
+    @Autowired
+    private StepDefs stepDefs;
 
     @Autowired
     private WebApplicationContext wac;
@@ -54,19 +54,19 @@ public class UploadDataFileStepDefs {
         Resource file = wac.getResource("classpath:" + filename);
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         FileCopyUtils.copy(file.getInputStream(), output);
-        String contentType = URLConnection.guessContentTypeFromName(filename);
         dataFile.setTitle(title);
         dataFile.setOwner(owner);
-        dataFile.setContent("data:" + contentType + ";base64," + DatatypeConverter.printBase64Binary(output.toByteArray()));
+        dataFile.setContent(output.toString());
         dataFileRepository.save(dataFile);
     }
 
 
     @Then("^the dataset contains a file$")
     public void theDatasetContainsAFile() throws Throwable {
-        result = mockMvc.perform(get(dataFile.getUri() + "/data")
+        result = stepDefs.mockMvc.perform(get(dataFile.getUri())
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content").value(dataFile.getContent()))
                 .andDo(print());
     }
 }
