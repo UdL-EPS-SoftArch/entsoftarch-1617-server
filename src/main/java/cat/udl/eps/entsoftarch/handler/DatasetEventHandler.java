@@ -37,7 +37,7 @@ public class DatasetEventHandler {
 
     @HandleBeforeSave
     @PreAuthorize("#dataset.owner.username == principal.username")
-    public void handleDatasetPreSave(Dataset dataset){
+    public void handleDatasetPreSave(Dataset dataset) {
         logger.info("Before updating: {}", dataset);
 
         dataset.setLastModified(ZonedDateTime.now());
@@ -45,7 +45,7 @@ public class DatasetEventHandler {
 
     @HandleBeforeDelete
     @PreAuthorize("#dataset.owner.username == principal.username")
-    public void handleDatasetPreDelete(Dataset dataset){
+    public void handleDatasetPreDelete(Dataset dataset) {
         logger.info("Before deleting: {}", dataset);
     }
 
@@ -66,23 +66,27 @@ public class DatasetEventHandler {
     }
 
     @HandleAfterCreate
-    public void handleDatasetPostCreate(Dataset dataset){
-        if( dataset instanceof DataFile){
-            logger.error("After creating datafile: {}");
-        }else if(dataset instanceof Dataset){
-            //DataFile df = (DataFile) dataset;
+    public void handleDataFilePostCreate(DataFile dataFile) {
+        logger.info("After create datafile: {}", dataFile);
+    }
 
-            logger.error("After creating dataset: {}");
-        }
-
+    @HandleAfterCreate
+    public void handleDatasetPostCreate(Dataset dataset) {
+        logger.info("After creating dataset: {}", dataset);
     }
 
     @HandleAfterSave
-    public void handleDatasetPostSave(Dataset dataset){ logger.info("After updating: {}", dataset); }
+    public void handleDatasetPostSave(Dataset dataset) {
+        logger.info("After updating: {}", dataset);
+    }
 
     @HandleAfterDelete
-    public void handleDatasetPostDelete(Dataset dataset){ logger.info("After deleting: {}", dataset); }
+    public void handleDatasetPostDelete(Dataset dataset) {
+        logger.info("After deleting: {}", dataset);
+    }
 
     @HandleAfterLinkSave
-    public void handleDatasetPostLinkSave(Dataset dataset, Object o) { logger.info("After linking: {} to {}", dataset, o); }
+    public void handleDatasetPostLinkSave(Dataset dataset, Object o) {
+        logger.info("After linking: {} to {}", dataset, o);
+    }
 }
