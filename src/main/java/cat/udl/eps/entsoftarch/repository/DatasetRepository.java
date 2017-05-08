@@ -1,7 +1,7 @@
 package cat.udl.eps.entsoftarch.repository;
 
 import cat.udl.eps.entsoftarch.domain.Dataset;
-import cat.udl.eps.entsoftarch.domain.Tag;
+import cat.udl.eps.entsoftarch.domain.Schema;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
@@ -18,4 +18,6 @@ public interface DatasetRepository extends PagingAndSortingRepository<Dataset, L
     List<Dataset> findByDescriptionContaining(@Param("description") String description);
     List<Dataset> findByTaggedWith_Name(@Param("tag")String tag);
     List<Dataset> findByTaggedWith_NameStartingWith(@Param("tag")String tag);
+    List<Dataset> findByDescriptionContainingAndSchema(@Param("description") String description,
+                                                       @Param("schema") Schema schema);
 }
