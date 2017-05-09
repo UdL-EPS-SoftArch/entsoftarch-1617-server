@@ -7,4 +7,4 @@ Feature: Upload Data File
   Scenario: Create a dataset by uploading file
     Given I login as "owner" with password "password"
     When I upload a file with filename "test.csv" and owner "owner" and title "my dataset"
-    Then the dataset contains a file
+    Then The dataset contains a file with filename "test.csv"
