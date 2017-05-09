@@ -32,13 +32,13 @@ public class LicenseEventHandler {
     }
 
     @HandleBeforeSave
-    @PreAuthorize("#licence.owner.username == principal.username")
+    @PreAuthorize("#license.owner.username == principal.username")
     public void handleLicensePreSave(License license) {
         logger.info("Before updating: {}", license);
     }
 
     @HandleBeforeDelete
-    @PreAuthorize("#licence.owner.username == principal.username")
+    @PreAuthorize("#license.owner.username == principal.username")
     public void handleLicensePreDelete(License license) {
         logger.info("Before deleting: {}", license);
     }
