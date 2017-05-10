@@ -50,8 +50,8 @@ public class UploadDataFileStepDefs {
     private ResultActions result;
 
 
-    @When("^I upload a file with filename \"([^\"]*)\" and owner \"([^\"]*)\" and title \"([^\"]*)\"$")
-    public void iUploadAFileWithFilenameAndOwnerAndTitle(String filename, String username, String title) throws Throwable {
+    @When("^I upload a file with filename \"([^\"]*)\" and owner \"([^\"]*)\" and title \"([^\"]*)\" and separator \"([^\"]*)\"$")
+    public void iUploadAFileWithFilenameAndOwnerAndTitle(String filename, String username, String title, String separator) throws Throwable {
         DataOwner owner = dataOwnerRepository.findOne(username);
         dataFile = new DataFile();
         dataFile.setFilename(filename);
@@ -61,6 +61,7 @@ public class UploadDataFileStepDefs {
         dataFile.setTitle(title);
         dataFile.setOwner(owner);
         dataFile.setContent(output.toString());
+        dataFile.setSeparator(separator);
 
         String message = mapper.writeValueAsString(dataFile);
 
@@ -73,10 +74,24 @@ public class UploadDataFileStepDefs {
                 .andDo(print());
     }
 
-
     @Then("^The dataset contains a file with filename \"([^\"]*)\"$")
     public void theDatasetContainsAFileWithFilename(String filename) throws Throwable {
         result.andExpect(jsonPath("$.filename").value(filename));
+    }
+
+    @Then("^The datafile content contains \"([^\"]*)\" content$")
+    public void theDatafileContentContains(String filename) throws Throwable {
+        dataFile = new DataFile();
+        dataFile.setFilename(filename);
+        Resource file = wac.getResource("classpath:" + filename);
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        FileCopyUtils.copy(file.getInputStream(), output);
+        result.andExpect(jsonPath("$.content").value(output.toString()));
+    }
+
+    @Then("^The datafile separator is \"([^\"]*)\"$")
+    public void theDatafileSeparatorIs(String separator) throws Throwable {
+        result.andExpect(jsonPath("$.separator").value(separator));
     }
 }
 

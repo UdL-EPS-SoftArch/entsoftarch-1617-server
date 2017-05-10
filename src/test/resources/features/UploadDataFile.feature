@@ -6,5 +6,7 @@ Feature: Upload Data File
 
   Scenario: Create a dataset by uploading file
     Given I login as "owner" with password "password"
-    When I upload a file with filename "test.csv" and owner "owner" and title "my dataset"
+    When I upload a file with filename "test.csv" and owner "owner" and title "my dataset" and separator ","
     Then The dataset contains a file with filename "test.csv"
+    And The datafile content contains "test.csv" content
+    And The datafile separator is ","

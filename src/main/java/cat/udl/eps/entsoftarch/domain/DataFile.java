@@ -23,6 +23,8 @@ public class DataFile extends Dataset {
 
     private String content;
 
+    private String separator;
+
     @OneToMany
     @JsonIdentityReference(alwaysAsId = true)
     private List<DataUser> downloaded;
