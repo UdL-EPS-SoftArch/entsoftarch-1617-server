@@ -22,8 +22,13 @@ public class Record {
     @NotBlank
     private String data;
 
+    @NotBlank
+    private String separator;
+
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @ReadOnlyProperty
     private ZonedDateTime dateTime;
+
+
 }
 
