@@ -75,12 +75,13 @@ public class DatasetEventHandler {
 
         for (String row: rows){
             Record r = new Record();
-
+            r.setSeparator(",");
             r.setData(row);
             r.setDateTime(ZonedDateTime.now());
             records.add(r);
         }
         dataFile.setRecords(records);
+        dataFile.setSeparator(",");
     }
 
     @HandleAfterCreate
