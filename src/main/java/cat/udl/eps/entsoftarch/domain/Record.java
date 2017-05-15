@@ -1,14 +1,16 @@
 package cat.udl.eps.entsoftarch.domain;
-
-import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.data.annotation.ReadOnlyProperty;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.time.ZonedDateTime;
+
+
+/**
+ * Created by ElTrioMaquinero on 4/25/17.
+ */
 
 @Entity
 @Data
