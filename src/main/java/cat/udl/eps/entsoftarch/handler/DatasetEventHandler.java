@@ -1,9 +1,6 @@
 package cat.udl.eps.entsoftarch.handler;
 
-import cat.udl.eps.entsoftarch.domain.DataFile;
-import cat.udl.eps.entsoftarch.domain.DataOwner;
-import cat.udl.eps.entsoftarch.domain.Dataset;
-import cat.udl.eps.entsoftarch.domain.User;
+import cat.udl.eps.entsoftarch.domain.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.rest.core.annotation.*;
@@ -14,6 +11,9 @@ import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
 
 /**
  * Created by http://rhizomik.net/~roberto/
@@ -67,7 +67,20 @@ public class DatasetEventHandler {
 
     @HandleAfterCreate
     public void handleDataFilePostCreate(DataFile dataFile) {
+
         logger.info("After create datafile: {}", dataFile);
+        String[] rows = dataFile.getContent().split(dataFile.getSeparator());
+
+        List<Record> records = new ArrayList<>();
+
+        for (String row: rows){
+            Record r = new Record();
+
+            r.setData(row);
+            r.setDateTime(ZonedDateTime.now());
+            records.add(r);
+        }
+        dataFile.setRecords(records);
     }
 
     @HandleAfterCreate

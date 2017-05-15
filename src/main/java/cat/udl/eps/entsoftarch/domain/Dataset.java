@@ -69,6 +69,10 @@ public class Dataset extends UriEntity<Long> {
     @JsonIdentityReference(alwaysAsId = true)
     private List<Comment> commentedWith = new ArrayList<>();
 
+    @OneToMany
+    @JsonIdentityReference(alwaysAsId = true)
+    private List<Record> records = new ArrayList<>();
+
     public void removeTag(Tag tag){
         this.taggedWith.remove(tag);
     }
