@@ -69,7 +69,7 @@ public class DatasetEventHandler {
     public void handleDataFilePostCreate(DataFile dataFile) {
 
         logger.info("After create datafile: {}", dataFile);
-        String[] rows = dataFile.getContent().split(dataFile.getSeparator());
+        String[] rows = dataFile.getContent().split("[\\r\\n]+");
 
         List<Record> records = new ArrayList<>();
 
