@@ -69,7 +69,7 @@ public class Dataset extends UriEntity<Long> {
     @JsonIdentityReference(alwaysAsId = true)
     private List<Comment> commentedWith = new ArrayList<>();
 
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.ALL})
     @JsonIdentityReference(alwaysAsId = true)
     private List<Record> records = new ArrayList<>();
 
