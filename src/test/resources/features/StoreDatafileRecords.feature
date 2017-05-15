@@ -10,3 +10,5 @@ Feature: Upload Data File
     Then The dataset contains a file with filename "test.csv"
     And The datafile content contains "test.csv" content
     And The datafile separator is ","
+    And The datafile contains 3 lines
+    And The line 3 contains "3,Gerard,700"
