@@ -5,6 +5,8 @@ import cat.udl.eps.entsoftarch.domain.DataOwner;
 import cat.udl.eps.entsoftarch.repository.DataFileRepository;
 import cat.udl.eps.entsoftarch.repository.DataOwnerRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import cucumber.api.PendingException;
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,7 @@ import org.springframework.web.context.WebApplicationContext;
 import java.io.ByteArrayOutputStream;
 
 import static cat.udl.eps.entsoftarch.steps.AuthenticationStepDefs.authenticate;
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -92,6 +95,20 @@ public class UploadDataFileStepDefs {
     @Then("^The datafile separator is \"([^\"]*)\"$")
     public void theDatafileSeparatorIs(String separator) throws Throwable {
         result.andExpect(jsonPath("$.separator").value(separator));
+    }
+
+    @And("^The datafile contains (\\d+) records$")
+    public void theDatafileContainsRecords(int numRecords) throws Throwable {
+
+        result.andExpect(jsonPath("$.records.*", hasSize(numRecords)));
+
+    }
+
+    @And("^The line (\\d+) contains \"([^\"]*)\"$")
+    public void theLineContains(int line, String content) throws Throwable {
+
+        result.andExpect(jsonPath("$.records["+line+"].data").value(content));
+
     }
 }
 
