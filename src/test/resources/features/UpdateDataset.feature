@@ -30,3 +30,14 @@ Feature: Update Dataset
     Then The response code is 403
     And The error message is "Access is denied"
     And The dataset has title "my original data"
+
+  Scenario: Update a dataset schema
+    Given I login as "owner" with password "password"
+    And There is a schema with title "my schema" and owner "owner"
+    And There is a schema with title "my new schema" and owner "owner"
+    And There is a dataset with title "my dataset" and owner "owner"
+    And I set a schema with title "my schema" to dataset with title "my dataset"
+    And The dataset with title "my dataset" has a schema with title "my schema"
+    When I update my dataset with title "my dataset" to schema "my new schema"
+    Then The response code is 200
+    And The dataset with title "my dataset" has a schema with title "my new schema"

@@ -2,8 +2,10 @@ package cat.udl.eps.entsoftarch.steps;
 
 import cat.udl.eps.entsoftarch.domain.DataOwner;
 import cat.udl.eps.entsoftarch.domain.Dataset;
+import cat.udl.eps.entsoftarch.domain.Schema;
 import cat.udl.eps.entsoftarch.repository.DataOwnerRepository;
 import cat.udl.eps.entsoftarch.repository.DatasetRepository;
+import cat.udl.eps.entsoftarch.repository.SchemaRepository;
 import com.jayway.jsonpath.JsonPath;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
@@ -20,6 +22,7 @@ import java.time.temporal.ChronoUnit;
 
 import static cat.udl.eps.entsoftarch.steps.AuthenticationStepDefs.authenticate;
 import static org.hamcrest.Matchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -30,12 +33,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class UpdateDatasetStepDefs {
     private static final Logger logger = LoggerFactory.getLogger(UpdateDatasetStepDefs.class);
 
-    @Autowired
-    private StepDefs stepDefs;
-    @Autowired
-    private DatasetRepository datasetRepository;
-    @Autowired
-    private DataOwnerRepository dataOwnerRepository;
+    @Autowired private StepDefs stepDefs;
+    @Autowired private DatasetRepository datasetRepository;
+    @Autowired private DataOwnerRepository dataOwnerRepository;
+    @Autowired private SchemaRepository schemaRepository;
 
 
     @When("^I update my dataset with title \"([^\"]*)\" to title \"([^\"]*)\"$")
@@ -101,5 +102,21 @@ public class UpdateDatasetStepDefs {
                         .with(authenticate()))
                     .andDo(print());
     }
-}
 
+    @When("^I update my dataset with title \"([^\"]*)\" to schema \"([^\"]*)\"$")
+    public void iUpdateMyDatasetWithTitleToSchema(String datasetTitle, String schemaTitle) throws Throwable {
+        Dataset dataset = datasetRepository.findByTitle(datasetTitle).get(0);
+        Schema schema = schemaRepository.findByTitle(schemaTitle).get(0);
+
+        dataset.setSchema(schema);
+        String message = stepDefs.mapper.writeValueAsString(dataset);
+
+        stepDefs.result = stepDefs.mockMvc.perform(
+                patch("/datasets/{id}", dataset.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(message)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(authenticate()))
+                .andDo(print());
+    }
+}
