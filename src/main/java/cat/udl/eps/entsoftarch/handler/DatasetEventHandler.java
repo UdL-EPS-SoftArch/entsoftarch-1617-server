@@ -83,6 +83,25 @@ public class DatasetEventHandler {
         dataFile.setRecords(records);
     }
 
+
+    @HandleAfterCreate
+    public void handleDataStreamPostCreate(DataStream dataStream) {
+
+        logger.info("After create datastream: {}", dataStream);
+        String[] rows = dataStream.getContent().split("[\\r\\n]+");
+
+        List<Record> records = new ArrayList<>();
+
+        for (String row: rows){
+            Record r = new Record();
+            r.setSeparator(dataStream.getSeparator());
+            r.setData(row);
+            r.setDateTime(ZonedDateTime.now());
+            records.add(r);
+        }
+        dataStream.setRecords(records);
+    }
+
     @HandleAfterCreate
     public void handleDatasetPostCreate(Dataset dataset) {
         logger.info("After creating dataset: {}", dataset);
