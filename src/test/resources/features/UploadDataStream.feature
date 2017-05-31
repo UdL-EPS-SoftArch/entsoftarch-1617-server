@@ -6,7 +6,7 @@ Feature: Upload Data Stream
 
   Scenario: Create a dataset by uploading stream
     Given I login as "owner" with password "password"
-    When I upload a stream with name "test.csv" and owner "owner" and title "my dataset" and separator ","
-    Then The dataset contains a stream with name "test.csv"
+    When I upload a stream with streamname "test.csv" and owner "owner" and title "my dataset" and separator ","
+    Then The dataset contains a stream with streamname "test.csv"
     And The datastream content contains "test.csv" content
     And The datastream separator is ","
