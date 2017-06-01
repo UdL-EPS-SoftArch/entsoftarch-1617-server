@@ -88,18 +88,7 @@ public class DatasetEventHandler {
     public void handleDataStreamPostCreate(DataStream dataStream) {
 
         logger.info("After create datastream: {}", dataStream);
-        String[] rows = dataStream.getContent().split("[\\r\\n]+");
 
-        List<Record> records = new ArrayList<>();
-
-        for (String row: rows){
-            Record r = new Record();
-            r.setSeparator(dataStream.getSeparator());
-            r.setData(row);
-            r.setDateTime(ZonedDateTime.now());
-            records.add(r);
-        }
-        dataStream.setRecords(records);
     }
 
 
