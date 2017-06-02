@@ -23,6 +23,7 @@ import java.util.List;
 public class DataOwner extends User {
 
     @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     @JsonIdentityReference(alwaysAsId = true)
     private List<Dataset> ownsDatasets = new ArrayList<>();
 
