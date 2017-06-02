@@ -13,7 +13,7 @@ import javax.transaction.Transactional;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringTokenizer;
+
 
 /**
  * Created by http://rhizomik.net/~roberto/
@@ -82,6 +82,16 @@ public class DatasetEventHandler {
         }
         dataFile.setRecords(records);
     }
+
+
+    @HandleAfterCreate
+    public void handleDataStreamPostCreate(DataStream dataStream) {
+
+        logger.info("After create datastream: {}", dataStream);
+
+    }
+
+
 
     @HandleAfterCreate
     public void handleDatasetPostCreate(Dataset dataset) {

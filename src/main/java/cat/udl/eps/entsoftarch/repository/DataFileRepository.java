@@ -1,6 +1,7 @@
 package cat.udl.eps.entsoftarch.repository;
 
 import cat.udl.eps.entsoftarch.domain.DataFile;
+import cat.udl.eps.entsoftarch.domain.Dataset;
 import cat.udl.eps.entsoftarch.domain.Schema;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
