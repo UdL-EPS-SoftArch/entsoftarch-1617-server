@@ -42,6 +42,8 @@ public class DataOwner extends User {
     @JsonIdentityReference(alwaysAsId = true)
     private List<Dataset> sharedDatasets;
 
+    private Boolean verified;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_OWNER");
