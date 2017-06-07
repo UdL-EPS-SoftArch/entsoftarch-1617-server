@@ -82,22 +82,22 @@ public class DatasetEventHandler {
 
 
 
-        Workbook wb = new XSSFWorkbook(new File("c:/Libro1.xlsx"));
-        DataFormatter formatter = new DataFormatter();
-        PrintStream out = new PrintStream(new FileOutputStream("test.txt"),
-                true, "UTF-8");
-        for (Sheet sheet : wb) {
-            for (Row row : sheet) {
-                boolean firstCell = true;
-                for (Cell cell : row) {
-                    if ( ! firstCell ) out.print(',');
-                    String text = formatter.formatCellValue(cell);
-                    out.print(text);
-                    firstCell = false;
-                }
-                out.println();
-            }
-        }
+//        Workbook wb = new XSSFWorkbook(new File("c:/Libro1.xlsx"));
+//        DataFormatter formatter = new DataFormatter();
+//        PrintStream out = new PrintStream(new FileOutputStream("test.txt"),
+//                true, "UTF-8");
+//        for (Sheet sheet : wb) {
+//            for (Row row : sheet) {
+//                boolean firstCell = true;
+//                for (Cell cell : row) {
+//                    if ( ! firstCell ) out.print(',');
+//                    String text = formatter.formatCellValue(cell);
+//                    out.print(text);
+//                    firstCell = false;
+//                }
+//                out.println();
+//            }
+//        }
 
         for (String row: rows){
             Record r = new Record();
