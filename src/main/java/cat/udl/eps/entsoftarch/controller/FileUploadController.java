@@ -17,6 +17,10 @@ import java.io.PrintStream;
 
 /**
  * Created by ElTrioMaquinero on 07/06/2017.
+ * <p>
+ * At moment only can upload files using multipart/form-data POST request
+ * After upload to server, the controller parse the xlsx file uploaded and convert to plain text file
+ * and then save to local server.
  */
 
 
@@ -45,6 +49,7 @@ public class FileUploadController {
                 logger.error("Server File Location="
                         + serverFile.getName());
 
+                // Parse the xlsx to plain text.txt
                 Workbook wb = new XSSFWorkbook(serverFile);
                 DataFormatter formatter = new DataFormatter();
                 PrintStream out = new PrintStream(new FileOutputStream("test.txt"),
@@ -63,7 +68,7 @@ public class FileUploadController {
                 }
 
                 out.close();
-
+                // And send the response
                 return "You successfully uploaded file=" + name;
             } catch (Exception e) {
                 return "You failed to upload " + name + " => " + e.getMessage();
