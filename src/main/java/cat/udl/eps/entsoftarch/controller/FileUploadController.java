@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedOutputStream;
@@ -22,7 +23,8 @@ public class FileUploadController {
     private static final Logger logger = LoggerFactory.getLogger(FileUploadController.class);
 
     @PostMapping("/uploadFile")
-    public String handleFileUpload(@RequestParam("name") String name,
+    public @ResponseBody
+    String handleFileUpload(@RequestParam("name") String name,
                                    @RequestParam("file") MultipartFile file) {
 
         if (!file.isEmpty()) {
