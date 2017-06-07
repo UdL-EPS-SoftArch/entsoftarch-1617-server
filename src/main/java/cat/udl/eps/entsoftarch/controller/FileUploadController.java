@@ -26,20 +26,14 @@ public class FileUploadController {
     private static final Logger logger = LoggerFactory.getLogger(FileUploadController.class);
 
     @PostMapping("/uploadFile")
-    public @ResponseBody
+    public
+    @ResponseBody
     String handleFileUpload(@RequestParam("name") String name,
-                                   @RequestParam("file") MultipartFile file) {
+                            @RequestParam("file") MultipartFile file) {
 
         if (!file.isEmpty()) {
             try {
                 byte[] bytes = file.getBytes();
-
-                // Creating the directory to store file
-//                String rootPath = System.getProperty("catalina.home");
-//                File dir = new File("/");
-//                        //rootPath + File.separator + "tmpFiles");
-//                if (!dir.exists())
-//                    dir.mkdirs();
 
                 // Create the file on server
                 File serverFile = new File(name);
@@ -49,9 +43,9 @@ public class FileUploadController {
                 stream.close();
 
                 logger.error("Server File Location="
-                        + serverFile.getAbsolutePath());
+                        + serverFile.getName());
 
-                Workbook wb = new XSSFWorkbook(serverFile.getAbsolutePath());
+                Workbook wb = new XSSFWorkbook(serverFile);
                 DataFormatter formatter = new DataFormatter();
                 PrintStream out = new PrintStream(new FileOutputStream("test.txt"),
                         true, "UTF-8");
@@ -59,7 +53,7 @@ public class FileUploadController {
                     for (Row row : sheet) {
                         boolean firstCell = true;
                         for (Cell cell : row) {
-                            if ( ! firstCell ) out.print(',');
+                            if (!firstCell) out.print(',');
                             String text = formatter.formatCellValue(cell);
                             out.print(text);
                             firstCell = false;
