@@ -33,6 +33,7 @@ public class DatasetEventHandler {
         dataset.setLastModified(dataset.getDateTime());
         DataOwner principal = (DataOwner) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         dataset.setOwner(principal);
+        dataset.setOwnerId(principal.getUsername());
     }
 
     @HandleBeforeSave

@@ -41,6 +41,9 @@ public class Schema extends UriEntity<Long> {
     @JsonIdentityReference(alwaysAsId = true)
     private DataOwner owner;
 
+    private String ownerId;
+
+
     @OneToMany(mappedBy = "schema", fetch = FetchType.EAGER)
     @JsonIdentityReference(alwaysAsId = true)
     private List<Dataset> datasets = new ArrayList<>();

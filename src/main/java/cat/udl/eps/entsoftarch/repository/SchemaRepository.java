@@ -14,6 +14,7 @@ import java.util.List;
 public interface SchemaRepository extends PagingAndSortingRepository<Schema, Long> {
     List<Schema> findByTitle(@Param("title") String title);
     List<Schema> findByDescription(@Param("description") String description);
+    List<Schema> findByOwnerId(@Param("ownerId") String ownerId);
     List<Schema> findByDescriptionContaining(@Param("description") String description);
 }
 

@@ -46,6 +46,8 @@ public class Dataset extends UriEntity<Long> {
     @JsonIdentityReference(alwaysAsId = true)
     private DataOwner owner;
 
+    private String ownerId;
+
     @ManyToOne
     @JsonIdentityReference(alwaysAsId = true)
     private Schema schema;

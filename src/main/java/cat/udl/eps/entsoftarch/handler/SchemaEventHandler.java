@@ -32,6 +32,7 @@ public class SchemaEventHandler {
         schema.setLastModified(schema.getDateTime());
         DataOwner principal = (DataOwner) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         schema.setOwner(principal);
+        schema.setOwnerId(principal.getUsername());
     }
 
     @HandleBeforeSave

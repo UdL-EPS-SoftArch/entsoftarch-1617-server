@@ -29,6 +29,7 @@ public class LicenseEventHandler {
 
         DataOwner principal=(DataOwner) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         license.setOwner(principal);
+        license.setOwnerId(principal.getUsername());
     }
 
     @HandleBeforeSave
