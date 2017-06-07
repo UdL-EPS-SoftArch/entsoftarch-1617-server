@@ -27,6 +27,8 @@ public abstract class License extends UriEntity<Long> {
     @JsonIdentityReference(alwaysAsId = true)
     private DataOwner owner;
 
+    private String ownerId;
+
     @OneToMany(mappedBy = "license", fetch = FetchType.EAGER)
     @JsonIdentityReference(alwaysAsId = true)
     private List<Dataset> datasets = new ArrayList<>();

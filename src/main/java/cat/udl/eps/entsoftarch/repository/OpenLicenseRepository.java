@@ -14,5 +14,6 @@ import java.util.List;
 @RepositoryRestResource
 public interface OpenLicenseRepository extends PagingAndSortingRepository <OpenLicense, Long> {
     List <OpenLicense> findByText(@Param("text") String text);
+    List <OpenLicense> findByOwnerId(@Param("ownerId") String ownerId);
     List <OpenLicense> findByTextContaining(@Param("text") String text);
 }
