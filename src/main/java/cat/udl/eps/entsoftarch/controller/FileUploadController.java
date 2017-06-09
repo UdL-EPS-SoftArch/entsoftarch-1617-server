@@ -1,9 +1,16 @@
 package cat.udl.eps.entsoftarch.controller;
 
+import cat.udl.eps.entsoftarch.domain.DataFile;
+import cat.udl.eps.entsoftarch.domain.DataOwner;
+import cat.udl.eps.entsoftarch.domain.Record;
+import cat.udl.eps.entsoftarch.repository.DataFileRepository;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,7 +20,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.PrintStream;
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by ElTrioMaquinero on 07/06/2017.
@@ -29,10 +38,15 @@ public class FileUploadController {
 
     private static final Logger logger = LoggerFactory.getLogger(FileUploadController.class);
 
+    @Autowired
+    private DataFileRepository dataFileRepository;
+
     @PostMapping("/uploadFile")
+    @PreAuthorize("hasRole('OWNER')")
     public
     @ResponseBody
-    String handleFileUpload(@RequestParam("name") String name,
+    String handleFileUpload(@RequestParam("title") String title,
+                            @RequestParam("description") String description,
                             @RequestParam("file") MultipartFile file) {
 
         if (!file.isEmpty()) {
@@ -40,7 +54,8 @@ public class FileUploadController {
                 byte[] bytes = file.getBytes();
 
                 // Create the file on server
-                File serverFile = new File(name);
+                String fileName = file.getOriginalFilename();
+                File serverFile = new File(fileName);
                 BufferedOutputStream stream = new BufferedOutputStream(
                         new FileOutputStream(serverFile));
                 stream.write(bytes);
@@ -52,29 +67,49 @@ public class FileUploadController {
                 // Parse the xlsx to plain text.txt
                 Workbook wb = new XSSFWorkbook(serverFile);
                 DataFormatter formatter = new DataFormatter();
-                PrintStream out = new PrintStream(new FileOutputStream("test.txt"),
-                        true, "UTF-8");
+
+                List<Record> records = new ArrayList<>();
+
+
                 for (Sheet sheet : wb) {
                     for (Row row : sheet) {
+                        String text = "";
                         boolean firstCell = true;
                         for (Cell cell : row) {
-                            if (!firstCell) out.print(',');
-                            String text = formatter.formatCellValue(cell);
-                            out.print(text);
-                            firstCell = false;
+                            if (firstCell) {
+                                text = formatter.formatCellValue(cell);
+                                firstCell = false;
+                            } else {
+                                text += "," + formatter.formatCellValue(cell);
+                            }
                         }
-                        out.println();
+                        Record r = new Record();
+                        r.setData(text);
+                        r.setSeparator(",");
+                        r.setDateTime(ZonedDateTime.now());
+                        records.add(r);
                     }
                 }
 
-                out.close();
+                DataFile df = new DataFile();
+                DataOwner principal = (DataOwner) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+                df.setOwner(principal);
+                df.setDateTime(ZonedDateTime.now());
+                df.setRecords(records);
+                df.setFilename(serverFile.getName());
+                df.setTitle(title);
+                df.setDescription(description);
+                df.setSeparator(",");
+
+                dataFileRepository.save(df);
+
                 // And send the response
-                return "You successfully uploaded file=" + name;
+                return "You successfully uploaded file=" + fileName;
             } catch (Exception e) {
-                return "You failed to upload " + name + " => " + e.getMessage();
+                return "You failed to upload " + file.getName() + " => " + e.getMessage();
             }
         } else {
-            return "You failed to upload " + name
+            return "You failed to upload " + file.getName()
                     + " because the file was empty.";
         }
     }
