@@ -17,9 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
+import java.io.*;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,16 +52,19 @@ public class FileUploadController {
 
         if (!file.isEmpty()) {
             try {
-                byte[] bytes = file.getBytes();
 
-                // Create the file on server
-
+                // UPLOAD FILE
+                /*byte[] bytes = file.getBytes();
                 File serverFile = new File(fileName);
+                file.transferTo(serverFile);
                 BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile));
                 stream.write(bytes);
-                stream.close();
+                stream.close();*/
 
-                logger.error("Server File Location="+ serverFile.getName());
+                //comment the following line, and uncomment the previous piece of code to save a file instance in the server
+                InputStream serverFile =  new BufferedInputStream(file.getInputStream());
+
+                logger.error("Server File Location="+ fileName);
 
                 // Parse the xlsx to plain text.txt
                 Workbook wb = new XSSFWorkbook(serverFile);
@@ -97,7 +98,7 @@ public class FileUploadController {
                 df.setOwner(principal);
                 df.setDateTime(ZonedDateTime.now());
                 df.setRecords(records);
-                df.setFilename(serverFile.getName());
+                df.setFilename(fileName);
                 df.setTitle(title);
                 df.setDescription(description);
                 df.setSeparator(","); //excel doesn't use separator, so Trio Makinero team decided to set comma as the default.
@@ -107,10 +108,10 @@ public class FileUploadController {
                 // And send the response
                 return "You successfully uploaded file=" + fileName;
             } catch (Exception e) {
-                return "You failed to upload " + file.getName() + " => " + e.getMessage();
+                return "You failed to upload " + fileName + " => " + e.getMessage();
             }
         } else {
-            return "You failed to upload " + file.getName()
+            return "You failed to upload " + fileName
                     + " because the file was empty.";
         }
     }
