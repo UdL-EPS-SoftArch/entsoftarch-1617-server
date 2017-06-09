@@ -49,20 +49,21 @@ public class FileUploadController {
                             @RequestParam("description") String description,
                             @RequestParam("file") MultipartFile file) {
 
+        DataOwner principal = (DataOwner) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String fileName = file.getOriginalFilename();
+
         if (!file.isEmpty()) {
             try {
                 byte[] bytes = file.getBytes();
 
                 // Create the file on server
-                String fileName = file.getOriginalFilename();
+
                 File serverFile = new File(fileName);
-                BufferedOutputStream stream = new BufferedOutputStream(
-                        new FileOutputStream(serverFile));
+                BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile));
                 stream.write(bytes);
                 stream.close();
 
-                logger.error("Server File Location="
-                        + serverFile.getName());
+                logger.error("Server File Location="+ serverFile.getName());
 
                 // Parse the xlsx to plain text.txt
                 Workbook wb = new XSSFWorkbook(serverFile);
@@ -70,10 +71,10 @@ public class FileUploadController {
 
                 List<Record> records = new ArrayList<>();
 
-
                 for (Sheet sheet : wb) {
                     for (Row row : sheet) {
-                        String text = "";
+                        Record r;
+                        String text = null;
                         boolean firstCell = true;
                         for (Cell cell : row) {
                             if (firstCell) {
@@ -83,7 +84,7 @@ public class FileUploadController {
                                 text += "," + formatter.formatCellValue(cell);
                             }
                         }
-                        Record r = new Record();
+                        r = new Record();
                         r.setData(text);
                         r.setSeparator(",");
                         r.setDateTime(ZonedDateTime.now());
@@ -92,14 +93,14 @@ public class FileUploadController {
                 }
 
                 DataFile df = new DataFile();
-                DataOwner principal = (DataOwner) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
                 df.setOwner(principal);
                 df.setDateTime(ZonedDateTime.now());
                 df.setRecords(records);
                 df.setFilename(serverFile.getName());
                 df.setTitle(title);
                 df.setDescription(description);
-                df.setSeparator(",");
+                df.setSeparator(","); //excel doesn't use separator, so Trio Makinero team decided to set comma as the default.
 
                 dataFileRepository.save(df);
 
