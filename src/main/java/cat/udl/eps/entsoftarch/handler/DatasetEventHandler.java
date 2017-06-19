@@ -1,6 +1,9 @@
 package cat.udl.eps.entsoftarch.handler;
 
 import cat.udl.eps.entsoftarch.domain.*;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.rest.core.annotation.*;
@@ -10,6 +13,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +73,7 @@ public class DatasetEventHandler {
     }
 
     @HandleAfterCreate
-    public void handleDataFilePostCreate(DataFile dataFile) {
+    public void handleDataFilePostCreate(DataFile dataFile) throws IOException, InvalidFormatException {
 
         logger.info("After create datafile: {}", dataFile);
         String[] rows = dataFile.getContent().split("[\\r\\n]+");
